@@ -82,7 +82,15 @@
         "title": "Responsabile fin dalla progettazione",
         "description": "Integrare sovranità dei dati, spiegabilità e gestione del rischio algoritmico sin dal primo giorno."
       }
-    ]
+    ],
+    "contactCard": {
+      "eyebrow": "Dialogo Direzionale",
+      "heading": "Avvia un dialogo diretto.",
+      "description": "Disponibile per advisory a consigli di amministrazione, governance della trasformazione IA e keynote esecutivi.",
+      "cta": "Contatta Jithin",
+      "status": "Disponibile per contatti",
+      "tags": ["Advisory CdA", "Trasformazione IA", "Keynote"]
+    }
   },
   "contact": {
     "eyebrow": "Contatto diretto",

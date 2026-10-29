@@ -82,7 +82,15 @@
         "title": "Responsible by Design",
         "description": "Integrate data sovereignty, explainability, and algorithmic risk controls from day one."
       }
-    ]
+    ],
+    "contactCard": {
+      "eyebrow": "Executive Dialogue",
+      "heading": "Initiate direct dialogue.",
+      "description": "Available for board advisory, institutional AI transformation governance, and executive keynotes.",
+      "cta": "Connect with Jithin",
+      "status": "Inquiries welcome",
+      "tags": ["Board Advisory", "AI Transformation", "Keynotes"]
+    }
   },
   "contact": {
     "eyebrow": "Direct Engagement",
