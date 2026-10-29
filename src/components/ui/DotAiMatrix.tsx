@@ -1,294 +1,271 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, useReducedMotion } from "motion/react";
 
-interface NodeData {
+interface Neuron {
   id: string;
   x: number;
   y: number;
+  layer: number;
   r: number;
-  label: string;
-  type: "core" | "agent" | "gateway" | "satellite";
 }
 
-const PRIMARY_NODES: NodeData[] = [
-  { id: "core", x: 250, y: 250, r: 7, label: "EXECUTIVE AI CORE", type: "core" },
-  { id: "n1", x: 160, y: 150, r: 5, label: "REASONING ENGINE", type: "agent" },
-  { id: "n2", x: 340, y: 140, r: 5, label: "HYBRID RAG MESH", type: "agent" },
-  { id: "n3", x: 370, y: 310, r: 5, label: "AUTONOMOUS ACTUATOR", type: "agent" },
-  { id: "n4", x: 130, y: 320, r: 5, label: "GOVERNANCE GATEWAY", type: "gateway" },
-  { id: "n5", x: 250, y: 100, r: 4, label: "CONTEXT SYNTHESIS", type: "satellite" },
-  { id: "n6", x: 390, y: 220, r: 4, label: "DECISION CHECKPOINT", type: "satellite" },
-  { id: "n7", x: 250, y: 400, r: 4, label: "AUDIT LEDGER", type: "satellite" },
-  { id: "n8", x: 110, y: 220, r: 4, label: "TELEMETRY BUS", type: "satellite" },
+// 5-layer 2D Neural Network Architecture
+const LAYERS: { count: number; x: number; yStart: number; yGap: number }[] = [
+  { count: 4, x: 50, yStart: 90, yGap: 80 },   // Layer 0: Input / Perception (4 neurons)
+  { count: 5, x: 155, yStart: 55, yGap: 72 },  // Layer 1: Feature Extraction (5 neurons)
+  { count: 6, x: 260, yStart: 40, yGap: 64 },  // Layer 2: Deep Processing (6 neurons)
+  { count: 4, x: 365, yStart: 90, yGap: 80 },  // Layer 3: Decision Synthesis (4 neurons)
+  { count: 2, x: 460, yStart: 160, yGap: 100 }, // Layer 4: Output Execution (2 neurons)
 ];
 
-const CONNECTIONS: [string, string][] = [
-  ["core", "n1"],
-  ["core", "n2"],
-  ["core", "n3"],
-  ["core", "n4"],
-  ["n1", "n5"],
-  ["n2", "n5"],
-  ["n2", "n6"],
-  ["n3", "n6"],
-  ["n3", "n7"],
-  ["n4", "n7"],
-  ["n4", "n8"],
-  ["n1", "n8"],
-];
-
-// 8x8 ambient background dot grid
-const GRID_DOTS: { cx: number; cy: number; delay: number }[] = [];
-for (let col = 0; col < 9; col++) {
-  for (let row = 0; row < 9; row++) {
-    GRID_DOTS.push({
-      cx: 50 + col * 50,
-      cy: 50 + row * 50,
-      delay: (col * 9 + row) * 0.04,
+const NEURONS: Neuron[] = [];
+LAYERS.forEach((layerSpec, layerIndex) => {
+  for (let i = 0; i < layerSpec.count; i++) {
+    NEURONS.push({
+      id: `L${layerIndex}-N${i}`,
+      x: layerSpec.x,
+      y: layerSpec.yStart + i * layerSpec.yGap,
+      layer: layerIndex,
+      r: layerIndex === 2 ? 4.5 : layerIndex === 4 ? 5 : 4,
     });
   }
+});
+
+// Construct dense synaptic connections between adjacent layers
+interface Synapse {
+  id: string;
+  from: Neuron;
+  to: Neuron;
+  activePathIndex: number;
 }
 
-export function DotAiMatrix({ className = "" }: { className?: string }) {
-  const [activeNode, setActiveNode] = useState<NodeData | null>(null);
-  const shouldReduceMotion = useReducedMotion();
+const SYNAPSES: Synapse[] = [];
+let pathCounter = 0;
 
-  const nodeMap = new Map<string, NodeData>();
-  PRIMARY_NODES.forEach((n) => nodeMap.set(n.id, n));
+for (let l = 0; l < LAYERS.length - 1; l++) {
+  const currentLayerNeurons = NEURONS.filter((n) => n.layer === l);
+  const nextLayerNeurons = NEURONS.filter((n) => n.layer === l + 1);
+
+  currentLayerNeurons.forEach((source) => {
+    nextLayerNeurons.forEach((target) => {
+      SYNAPSES.push({
+        id: `${source.id}->${target.id}`,
+        from: source,
+        to: target,
+        activePathIndex: pathCounter++ % 8,
+      });
+    });
+  });
+}
+
+// Select curated primary transmission pathways for animated action-potential pulses
+const TRANSMISSION_PATHS: {
+  points: { x: number; y: number }[];
+  duration: number;
+  delay: number;
+}[] = [
+  {
+    points: [
+      { x: 50, y: 90 },
+      { x: 155, y: 127 },
+      { x: 260, y: 168 },
+      { x: 365, y: 170 },
+      { x: 460, y: 160 },
+    ],
+    duration: 2.8,
+    delay: 0,
+  },
+  {
+    points: [
+      { x: 50, y: 250 },
+      { x: 155, y: 199 },
+      { x: 260, y: 232 },
+      { x: 365, y: 250 },
+      { x: 460, y: 260 },
+    ],
+    duration: 3.2,
+    delay: 1.0,
+  },
+  {
+    points: [
+      { x: 50, y: 170 },
+      { x: 155, y: 55 },
+      { x: 260, y: 104 },
+      { x: 365, y: 90 },
+      { x: 460, y: 160 },
+    ],
+    duration: 3.0,
+    delay: 1.8,
+  },
+  {
+    points: [
+      { x: 50, y: 330 },
+      { x: 155, y: 343 },
+      { x: 260, y: 360 },
+      { x: 365, y: 330 },
+      { x: 460, y: 260 },
+    ],
+    duration: 2.9,
+    delay: 2.4,
+  },
+];
+
+export function DotAiMatrix({ className = "" }: { className?: string }) {
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div
-      className={`relative w-full aspect-square max-w-[520px] mx-auto flex items-center justify-center rounded-2xl border border-border-subtle bg-surface-raised/60 p-4 sm:p-6 select-none overflow-hidden ${className}`}
-      aria-label="Interactive AI Dot Matrix Animation"
+      className={`relative w-full aspect-[5/4] max-w-[540px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
+      aria-hidden="true"
     >
-      {/* Top Monospace Status Overlay */}
-      <div className="absolute top-4 inset-x-6 flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-ink-muted/80 z-10 pointer-events-none">
-        <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-ink animate-pulse" />
-          <span>NEURAL LATTICE // ACTIVE</span>
-        </div>
-        <span className="hidden sm:inline-block">SYNAPSE RATE: 140Hz</span>
-      </div>
-
       <svg
-        viewBox="0 0 500 500"
+        viewBox="0 0 510 420"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
       >
-        {/* Background Dot Matrix */}
-        <g className="ambient-grid">
-          {GRID_DOTS.map((dot, idx) => (
-            <motion.circle
-              key={`grid-${idx}`}
-              cx={dot.cx}
-              cy={dot.cy}
-              r={1.25}
-              className="fill-ink"
-              initial={{ opacity: 0.12 }}
-              animate={
-                shouldReduceMotion
-                  ? { opacity: 0.15 }
-                  : {
-                      opacity: [0.08, 0.28, 0.08],
-                      scale: [1, 1.25, 1],
-                    }
-              }
-              transition={{
-                duration: 3.5,
-                repeat: Infinity,
-                delay: (idx % 12) * 0.25,
-                ease: "easeInOut",
-              }}
+        {/* Synaptic Pathway Lines (Background) */}
+        <g className="synapses">
+          {SYNAPSES.map((synapse) => (
+            <line
+              key={synapse.id}
+              x1={synapse.from.x}
+              y1={synapse.from.y}
+              x2={synapse.to.x}
+              y2={synapse.to.y}
+              className="stroke-ink/10"
+              strokeWidth="0.85"
             />
           ))}
         </g>
 
-        {/* Concentric Coordinate Rings */}
-        <circle
-          cx="250"
-          cy="250"
-          r="190"
-          strokeDasharray="3 4"
-          className="stroke-ink/15"
-          strokeWidth="1"
-        />
-        <circle
-          cx="250"
-          cy="250"
-          r="130"
-          className="stroke-ink/20"
-          strokeWidth="1"
-        />
-        <circle
-          cx="250"
-          cy="250"
-          r="70"
-          strokeDasharray="2 3"
-          className="stroke-ink/25"
-          strokeWidth="1"
-        />
-
-        {/* Expanding Wave Rings from Center */}
+        {/* Dynamic Firing Synapse Highlight Pulses */}
         {!shouldReduceMotion && (
-          <>
-            <motion.circle
-              cx="250"
-              cy="250"
-              r="70"
-              className="stroke-ink/30"
-              strokeWidth="1"
-              initial={{ r: 20, opacity: 0.6 }}
-              animate={{ r: [20, 180], opacity: [0.6, 0] }}
-              transition={{
-                duration: 4.5,
-                repeat: Infinity,
-                ease: "easeOut",
-              }}
-            />
-            <motion.circle
-              cx="250"
-              cy="250"
-              r="70"
-              className="stroke-ink/20"
-              strokeWidth="1"
-              initial={{ r: 20, opacity: 0.5 }}
-              animate={{ r: [20, 180], opacity: [0.5, 0] }}
-              transition={{
-                duration: 4.5,
-                repeat: Infinity,
-                delay: 2.25,
-                ease: "easeOut",
-              }}
-            />
-          </>
+          <g className="active-synaptic-traces">
+            {SYNAPSES.filter((_, idx) => idx % 6 === 0).map((synapse, idx) => (
+              <motion.line
+                key={`active-${synapse.id}`}
+                x1={synapse.from.x}
+                y1={synapse.from.y}
+                x2={synapse.to.x}
+                y2={synapse.to.y}
+                className="stroke-ink/40"
+                strokeWidth="1.2"
+                strokeDasharray="8 24"
+                animate={{
+                  strokeDashoffset: [0, -64],
+                  opacity: [0.15, 0.7, 0.15],
+                }}
+                transition={{
+                  duration: 2.4,
+                  repeat: Infinity,
+                  delay: (idx * 0.3) % 2,
+                  ease: "linear",
+                }}
+              />
+            ))}
+          </g>
         )}
 
-        {/* Synaptic Connector Lines */}
-        <g className="connections">
-          {CONNECTIONS.map(([srcId, dstId], idx) => {
-            const src = nodeMap.get(srcId);
-            const dst = nodeMap.get(dstId);
-            if (!src || !dst) return null;
+        {/* Action Potential Pulses Traveling Across 2D Network */}
+        {!shouldReduceMotion && (
+          <g className="action-potentials">
+            {TRANSMISSION_PATHS.map((path, pIdx) => {
+              const xKeyframes = path.points.map((pt) => pt.x);
+              const yKeyframes = path.points.map((pt) => pt.y);
 
-            const isHighlighted =
-              activeNode?.id === srcId || activeNode?.id === dstId;
-
-            return (
-              <g key={`conn-${idx}`}>
-                <motion.line
-                  x1={src.x}
-                  y1={src.y}
-                  x2={dst.x}
-                  y2={dst.y}
-                  className={
-                    isHighlighted
-                      ? "stroke-ink transition-all duration-200"
-                      : "stroke-ink/25"
-                  }
-                  strokeWidth={isHighlighted ? 1.75 : 1}
-                  strokeDasharray="4 4"
-                  initial={false}
-                  animate={
-                    shouldReduceMotion
-                      ? {}
-                      : {
-                          strokeDashoffset: [0, -16],
-                        }
-                  }
+              return (
+                <motion.circle
+                  key={`pulse-${pIdx}`}
+                  r={3}
+                  className="fill-ink"
+                  initial={{
+                    cx: path.points[0].x,
+                    cy: path.points[0].y,
+                    opacity: 0,
+                    scale: 0.8,
+                  }}
+                  animate={{
+                    cx: xKeyframes,
+                    cy: yKeyframes,
+                    opacity: [0, 0.95, 0.95, 0.95, 0],
+                    scale: [0.8, 1.3, 1.1, 1.3, 0.8],
+                  }}
                   transition={{
-                    duration: 2.5,
+                    duration: path.duration,
                     repeat: Infinity,
-                    ease: "linear",
+                    delay: path.delay,
+                    ease: "easeInOut",
                   }}
                 />
-              </g>
-            );
-          })}
-        </g>
+              );
+            })}
+          </g>
+        )}
 
-        {/* Primary Interactive AI Feature Dots */}
-        <g className="feature-dots">
-          {PRIMARY_NODES.map((node) => {
-            const isHovered = activeNode?.id === node.id;
-            const isCore = node.type === "core";
+        {/* 2D Neurons (Dots) */}
+        <g className="neurons">
+          {NEURONS.map((neuron, idx) => {
+            const isOutput = neuron.layer === 4;
+            const isCenterDeep = neuron.layer === 2 && (idx === 10 || idx === 11);
 
             return (
-              <g
-                key={node.id}
-                className="cursor-pointer"
-                onMouseEnter={() => setActiveNode(node)}
-                onMouseLeave={() => setActiveNode(null)}
-                tabIndex={0}
-                role="button"
-                aria-label={node.label}
-                onFocus={() => setActiveNode(node)}
-                onBlur={() => setActiveNode(null)}
-              >
-                {/* Outer halo / beacon ring */}
+              <g key={neuron.id}>
+                {/* Outer subtle halo ring */}
                 <motion.circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={node.r + (isHovered ? 12 : 7)}
-                  className={
-                    isHovered
-                      ? "stroke-ink fill-surface/60"
-                      : "stroke-ink/30 fill-transparent"
-                  }
-                  strokeWidth="1"
-                  strokeDasharray={isCore ? undefined : "2 2"}
+                  cx={neuron.x}
+                  cy={neuron.y}
+                  r={neuron.r + 5}
+                  className="stroke-ink/20 fill-transparent"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
                   animate={
                     shouldReduceMotion
                       ? {}
                       : {
-                          scale: isHovered ? [1.1, 1.25, 1.1] : [1, 1.12, 1],
+                          scale: [1, 1.25, 1],
+                          opacity: [0.2, 0.5, 0.2],
                         }
                   }
                   transition={{
-                    duration: isCore ? 2 : 3,
+                    duration: 2.8 + (idx % 4) * 0.4,
                     repeat: Infinity,
+                    delay: (idx % 7) * 0.2,
                     ease: "easeInOut",
                   }}
                 />
 
-                {/* Primary Dot Body */}
+                {/* Primary Neuron Dot Body */}
                 <motion.circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={isHovered ? node.r + 2 : node.r}
-                  className={isHovered || isCore ? "fill-ink" : "fill-ink/85"}
+                  cx={neuron.x}
+                  cy={neuron.y}
+                  r={neuron.r}
+                  className={isOutput || isCenterDeep ? "fill-ink" : "fill-ink/80"}
                   animate={
                     shouldReduceMotion
                       ? {}
                       : {
-                          scale: isHovered ? 1.2 : [1, 1.08, 1],
+                          scale: [1, 1.18, 1],
+                          opacity: [0.75, 1, 0.75],
                         }
                   }
                   transition={{
-                    duration: 1.8,
+                    duration: 2.2 + (idx % 5) * 0.3,
                     repeat: Infinity,
+                    delay: (idx % 6) * 0.25,
                     ease: "easeInOut",
                   }}
                 />
 
-                {/* Satellite Orbital Dot around Core */}
-                {isCore && !shouldReduceMotion && (
-                  <motion.circle
-                    cx={node.x}
-                    cy={node.y}
-                    r={2.5}
-                    className="fill-ink"
-                    animate={{
-                      cx: [250 + 26, 250, 250 - 26, 250, 250 + 26],
-                      cy: [250, 250 + 26, 250, 250 - 26, 250],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+                {/* Core nucleus dot for output / focal neurons */}
+                {(isOutput || isCenterDeep) && (
+                  <circle
+                    cx={neuron.x}
+                    cy={neuron.y}
+                    r={1.5}
+                    className="fill-surface"
                   />
                 )}
               </g>
@@ -296,19 +273,6 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           })}
         </g>
       </svg>
-
-      {/* Bottom Node Inspector / Active Label */}
-      <div className="absolute bottom-4 inset-x-6 flex items-center justify-between text-[11px] font-mono pt-3 border-t border-border-subtle/60 text-ink">
-        <div className="flex items-center gap-2">
-          <span className="text-ink-muted text-[10px]">INSPECT:</span>
-          <span className="font-semibold tracking-wider">
-            {activeNode ? activeNode.label : "ORCHESTRATION LAYER"}
-          </span>
-        </div>
-        <span className="text-[10px] text-ink-muted uppercase">
-          {activeNode ? `ID: ${activeNode.id.toUpperCase()}` : "AUTONOMOUS"}
-        </span>
-      </div>
     </div>
   );
 }
