@@ -77,9 +77,6 @@ export function Header({ locale, dict }: HeaderProps) {
             <span className="font-serif text-xl sm:text-2xl font-normal tracking-tight text-ink">
               {siteConfig.name}
             </span>
-            <span className="hidden sm:inline-block text-[10px] font-mono tracking-widest uppercase px-2 py-0.5 rounded border border-border-subtle text-ink-muted">
-              CIO
-            </span>
           </Link>
 
           {/* Desktop Navigation Links */}
