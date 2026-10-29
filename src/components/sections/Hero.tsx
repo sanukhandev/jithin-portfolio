@@ -23,15 +23,6 @@ export function Hero({ locale, dict }: HeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Main Hero Narrative */}
           <div className="lg:col-span-7 flex flex-col items-start z-10">
-            <MotionWrapper delay={0.05}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border-subtle bg-surface-raised mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-ink" aria-hidden="true" />
-                <span className="text-xs font-mono uppercase tracking-widest text-ink font-medium">
-                  {dict.hero.eyebrow}
-                </span>
-              </div>
-            </MotionWrapper>
-
             <MotionWrapper delay={0.1}>
               <div className="mb-4">
                 <span className="block text-sm sm:text-base font-mono uppercase tracking-wider text-ink-muted">
