@@ -68,9 +68,9 @@ export function LanguageSwitcher({
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={`${selectLabel}: ${LOCALE_LABELS[currentLocale]}`}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle bg-surface hover:border-border-strong text-ink text-xs font-mono uppercase tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 min-h-[38px]"
+        className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle bg-surface hover:border-border-strong text-ink text-xs font-mono uppercase tracking-wider transition-all focus-visible:outline-2 focus-visible:outline-offset-2 min-h-[38px]"
       >
-        <Globe className="w-3.5 h-3.5 text-ink/70" strokeWidth={1.75} aria-hidden="true" />
+        <Globe className="w-3.5 h-3.5 text-ink/70 transition-transform duration-300 ease-out group-hover:rotate-45 group-hover:scale-115" strokeWidth={1.75} aria-hidden="true" />
         <span>{currentLocale.toUpperCase()}</span>
       </button>
 

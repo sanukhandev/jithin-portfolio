@@ -71,11 +71,11 @@ export function Footer({ locale, dict }: FooterProps) {
             <button
               type="button"
               onClick={scrollToTop}
-              className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink transition-colors p-2 rounded border border-border-subtle hover:border-border-strong bg-surface"
+              className="group inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-ink-muted hover:text-ink transition-colors p-2 rounded border border-border-subtle hover:border-border-strong bg-surface"
               aria-label={dict.footer.backToTop}
             >
               <span>{dict.footer.backToTop}</span>
-              <ArrowUp className="w-3.5 h-3.5" strokeWidth={1.75} aria-hidden="true" />
+              <ArrowUp className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:-translate-y-1" strokeWidth={1.75} aria-hidden="true" />
             </button>
             <div className="mt-6 md:mt-0 text-start md:text-end text-xs font-mono text-ink-muted">
               <span>LOCALE: {locale.toUpperCase()}</span>

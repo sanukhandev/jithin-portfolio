@@ -38,7 +38,6 @@ export function ContactForm({ dict }: ContactFormProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2200);
     } catch {
-      // Fallback
       setCopied(false);
     }
   };
@@ -83,28 +82,28 @@ export function ContactForm({ dict }: ContactFormProps) {
   )}`;
 
   return (
-    <div className="relative w-full p-8 sm:p-10 lg:p-12 rounded-2xl glass-card-spatial bg-surface-raised/95 border border-border-subtle shadow-xl backdrop-blur-md">
+    <div className="relative w-full max-w-xl mx-auto p-5 sm:p-7 rounded-2xl glass-card-spatial bg-surface-raised/95 border border-border-subtle shadow-xl backdrop-blur-md">
       {status === "success" ? (
-        /* Executive Success State */
-        <div className="flex flex-col items-center text-center py-6 sm:py-8" role="status" aria-live="polite">
-          <div className="w-14 h-14 rounded-full bg-surface border border-border-subtle flex items-center justify-center text-ink mb-6">
-            <Check className="w-7 h-7" strokeWidth={2} aria-hidden="true" />
+        /* Executive Success State - Compact */
+        <div className="flex flex-col items-center text-center py-5 sm:py-6" role="status" aria-live="polite">
+          <div className="w-12 h-12 rounded-full bg-surface border border-border-subtle flex items-center justify-center text-ink mb-4">
+            <Check className="w-6 h-6" strokeWidth={2} aria-hidden="true" />
           </div>
 
-          <h3 className="text-2xl sm:text-3xl font-serif text-ink mb-3">
+          <h3 className="text-xl sm:text-2xl font-serif text-ink mb-2">
             {t.successTitle}
           </h3>
 
-          <p className="text-sm sm:text-base text-ink-muted font-sans leading-relaxed max-w-lg mb-8">
+          <p className="text-xs sm:text-sm text-ink-muted font-sans leading-relaxed max-w-md mb-6">
             {t.successMessage}
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 w-full">
+          <div className="flex flex-wrap items-center justify-center gap-3 w-full">
             <Button
               href={`mailto:${TARGET_EMAIL}`}
               variant="primary"
-              size="md"
-              icon={<ArrowUpRight className="w-4 h-4" strokeWidth={2} aria-hidden="true" />}
+              size="sm"
+              icon={<ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />}
             >
               {TARGET_EMAIL}
             </Button>
@@ -112,16 +111,16 @@ export function ContactForm({ dict }: ContactFormProps) {
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-border-subtle bg-surface text-sm font-medium text-ink hover:bg-surface-raised transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-border-subtle bg-surface text-xs font-medium text-ink hover:bg-surface-panel transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               {copied ? (
                 <>
-                  <Check className="w-4 h-4 text-ink" strokeWidth={2} aria-hidden="true" />
+                  <Check className="w-3.5 h-3.5 text-ink" strokeWidth={2} aria-hidden="true" />
                   <span>{t.copied}</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4 text-ink-muted" strokeWidth={1.75} aria-hidden="true" />
+                  <Copy className="w-3.5 h-3.5 text-ink-muted transition-transform duration-200 group-hover:scale-115" strokeWidth={1.75} aria-hidden="true" />
                   <span>{t.copyEmail}</span>
                 </>
               )}
@@ -130,58 +129,51 @@ export function ContactForm({ dict }: ContactFormProps) {
             <button
               type="button"
               onClick={resetForm}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-transparent text-sm font-medium text-ink-muted hover:text-ink transition-colors"
+              className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-transparent text-xs font-medium text-ink-muted hover:text-ink transition-colors"
             >
-              <RefreshCw className="w-4 h-4" strokeWidth={1.75} aria-hidden="true" />
+              <RefreshCw className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:rotate-180" strokeWidth={1.75} aria-hidden="true" />
               <span>{t.sendAnother}</span>
             </button>
           </div>
         </div>
       ) : (
-        /* Interactive Executive Contact Form */
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Header Prompt */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border-subtle/80 gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">
-                <Mail className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
-              </div>
-              <div>
-                <span className="font-mono text-xs uppercase tracking-wider text-ink-muted block">
-                  {dict.contact.configuredEmail}
-                </span>
-                <span className="text-sm font-medium text-ink">
-                  {TARGET_EMAIL}
-                </span>
-              </div>
+        /* Sleek Concise Contact Form */
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          {/* Header Bar: Email + 1-Click Copy in Single Sleek Line */}
+          <div className="flex items-center justify-between pb-3 border-b border-border-subtle/70 gap-2">
+            <div className="flex items-center gap-2 text-xs">
+              <Mail className="w-4 h-4 text-ink shrink-0" strokeWidth={1.75} aria-hidden="true" />
+              <span className="font-mono text-ink-muted/80 hidden sm:inline">{dict.contact.configuredEmail}:</span>
+              <span className="font-mono font-medium text-ink">{TARGET_EMAIL}</span>
             </div>
 
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="self-start sm:self-center inline-flex items-center gap-1.5 text-xs font-mono text-ink-muted hover:text-ink transition-colors"
+              className="group inline-flex items-center gap-1.5 text-xs font-mono text-ink-muted hover:text-ink transition-colors px-2 py-1 rounded hover:bg-surface"
+              aria-label={t.copyEmail}
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />
-                  <span>{t.copied}</span>
+                  <Check className="w-3.5 h-3.5 text-ink" strokeWidth={2} aria-hidden="true" />
+                  <span className="text-ink font-semibold">{t.copied}</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-3.5 h-3.5" strokeWidth={1.75} aria-hidden="true" />
-                  <span>{t.copyEmail}</span>
+                  <Copy className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-115" strokeWidth={1.75} aria-hidden="true" />
+                  <span className="hover:underline underline-offset-2">{t.copyEmail}</span>
                 </>
               )}
             </button>
           </div>
 
-          {/* Form Inputs Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {/* Form Inputs Grid: 2 Columns for Name & Email */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Name */}
             <div>
               <label
                 htmlFor="contact-name"
-                className="block text-xs font-mono uppercase tracking-wider text-ink-muted mb-2 font-medium"
+                className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted mb-1 font-medium"
               >
                 {t.nameLabel} <span className="text-ink">*</span>
               </label>
@@ -193,7 +185,7 @@ export function ContactForm({ dict }: ContactFormProps) {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder={t.namePlaceholder}
-                className="w-full px-4 py-3 rounded-xl bg-surface/90 border border-border-subtle focus:border-ink text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-surface/90 border border-border-subtle focus:border-ink text-xs sm:text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
               />
             </div>
 
@@ -201,7 +193,7 @@ export function ContactForm({ dict }: ContactFormProps) {
             <div>
               <label
                 htmlFor="contact-email"
-                className="block text-xs font-mono uppercase tracking-wider text-ink-muted mb-2 font-medium"
+                className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted mb-1 font-medium"
               >
                 {t.emailLabel} <span className="text-ink">*</span>
               </label>
@@ -213,7 +205,7 @@ export function ContactForm({ dict }: ContactFormProps) {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder={t.emailPlaceholder}
-                className="w-full px-4 py-3 rounded-xl bg-surface/90 border border-border-subtle focus:border-ink text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-surface/90 border border-border-subtle focus:border-ink text-xs sm:text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
               />
             </div>
           </div>
@@ -222,7 +214,7 @@ export function ContactForm({ dict }: ContactFormProps) {
           <div>
             <label
               htmlFor="contact-subject"
-              className="block text-xs font-mono uppercase tracking-wider text-ink-muted mb-2 font-medium"
+              className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted mb-1 font-medium"
             >
               {t.subjectLabel}
             </label>
@@ -233,15 +225,15 @@ export function ContactForm({ dict }: ContactFormProps) {
               value={formData.subject}
               onChange={handleChange}
               placeholder={t.subjectPlaceholder}
-              className="w-full px-4 py-3 rounded-xl bg-surface/90 border border-border-subtle focus:border-ink text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-surface/90 border border-border-subtle focus:border-ink text-xs sm:text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200"
             />
           </div>
 
-          {/* Message Details */}
+          {/* Message Details (Compact 3 rows) */}
           <div>
             <label
               htmlFor="contact-message"
-              className="block text-xs font-mono uppercase tracking-wider text-ink-muted mb-2 font-medium"
+              className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted mb-1 font-medium"
             >
               {t.messageLabel} <span className="text-ink">*</span>
             </label>
@@ -249,39 +241,39 @@ export function ContactForm({ dict }: ContactFormProps) {
               id="contact-message"
               name="message"
               required
-              rows={4}
+              rows={3}
               value={formData.message}
               onChange={handleChange}
               placeholder={t.messagePlaceholder}
-              className="w-full px-4 py-3 rounded-xl bg-surface/90 border border-border-subtle focus:border-ink text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200 resize-y"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-surface/90 border border-border-subtle focus:border-ink text-xs sm:text-sm text-ink placeholder:text-ink-muted/50 focus:outline-none transition-colors duration-200 resize-none"
             />
           </div>
 
           {/* Error Banner */}
           {status === "error" && (
             <div
-              className="p-4 rounded-xl bg-surface border border-border-strong flex items-start gap-3 text-xs"
+              className="p-3.5 rounded-xl bg-surface border border-border-strong flex items-start gap-2.5 text-xs"
               role="alert"
             >
               <AlertCircle className="w-4 h-4 text-ink shrink-0 mt-0.5" strokeWidth={1.75} aria-hidden="true" />
               <div className="flex-1">
-                <p className="text-ink font-medium leading-relaxed mb-2">
+                <p className="text-ink font-medium leading-relaxed mb-1.5">
                   {errorMessage}
                 </p>
                 <a
                   href={directMailtoUrl}
-                  className="inline-flex items-center gap-1.5 font-mono text-ink underline underline-offset-4 font-semibold hover:opacity-80"
+                  className="group inline-flex items-center gap-1 font-mono text-ink underline underline-offset-4 font-semibold hover:opacity-80"
                 >
                   <span>{t.directEmailCta}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} aria-hidden="true" />
                 </a>
               </div>
             </div>
           )}
 
           {/* Action Footer */}
-          <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-border-subtle/80">
-            <span className="text-xs font-mono text-ink-muted order-2 sm:order-1">
+          <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-border-subtle/70">
+            <span className="text-[11px] font-mono text-ink-muted/80 order-2 sm:order-1">
               {t.securityNotice}
             </span>
 
@@ -289,7 +281,7 @@ export function ContactForm({ dict }: ContactFormProps) {
               <Button
                 type="submit"
                 variant="primary"
-                size="lg"
+                size="md"
                 disabled={status === "submitting"}
                 icon={
                   status === "submitting" ? (
@@ -311,7 +303,7 @@ export function ContactForm({ dict }: ContactFormProps) {
                         ease: "easeInOut",
                       }}
                     >
-                      <Hand className="w-4 h-4 text-white group-hover:scale-110 transition-transform" strokeWidth={2} aria-hidden="true" />
+                      <Hand className="w-4 h-4 text-white transition-transform duration-200 group-hover:scale-115" strokeWidth={2} aria-hidden="true" />
                     </motion.span>
                   )
                 }

@@ -115,12 +115,12 @@ export function Header({ locale, dict }: HeaderProps) {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? dict.nav.close : dict.nav.menu}
-              className="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border-subtle bg-surface text-ink hover:border-border-strong transition-all focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="group md:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border-subtle bg-surface text-ink hover:border-border-strong transition-all focus-visible:outline-2 focus-visible:outline-offset-2"
             >
               {mobileMenuOpen ? (
-                <X className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
+                <X className="w-5 h-5 transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" strokeWidth={1.75} aria-hidden="true" />
               ) : (
-                <Menu className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
+                <Menu className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" strokeWidth={1.75} aria-hidden="true" />
               )}
             </button>
           </div>

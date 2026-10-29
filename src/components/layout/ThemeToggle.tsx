@@ -46,13 +46,13 @@ export function ThemeToggle({ lightLabel, darkLabel }: ThemeToggleProps) {
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border-subtle bg-surface hover:border-border-strong text-ink transition-all focus-visible:outline-2 focus-visible:outline-offset-2"
+      className="group inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border-subtle bg-surface hover:border-border-strong text-ink transition-all focus-visible:outline-2 focus-visible:outline-offset-2"
     >
       {mounted ? (
         theme === "light" ? (
-          <Moon className="w-4 h-4" strokeWidth={1.75} aria-hidden="true" />
+          <Moon className="w-4 h-4 transition-transform duration-300 ease-out group-hover:rotate-12 group-hover:scale-115" strokeWidth={1.75} aria-hidden="true" />
         ) : (
-          <Sun className="w-4 h-4" strokeWidth={1.75} aria-hidden="true" />
+          <Sun className="w-4 h-4 transition-transform duration-300 ease-out group-hover:rotate-45 group-hover:scale-115" strokeWidth={1.75} aria-hidden="true" />
         )
       ) : (
         <span className="w-4 h-4 inline-block" />

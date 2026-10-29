@@ -14,21 +14,21 @@ export function Contact({ dict }: ContactProps) {
   return (
     <section
       id="contact"
-      className="relative py-24 sm:py-32 lg:py-40 border-b border-border-subtle bg-surface overflow-hidden"
+      className="relative py-20 sm:py-28 lg:py-32 border-b border-border-subtle bg-surface overflow-hidden"
       aria-labelledby="contact-heading"
     >
       {/* Background Pattern Animation with Opaque Bézier Spline Lines (Echoing Hero) */}
       <ContactBackgroundAnimation />
 
       <Container className="relative z-10">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Section Header */}
           <SectionHeader
             eyebrow={dict.contact.eyebrow}
             heading={dict.contact.heading}
             subheading={dict.contact.subheading}
             align="center"
-            className="mb-12 sm:mb-16"
+            className="mb-8 sm:mb-10"
           />
 
           {/* Centered Executive Contact Form */}

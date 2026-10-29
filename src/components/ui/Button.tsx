@@ -28,7 +28,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none glass-button-spatial";
+      "group relative inline-flex items-center justify-center font-medium focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none glass-button-spatial";
 
     const variantStyles = {
       primary:
@@ -50,11 +50,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const content = (
       <>
         {icon && iconPosition === "start" && (
-          <span className="shrink-0 transition-transform duration-200">{icon}</span>
+          <span className="shrink-0 transition-transform duration-300 ease-out group-hover:-translate-x-1 rtl:group-hover:translate-x-1 group-hover:scale-110">
+            {icon}
+          </span>
         )}
         <span>{children}</span>
         {icon && iconPosition === "end" && (
-          <span className="shrink-0 transition-transform duration-200">{icon}</span>
+          <span className="shrink-0 transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-0.5 rtl:group-hover:-translate-x-1 group-hover:scale-110">
+            {icon}
+          </span>
         )}
       </>
     );
