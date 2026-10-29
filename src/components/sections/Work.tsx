@@ -6,7 +6,6 @@ import { Dictionary } from "@/i18n/dictionaries";
 import { caseStudies } from "@/content/work";
 import { Container } from "../ui/Container";
 import { SectionHeader } from "../ui/SectionHeader";
-import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { MotionWrapper } from "../ui/MotionWrapper";
 import { RadarSchematic } from "../ui/RadarSchematic";
@@ -65,15 +64,14 @@ export function Work({ locale, dict }: WorkProps) {
                         isReversed ? "lg:order-1" : "lg:order-2"
                       }`}
                     >
-                      {/* Badge & Index */}
-                      <div className="flex items-center justify-between w-full mb-6">
-                        <Badge variant="outline">{dict.work.badge}</Badge>
-                        <span className="font-mono text-xs text-ink-muted/60 tracking-widest">
+                      {/* Case Index */}
+                      <div className="mb-2">
+                        <span className="font-mono text-xs text-ink-muted/70 tracking-widest uppercase">
                           CASE 0{idx + 1}
                         </span>
                       </div>
 
-                      {/* Title & Tagline */}
+                      {/* Title & Tagline (Moved Up) */}
                       <h3
                         id={`case-title-${study.id}`}
                         className="text-2xl sm:text-3xl lg:text-4xl font-serif text-ink mb-3 leading-snug"

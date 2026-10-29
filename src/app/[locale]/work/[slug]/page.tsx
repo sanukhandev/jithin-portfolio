@@ -9,7 +9,6 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { caseStudies } from "@/content/work";
 import { constructMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
-import { Badge } from "@/components/ui/Badge";
 import { RadarSchematic } from "@/components/ui/RadarSchematic";
 import { CopilotSchematic } from "@/components/ui/CopilotSchematic";
 import { AutonomousSchematic } from "@/components/ui/AutonomousSchematic";
@@ -82,11 +81,10 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           </Link>
         </div>
 
-        {/* Header Header */}
+        {/* Header */}
         <div className="max-w-4xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Badge variant="outline">{dict.work.badge}</Badge>
-            <span className="font-mono text-xs text-ink-muted">
+          <div className="mb-3">
+            <span className="font-mono text-xs text-ink-muted/70 tracking-widest uppercase">
               CONCEPT ARCHITECTURE
             </span>
           </div>
