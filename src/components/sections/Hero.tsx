@@ -25,14 +25,6 @@ export function Hero({ locale, dict }: HeroProps) {
           {/* Main Hero Narrative */}
           <div className="lg:col-span-7 flex flex-col items-start z-10">
             <MotionWrapper delay={0.1}>
-              <div className="mb-5 space-y-1">
-                <span className="block text-base sm:text-lg font-serif text-ink tracking-tight">
-                  {siteConfig.name}
-                </span>
-                <span className="block text-xs sm:text-sm font-mono uppercase tracking-wider text-ink-muted">
-                  CIO · {siteConfig.company.name}
-                </span>
-              </div>
               <h1
                 id="hero-title"
                 className="text-4xl sm:text-6xl lg:text-7xl font-serif text-ink font-normal tracking-tight leading-[1.08] mb-6 sm:mb-8"

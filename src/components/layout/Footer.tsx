@@ -42,14 +42,11 @@ export function Footer({ locale, dict }: FooterProps) {
               {siteConfig.role[locale]} · {siteConfig.company.name}
             </span>
             <span className="text-[11px] font-mono text-ink-muted/70 tracking-wider uppercase mb-4 block">
-              {siteConfig.company.presence} · {siteConfig.location[locale]}
+              {siteConfig.company.presence}
             </span>
             <p className="text-sm text-ink-muted max-w-sm leading-relaxed mb-6 font-sans">
               {siteConfig.heroMission[locale]}
             </p>
-            <div className="text-xs text-ink-muted/80 font-mono border-s-2 border-border-strong ps-3">
-              {dict.footer.disclaimerNotice}
-            </div>
           </div>
 
           {/* Navigation Links */}
@@ -72,7 +69,7 @@ export function Footer({ locale, dict }: FooterProps) {
           </div>
 
           {/* Quick Actions & Back to Top */}
-          <div className="md:col-span-3 flex flex-col items-start md:items-end justify-between">
+          <div className="md:col-span-3 flex flex-col items-start md:items-end justify-start">
             <button
               type="button"
               onClick={scrollToTop}
@@ -82,16 +79,13 @@ export function Footer({ locale, dict }: FooterProps) {
               <span>{dict.footer.backToTop}</span>
               <ArrowUp className="w-3.5 h-3.5 transition-transform duration-300 ease-out group-hover:-translate-y-1" strokeWidth={1.75} aria-hidden="true" />
             </button>
-            <div className="mt-6 md:mt-0 text-start md:text-end text-xs font-mono text-ink-muted">
-              <span>LOCALE: {locale.toUpperCase()}</span>
-            </div>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-ink-muted">
           <p>
-            &copy; {new Date().getFullYear()} {siteConfig.name}. {dict.footer.copyright}
+            &copy; {new Date().getFullYear()} {siteConfig.name}, CIO. All rights reserved to desertwhales.tech.
           </p>
           <p className="text-center sm:text-end text-[11px] text-ink-muted/80 flex items-center justify-center sm:justify-end flex-wrap gap-1">
             <span>Swiss Monochrome — Designed with</span>

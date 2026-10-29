@@ -45,6 +45,16 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background-color: var(--ink);
+  color: var(--surface);
+}
+
+::-moz-selection {
+  background-color: var(--ink);
+  color: var(--surface);
+}
+
 body {
   background-color: var(--surface);
   color: var(--ink);
