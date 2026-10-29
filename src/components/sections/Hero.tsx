@@ -48,7 +48,7 @@ export function Hero({ locale, dict }: HeroProps) {
               <div className="flex flex-wrap items-center gap-4">
                 <Button
                   href={`/${locale}#work`}
-                  variant="primary"
+                  variant="secondary"
                   size="lg"
                   icon={<ArrowUpRight className="w-4 h-4" strokeWidth={2} aria-hidden="true" />}
                 >
