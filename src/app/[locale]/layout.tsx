@@ -72,7 +72,13 @@ export default async function LocaleLayout({
   const websiteSchema = getWebSiteStructuredData(locale);
 
   return (
-    <html lang={locale} dir={dir} data-theme="light" suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={dir}
+      className={`${sfDisplay.variable} ${sfArabic.variable}`}
+      data-theme="light"
+      suppressHydrationWarning
+    >
       <head>
         <script
           type="application/ld+json"

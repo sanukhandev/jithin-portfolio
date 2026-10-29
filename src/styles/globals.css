@@ -21,7 +21,7 @@
   --action-text: #FFFFFF;
 
   /* Typography Roles */
-  --font-ui: var(--font-sf-display), -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-editorial: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 

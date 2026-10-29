@@ -21,7 +21,7 @@ export function About({ dict }: AboutProps) {
           {/* Executive Narrative */}
           <div className="lg:col-span-7 space-y-6">
             <MotionWrapper delay={0.1}>
-              <p className="text-xl sm:text-2xl font-serif text-ink leading-relaxed font-normal">
+              <p className="text-xl sm:text-2xl font-sans text-ink leading-relaxed font-normal">
                 {dict.about.lead}
               </p>
             </MotionWrapper>
@@ -54,7 +54,7 @@ export function About({ dict }: AboutProps) {
                         <span className="font-mono text-xs text-ink-muted/70">
                           0{idx + 1}
                         </span>
-                        <h4 className="text-base font-serif text-ink font-medium">
+                        <h4 className="text-base font-sans text-ink font-semibold">
                           {principle.title}
                         </h4>
                       </div>
