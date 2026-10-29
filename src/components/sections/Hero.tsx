@@ -25,12 +25,12 @@ export function Hero({ locale, dict }: HeroProps) {
           {/* Main Hero Narrative */}
           <div className="lg:col-span-7 flex flex-col items-start z-10">
             <MotionWrapper delay={0.1}>
-              <div className="mb-4">
-                <span className="block text-sm sm:text-base font-mono uppercase tracking-wider text-ink-muted">
-                  {siteConfig.name} — {siteConfig.role[locale]} · {siteConfig.company.name}
+              <div className="mb-5 space-y-1">
+                <span className="block text-base sm:text-lg font-serif text-ink tracking-tight">
+                  {siteConfig.name}
                 </span>
-                <span className="block text-xs font-mono text-ink-muted/70 tracking-widest uppercase mt-1">
-                  {siteConfig.company.presence} · {siteConfig.location[locale]}
+                <span className="block text-xs sm:text-sm font-mono uppercase tracking-wider text-ink-muted">
+                  CIO · {siteConfig.company.name}
                 </span>
               </div>
               <h1
@@ -82,8 +82,8 @@ export function Hero({ locale, dict }: HeroProps) {
             <ArrowDown className="w-3.5 h-3.5 animate-bounce" strokeWidth={1.5} aria-hidden="true" />
             <span>{dict.hero.scrollPrompt}</span>
           </div>
-          <span className="hidden sm:inline-block uppercase tracking-wider">
-            EXECUTIVE ARCHITECTURE · MONOCHROME SYSTEM
+          <span className="hidden sm:inline-block uppercase tracking-widest text-ink-muted/80">
+            {siteConfig.company.presence}
           </span>
         </div>
       </Container>
