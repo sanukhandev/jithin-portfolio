@@ -35,20 +35,22 @@ export function Pillars({ locale, dict }: PillarsProps) {
             return (
               <MotionWrapper key={pillar.id} delay={0.1 * idx}>
                 <div className="group h-full flex flex-col p-8 sm:p-10 rounded-xl glass-card-spatial bg-surface-raised/90">
-                  {/* Icon & Index */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="w-12 h-12 rounded-lg bg-surface border border-border-subtle flex items-center justify-center text-ink group-hover:scale-105 transition-transform">
+                  {/* Icon, Heading in between, & Index */}
+                  <div className="flex items-center justify-between gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-lg bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0 group-hover:scale-105 transition-transform">
                       <Icon className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
                     </div>
-                    <span className="font-mono text-xs text-ink-muted/60 tracking-widest">
+
+                    <h3 className="flex-1 text-xl sm:text-2xl font-serif text-ink leading-snug group-hover:translate-x-0.5 transition-transform">
+                      {pillar.title[locale]}
+                    </h3>
+
+                    <span className="font-mono text-xs text-ink-muted/60 tracking-widest shrink-0">
                       0{idx + 1}
                     </span>
                   </div>
 
-                  {/* Title & Summary */}
-                  <h3 className="text-xl sm:text-2xl font-serif text-ink mb-4 group-hover:translate-x-0.5 transition-transform">
-                    {pillar.title[locale]}
-                  </h3>
+                  {/* Summary */}
                   <p className="text-sm sm:text-base text-ink-muted leading-relaxed mb-8 flex-1">
                     {pillar.summary[locale]}
                   </p>

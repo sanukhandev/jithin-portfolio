@@ -1,5 +1,5 @@
 import React from "react";
-import { Compass, ShieldCheck, Layers, TrendingUp, CheckCircle2 } from "lucide-react";
+import { Compass, ShieldCheck, Layers, TrendingUp } from "lucide-react";
 import { Locale } from "@/types/content";
 import { Dictionary } from "@/i18n/dictionaries";
 import { approachStages } from "@/content/approach";
@@ -60,20 +60,19 @@ export function Approach({ locale, dict }: ApproachProps) {
               <div key={stage.step} className={`${config.span} ${config.offset} transition-transform`}>
                 <MotionWrapper delay={0.12 * idx}>
                   <div className="h-full flex flex-col p-7 sm:p-9 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
-                    {/* Top Collage Header: Icon + Heading together, with Step Number opposite */}
-                    <div className="flex items-start justify-between gap-4 mb-5">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">
-                          <Icon className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
-                        </div>
-                        <div>
-                          <h3 className={`font-serif text-ink leading-tight ${isWide ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`}>
-                            {stage.title[locale]}
-                          </h3>
-                          <p className="text-xs font-mono text-ink-muted uppercase tracking-wider mt-1">
-                            {stage.subtitle[locale]}
-                          </p>
-                        </div>
+                    {/* Top Collage Header: Icon, Heading in between, and Step Number */}
+                    <div className="flex items-center justify-between gap-4 mb-5">
+                      <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">
+                        <Icon className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`font-serif text-ink leading-tight ${isWide ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`}>
+                          {stage.title[locale]}
+                        </h3>
+                        <p className="text-xs font-mono text-ink-muted uppercase tracking-wider mt-1">
+                          {stage.subtitle[locale]}
+                        </p>
                       </div>
 
                       <span className="font-mono text-3xl sm:text-4xl font-light text-ink/60 tracking-tight shrink-0">
@@ -111,19 +110,14 @@ export function Approach({ locale, dict }: ApproachProps) {
                       </div>
                     </div>
 
-                    {/* Decision Gate Architectural Milestone Banner */}
-                    <div className="mt-6 pt-4 border-t border-border-subtle/70">
-                      <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-surface/70 border border-border-subtle/70">
-                        <CheckCircle2 className="w-4 h-4 text-ink shrink-0 mt-0.5" strokeWidth={1.75} aria-hidden="true" />
-                        <div>
-                          <span className="font-mono text-[11px] font-semibold text-ink uppercase tracking-wider block mb-0.5">
-                            {dict.approach.decisionGate}
-                          </span>
-                          <p className="text-xs text-ink-muted font-sans leading-relaxed">
-                            {stage.decisionGate[locale]}
-                          </p>
-                        </div>
-                      </div>
+                    {/* Decision Gate */}
+                    <div className="mt-6 pt-4 border-t border-border-subtle/70 text-xs sm:text-sm leading-relaxed">
+                      <span className="font-mono text-xs text-ink font-semibold tracking-wide">
+                        {`${dict.approach.decisionGate} //`}
+                      </span>{" "}
+                      <b className="font-semibold text-ink font-sans">
+                        {stage.decisionGate[locale]}
+                      </b>
                     </div>
                   </div>
                 </MotionWrapper>
