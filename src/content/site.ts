@@ -10,8 +10,8 @@ export const siteConfig: SiteConfig = {
   company: {
     name: "desertwhales.tech",
     url: "https://desertwhales.tech",
-    presence: "UAE · KSA · ITY · IND",
-    regions: ["UAE", "KSA", "ITY", "IND"],
+    presence: "UAE · KSA · ITA · IND",
+    regions: ["UAE", "KSA", "ITA", "IND"],
   },
   location: {
     en: "Palermo & Pagani, Italy",
