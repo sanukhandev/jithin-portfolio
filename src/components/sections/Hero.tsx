@@ -17,7 +17,7 @@ interface HeroProps {
 export function Hero({ locale, dict }: HeroProps) {
   return (
     <section
-      className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 lg:pt-48 lg:pb-36 overflow-hidden border-b border-border-subtle"
+      className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 lg:pt-48 lg:pb-36 overflow-hidden"
       aria-labelledby="hero-title"
     >
       <Container>
