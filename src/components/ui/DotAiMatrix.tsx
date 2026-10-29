@@ -4,77 +4,92 @@ import React, { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { FileText, FileCode, Files } from "lucide-react";
 
-// Glitch pixel characters for depixelating effect
-const PIXEL_CHARS = ["█", "▓", "▒", "░", "■", "▪", "0", "1"];
+// Apple-inspired multilingual greetings with exclamation mark (including English, Italian, and Arabic)
+const GREETINGS = [
+  { word: "Hello!", script: "Latin" },
+  { word: "Ciao!", script: "Latin" },
+  { word: "مرحباً!", script: "Arabic" },
+  { word: "Bonjour!", script: "Latin" },
+  { word: "Hola!", script: "Latin" },
+  { word: "Hallo!", script: "Latin" },
+];
+
+const GLITCH_GLYPHS = ["█", "▓", "▒", "░", "■", "▪", "0", "1"];
 
 export function DotAiMatrix({ className = "" }: { className?: string }) {
   const shouldReduceMotion = useReducedMotion();
 
-  const targetWord = "HELLO WORLD !";
-  const [resolvedCount, setResolvedCount] = useState(targetWord.length);
-  const [glitchText, setGlitchText] = useState(targetWord);
-  const [beamActive, setBeamActive] = useState(false);
+  const [greetingIndex, setGreetingIndex] = useState(0);
+  const currentWord = GREETINGS[greetingIndex].word;
+  const isArabic = GREETINGS[greetingIndex].script === "Arabic";
 
-  // Depixelation loop cycle
+  const [resolvedLength, setResolvedLength] = useState(currentWord.length);
+  const [displayText, setDisplayText] = useState(currentWord);
+  const [beamPulse, setBeamPulse] = useState(false);
+
+  // Cycling multilingual depixelating sequence
   useEffect(() => {
+    const target = GREETINGS[greetingIndex].word;
+
     if (shouldReduceMotion) {
-      setResolvedCount(targetWord.length);
-      setGlitchText(targetWord);
+      setDisplayText(target);
+      setResolvedLength(target.length);
       return;
     }
 
     let isMounted = true;
 
-    const runCycle = async () => {
-      while (isMounted) {
-        // Phase 1: Reset to pixelated noise
-        setBeamActive(false);
-        setResolvedCount(0);
-        setGlitchText(
-          targetWord
+    const runSequence = async () => {
+      // 1. Initial state: scrambled digital noise
+      setBeamPulse(false);
+      setResolvedLength(0);
+      setDisplayText(
+        target
+          .split("")
+          .map(() => GLITCH_GLYPHS[Math.floor(Math.random() * GLITCH_GLYPHS.length)])
+          .join("")
+      );
+
+      // 2. Stream travels along curly ribbons through vertical filters to single node
+      await new Promise((r) => setTimeout(r, 1100));
+      if (!isMounted) return;
+
+      // 3. Beam triggers from single node
+      setBeamPulse(true);
+      await new Promise((r) => setTimeout(r, 250));
+      if (!isMounted) return;
+
+      // 4. Depixelating word character by character
+      for (let i = 0; i <= target.length; i++) {
+        if (!isMounted) return;
+        setResolvedLength(i);
+        setDisplayText(
+          target
             .split("")
-            .map((ch) => (ch === " " ? " " : PIXEL_CHARS[Math.floor(Math.random() * PIXEL_CHARS.length)]))
+            .map((ch, idx) => {
+              if (idx < i) return ch;
+              return GLITCH_GLYPHS[Math.floor(Math.random() * GLITCH_GLYPHS.length)];
+            })
             .join("")
         );
-
-        // Wait for streams to travel through filters to single node
-        await new Promise((r) => setTimeout(r, 1200));
-        if (!isMounted) break;
-
-        // Phase 2: Beam fires from single node
-        setBeamActive(true);
-        await new Promise((r) => setTimeout(r, 300));
-        if (!isMounted) break;
-
-        // Phase 3: Depixelate character by character from stream impact
-        for (let i = 0; i <= targetWord.length; i++) {
-          if (!isMounted) break;
-          setResolvedCount(i);
-          setGlitchText(
-            targetWord
-              .split("")
-              .map((ch, idx) => {
-                if (idx < i) return ch;
-                if (ch === " ") return " ";
-                return PIXEL_CHARS[Math.floor(Math.random() * PIXEL_CHARS.length)];
-              })
-              .join("")
-          );
-          await new Promise((r) => setTimeout(r, 90));
-        }
-
-        // Phase 4: Fully resolved "HELLO WORLD !" holds in clear focus
-        setGlitchText(targetWord);
-        await new Promise((r) => setTimeout(r, 2200));
+        await new Promise((r) => setTimeout(r, 85));
       }
+
+      // 5. Final sharp word holds in clear focus
+      setDisplayText(target);
+      await new Promise((r) => setTimeout(r, 2200));
+      if (!isMounted) return;
+
+      // Advance to next greeting
+      setGreetingIndex((prev) => (prev + 1) % GREETINGS.length);
     };
 
-    runCycle();
+    runSequence();
 
     return () => {
       isMounted = false;
     };
-  }, [shouldReduceMotion]);
+  }, [greetingIndex, shouldReduceMotion]);
 
   // Stage Coordinates
   const DOC_SOURCES = [
@@ -84,53 +99,56 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
   ];
 
   const FILTER_1_X = 145;
-  const FILTER_2_X = 230;
-  const CORE_NODE = { x: 310, y: 160 };
-  const TARGET_START_X = 380;
-  const TARGET_Y = 168;
+  const FILTER_2_X = 235;
+  const CORE_NODE = { x: 315, y: 160 };
+  const GREETING_X = 405;
+  const GREETING_Y = 172;
 
-  // Stream paths from docs -> filters -> core node
-  const STREAM_PATHS = [
+  // Organic Curly / Bézier Spline Curves (Flowing Ribbons)
+  const CURLY_PATHS = [
+    // Ribbon 1: Top Doc -> Undulating through Filter 1 & 2 -> Core Node
     {
-      d: `M 65 75 L ${FILTER_1_X} 105 L ${FILTER_2_X} 135 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 2.8,
+      d: `M 65 75 C 95 40, 115 130, ${FILTER_1_X} 95 C 175 60, 205 185, ${FILTER_2_X} 135 C 265 95, 290 160, ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.1,
       delay: 0,
     },
+    // Ribbon 2: Center Doc -> Harmonic Sine Wave -> Core Node
     {
-      d: `M 65 160 L ${FILTER_1_X} 160 L ${FILTER_2_X} 160 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 2.5,
-      delay: 0.3,
-    },
-    {
-      d: `M 65 245 L ${FILTER_1_X} 215 L ${FILTER_2_X} 185 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 2.9,
-      delay: 0.6,
-    },
-    {
-      d: `M 65 75 L ${FILTER_1_X} 160 L ${FILTER_2_X} 135 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 3.1,
-      delay: 1.0,
-    },
-    {
-      d: `M 65 245 L ${FILTER_1_X} 160 L ${FILTER_2_X} 185 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      d: `M 65 160 C 100 120, 115 200, ${FILTER_1_X} 160 C 175 120, 205 200, ${FILTER_2_X} 160 C 265 120, 290 160, ${CORE_NODE.x} ${CORE_NODE.y}`,
       duration: 2.8,
-      delay: 1.4,
+      delay: 0.4,
+    },
+    // Ribbon 3: Bottom Doc -> Curving upwards through Filters -> Core Node
+    {
+      d: `M 65 245 C 95 280, 115 190, ${FILTER_1_X} 225 C 175 260, 205 135, ${FILTER_2_X} 185 C 265 225, 290 160, ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.3,
+      delay: 0.8,
+    },
+    // Ribbon 4: Sweeping S-Curve (Top to Bottom Harmonic)
+    {
+      d: `M 65 75 C 110 110, 125 210, ${FILTER_1_X} 175 C 165 140, 200 230, ${FILTER_2_X} 175 C 260 130, 290 160, ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.4,
+      delay: 1.2,
+    },
+    // Ribbon 5: Sweeping S-Curve (Bottom to Top Harmonic)
+    {
+      d: `M 65 245 C 110 210, 125 110, ${FILTER_1_X} 145 C 165 180, 200 90, ${FILTER_2_X} 145 C 260 190, 290 160, ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.0,
+      delay: 1.6,
     },
   ];
 
-  // Scattering pixel particles around the impact zone
-  const SCATTER_PIXELS = [
-    { x: TARGET_START_X - 10, y: TARGET_Y - 20, size: 4 },
-    { x: TARGET_START_X + 20, y: TARGET_Y - 28, size: 5 },
-    { x: TARGET_START_X + 60, y: TARGET_Y - 24, size: 4 },
-    { x: TARGET_START_X + 110, y: TARGET_Y - 26, size: 5 },
-    { x: TARGET_START_X + 160, y: TARGET_Y - 22, size: 4 },
-    { x: TARGET_START_X + 210, y: TARGET_Y - 25, size: 4.5 },
-    { x: TARGET_START_X + 15, y: TARGET_Y + 22, size: 4 },
-    { x: TARGET_START_X + 75, y: TARGET_Y + 26, size: 4.5 },
-    { x: TARGET_START_X + 130, y: TARGET_Y + 24, size: 5 },
-    { x: TARGET_START_X + 185, y: TARGET_Y + 25, size: 4 },
-    { x: TARGET_START_X + 235, y: TARGET_Y + 20, size: 4 },
+  // Scattering pixel particles around the greeting impact zone
+  const IMPACT_PIXELS = [
+    { x: GREETING_X - 12, y: GREETING_Y - 24, size: 4 },
+    { x: GREETING_X + 24, y: GREETING_Y - 32, size: 4.5 },
+    { x: GREETING_X + 68, y: GREETING_Y - 28, size: 4 },
+    { x: GREETING_X + 115, y: GREETING_Y - 30, size: 5 },
+    { x: GREETING_X + 160, y: GREETING_Y - 26, size: 4 },
+    { x: GREETING_X + 18, y: GREETING_Y + 24, size: 4 },
+    { x: GREETING_X + 72, y: GREETING_Y + 28, size: 4.5 },
+    { x: GREETING_X + 128, y: GREETING_Y + 25, size: 4 },
+    { x: GREETING_X + 175, y: GREETING_Y + 22, size: 4 },
   ];
 
   return (
@@ -144,15 +162,15 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full overflow-visible"
       >
-        {/* Subtle Ambient Grid Background */}
+        {/* Subtle Ambient Dot Lattice */}
         <defs>
-          <pattern id="dotLattice" width="20" height="20" patternUnits="userSpaceOnUse">
+          <pattern id="ambientDots" width="20" height="20" patternUnits="userSpaceOnUse">
             <circle cx="10" cy="10" r="0.6" className="fill-ink/15" />
           </pattern>
         </defs>
-        <rect width="680" height="320" fill="url(#dotLattice)" opacity={0.4} />
+        <rect width="680" height="320" fill="url(#ambientDots)" opacity={0.4} />
 
-        {/* 1. DOCUMENT ICONS (STAGE 1: GENERATION SOURCE) */}
+        {/* 1. DOCUMENT SOURCES (STAGE 1: GENERATION SOURCE) */}
         <g className="doc-icons">
           {DOC_SOURCES.map((doc) => {
             const Icon = doc.icon;
@@ -199,33 +217,34 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           })}
         </g>
 
-        {/* 2. TRANSMISSION RAILS */}
-        <g className="stream-rails">
-          {STREAM_PATHS.map((path, idx) => (
+        {/* 2. STATIC CURLY GUIDE RAILS */}
+        <g className="curly-guide-rails">
+          {CURLY_PATHS.map((path, idx) => (
             <path
               key={`rail-${idx}`}
               d={path.d}
               className="stroke-ink/10"
-              strokeWidth="0.8"
+              strokeWidth="0.85"
               strokeDasharray="2 3"
             />
           ))}
         </g>
 
-        {/* 3. TAILING IMPULSE STREAMS (PASSING THROUGH FILTERS) */}
+        {/* 3. DYNAMIC CURLY TAILING IMPULSES (PASSING THROUGH FILTERS) */}
         {!shouldReduceMotion && (
-          <g className="tailing-impulses">
-            {STREAM_PATHS.map((path, idx) => (
-              <React.Fragment key={`impulse-${idx}`}>
+          <g className="curly-tailing-signals">
+            {CURLY_PATHS.map((path, idx) => (
+              <React.Fragment key={`curly-tail-${idx}`}>
+                {/* Primary Curly Tailing Stream */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink"
-                  strokeWidth="1.75"
+                  strokeWidth="1.8"
                   strokeLinecap="round"
-                  strokeDasharray="45 280"
+                  strokeDasharray="50 340"
                   animate={{
-                    strokeDashoffset: [325, -325],
+                    strokeDashoffset: [390, -390],
                     opacity: [0, 0.95, 0.95, 0],
                   }}
                   transition={{
@@ -235,21 +254,22 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
                     ease: "easeInOut",
                   }}
                 />
+                {/* Secondary Micro-Wave Tail */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink/40"
-                  strokeWidth="0.9"
+                  strokeWidth="0.95"
                   strokeLinecap="round"
-                  strokeDasharray="14 311"
+                  strokeDasharray="16 374"
                   animate={{
-                    strokeDashoffset: [325, -325],
+                    strokeDashoffset: [390, -390],
                     opacity: [0, 0.7, 0.7, 0],
                   }}
                   transition={{
-                    duration: path.duration * 0.9,
+                    duration: path.duration * 0.92,
                     repeat: Infinity,
-                    delay: path.delay + 0.2,
+                    delay: path.delay + 0.25,
                     ease: "easeInOut",
                   }}
                 />
@@ -403,25 +423,20 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           <circle cx={CORE_NODE.x} cy={CORE_NODE.y} r="2" className="fill-surface" />
         </g>
 
-        {/* 6. EMITTING STREAM BEAM SHOOTING INTO PIXEL MATRIX (STAGE 4) */}
-        <line
-          x1={CORE_NODE.x + 20}
-          y1={CORE_NODE.y}
-          x2={TARGET_START_X - 10}
-          y2={TARGET_Y - 8}
+        {/* 6. STREAM BEAM SHOOTING INTO GREETING AREA (STAGE 4) */}
+        <path
+          d={`M ${CORE_NODE.x + 20} ${CORE_NODE.y} C ${CORE_NODE.x + 45} ${CORE_NODE.y - 15}, ${GREETING_X - 35} ${GREETING_Y - 5}, ${GREETING_X - 10} ${GREETING_Y - 8}`}
           className="stroke-ink/25"
           strokeWidth="1.2"
           strokeDasharray="3 3"
         />
 
-        {/* High energy beam pulse */}
-        <motion.line
-          x1={CORE_NODE.x + 20}
-          y1={CORE_NODE.y}
-          x2={TARGET_START_X - 10}
-          y2={TARGET_Y - 8}
+        {/* Dynamic Curved Energy Beam */}
+        <motion.path
+          d={`M ${CORE_NODE.x + 20} ${CORE_NODE.y} C ${CORE_NODE.x + 45} ${CORE_NODE.y - 15}, ${GREETING_X - 35} ${GREETING_Y - 5}, ${GREETING_X - 10} ${GREETING_Y - 8}`}
+          fill="none"
           className="stroke-ink"
-          strokeWidth="2.5"
+          strokeWidth="2.4"
           strokeLinecap="round"
           strokeDasharray="25 60"
           animate={
@@ -429,7 +444,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
               ? {}
               : {
                   strokeDashoffset: [85, -85],
-                  opacity: beamActive ? [0.4, 1, 0.4] : 0.2,
+                  opacity: beamPulse ? [0.4, 1, 0.4] : 0.2,
                 }
           }
           transition={{
@@ -442,13 +457,13 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
         {/* Impact Wave Expanding when Beam Hits */}
         {!shouldReduceMotion && (
           <motion.circle
-            cx={TARGET_START_X - 10}
-            cy={TARGET_Y - 8}
+            cx={GREETING_X - 10}
+            cy={GREETING_Y - 8}
             r="4"
             className="stroke-ink fill-transparent"
             strokeWidth="1.2"
             animate={{
-              r: [4, 18],
+              r: [4, 20],
               opacity: [0.9, 0],
             }}
             transition={{
@@ -459,18 +474,18 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           />
         )}
 
-        {/* 7. DEPIXELATING "HELLO WORLD !" TYPOGRAPHY & PIXEL MATRIX (STAGE 5) */}
+        {/* 7. APPLE-STYLE MULTILINGUAL GREETING & DEPIXELATION (STAGE 5) */}
         <g className="depixelating-target">
-          {/* Scatter Pixel Noise Blocks that dissolve / assemble */}
+          {/* Floating Scatter Pixel Blocks */}
           {!shouldReduceMotion &&
-            SCATTER_PIXELS.map((p, idx) => (
+            IMPACT_PIXELS.map((p, idx) => (
               <motion.rect
-                key={`scatter-pixel-${idx}`}
+                key={`impact-pixel-${idx}`}
                 width={p.size}
                 height={p.size}
                 className="fill-ink"
                 animate={
-                  resolvedCount < targetWord.length
+                  resolvedLength < currentWord.length
                     ? {
                         x: [p.x - 6, p.x + 6, p.x],
                         y: [p.y - 4, p.y + 4, p.y],
@@ -491,41 +506,49 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
               />
             ))}
 
-          {/* Clean Baseline Indicator Line */}
+          {/* Understated Baseline Guide */}
           <line
-            x1={TARGET_START_X}
-            y1={TARGET_Y + 12}
-            x2={TARGET_START_X + 270}
-            y2={TARGET_Y + 12}
+            x1={GREETING_X}
+            y1={GREETING_Y + 16}
+            x2={GREETING_X + 220}
+            y2={GREETING_Y + 16}
             className="stroke-ink/20"
             strokeWidth="1"
             strokeDasharray="4 4"
           />
 
-          {/* Prominent Depixelating Text */}
+          {/* Authentic Apple Setup / Loading Typography (SF Pro Display) */}
           <text
-            x={TARGET_START_X}
-            y={TARGET_Y}
-            className="fill-ink font-mono font-bold tracking-[0.2em] select-none"
-            style={{ fontSize: "24px" }}
+            x={GREETING_X}
+            y={GREETING_Y}
+            className="fill-ink select-none font-sans"
+            style={{
+              fontSize: "36px",
+              fontWeight: 600,
+              fontFamily: isArabic
+                ? '-apple-system, BlinkMacSystemFont, "SF Arabic", "Geeza Pro", "Segoe UI Arabic", "Dubai", "Tahoma", sans-serif'
+                : '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif',
+              letterSpacing: isArabic ? "normal" : "-0.035em",
+            }}
           >
-            {glitchText}
+            {displayText}
           </text>
 
-          {/* Spark trail advancing with the depixelation wave */}
-          {!shouldReduceMotion && resolvedCount < targetWord.length && (
+          {/* Depixelation Beam Spark Indicator */}
+          {!shouldReduceMotion && resolvedLength < currentWord.length && (
             <motion.rect
-              x={TARGET_START_X + resolvedCount * 19.5}
-              y={TARGET_Y - 22}
-              width="6"
-              height="26"
+              x={GREETING_X + resolvedLength * (isArabic ? 22 : 18.5)}
+              y={GREETING_Y - 28}
+              width="5"
+              height="34"
+              rx="1"
               className="fill-ink"
               animate={{
                 opacity: [1, 0.2, 1],
                 scaleY: [1, 1.2, 1],
               }}
               transition={{
-                duration: 0.3,
+                duration: 0.25,
                 repeat: Infinity,
                 ease: "linear",
               }}
