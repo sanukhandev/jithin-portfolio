@@ -54,16 +54,9 @@ export function About({ locale, dict }: AboutProps) {
                 </p>
 
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border-subtle/80">
-                  <div className="flex flex-wrap gap-2">
-                    {dict.about.contactCard.tags.map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface-panel/85 text-ink border border-border-subtle"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  <span className="text-xs font-mono text-ink-muted tracking-wider">
+                    {dict.about.contactCard.tags.join("  ·  ")}
+                  </span>
 
                   <Button
                     href={`/${locale}#contact`}

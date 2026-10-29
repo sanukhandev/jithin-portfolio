@@ -6,7 +6,6 @@ import { approachStages } from "@/content/approach";
 import { Container } from "../ui/Container";
 import { SectionHeader } from "../ui/SectionHeader";
 import { MotionWrapper } from "../ui/MotionWrapper";
-import { Badge } from "../ui/Badge";
 
 interface ApproachProps {
   locale: Locale;
@@ -16,28 +15,24 @@ interface ApproachProps {
 const STAGE_CONFIG = [
   {
     icon: Compass,
-    badge: "PHASE I · DIAGNOSTIC",
     span: "lg:col-span-7",
     offset: "lg:translate-y-0",
     isWide: true,
   },
   {
     icon: ShieldCheck,
-    badge: "PHASE II · SANDBOX",
     span: "lg:col-span-5",
     offset: "lg:translate-y-8",
     isWide: false,
   },
   {
     icon: Layers,
-    badge: "PHASE III · BLUEPRINT",
     span: "lg:col-span-5",
     offset: "lg:-translate-y-4",
     isWide: false,
   },
   {
     icon: TrendingUp,
-    badge: "PHASE IV · PRODUCTION",
     span: "lg:col-span-7",
     offset: "lg:translate-y-4",
     isWide: true,
@@ -65,27 +60,26 @@ export function Approach({ locale, dict }: ApproachProps) {
               <div key={stage.step} className={`${config.span} ${config.offset} transition-transform`}>
                 <MotionWrapper delay={0.12 * idx}>
                   <div className="h-full flex flex-col p-7 sm:p-9 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
-                    {/* Top Collage Header */}
-                    <div className="flex items-center justify-between gap-4 mb-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">
-                          <Icon className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
+                    {/* Top Collage Header: Icon + Heading together, with Step Number opposite */}
+                    <div className="flex items-start justify-between gap-4 mb-5">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">
+                          <Icon className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
                         </div>
-                        <Badge variant="subtle">{config.badge}</Badge>
+                        <div>
+                          <h3 className={`font-serif text-ink leading-tight ${isWide ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`}>
+                            {stage.title[locale]}
+                          </h3>
+                          <p className="text-xs font-mono text-ink-muted uppercase tracking-wider mt-1">
+                            {stage.subtitle[locale]}
+                          </p>
+                        </div>
                       </div>
 
-                      <span className="font-mono text-3xl sm:text-4xl font-light text-ink/75 tracking-tight">
+                      <span className="font-mono text-3xl sm:text-4xl font-light text-ink/60 tracking-tight shrink-0">
                         {stage.step}
                       </span>
                     </div>
-
-                    {/* Stage Title and Subtitle */}
-                    <h3 className={`font-serif text-ink mb-1.5 leading-snug ${isWide ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`}>
-                      {stage.title[locale]}
-                    </h3>
-                    <p className="text-xs font-mono text-ink-muted mb-4 uppercase tracking-wider">
-                      {stage.subtitle[locale]}
-                    </p>
 
                     {/* Stage Executive Narrative */}
                     <p className={`text-ink-muted font-sans leading-relaxed mb-6 flex-1 ${isWide ? "text-sm sm:text-base max-w-2xl" : "text-xs sm:text-sm"}`}>

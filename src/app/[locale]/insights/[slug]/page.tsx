@@ -140,15 +140,8 @@ export default async function InsightDetailPage({
               <span className="block text-xs font-mono uppercase tracking-wider text-ink font-semibold mb-4">
                 Topics &amp; Themes
               </span>
-              <div className="flex flex-wrap gap-2">
-                {article.topics[locale].map((topic, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface/85 border border-border-subtle text-ink"
-                  >
-                    {topic}
-                  </span>
-                ))}
+              <div className="text-xs font-mono text-ink-muted leading-relaxed tracking-wide">
+                {article.topics[locale].join("  ·  ")}
               </div>
             </div>
 

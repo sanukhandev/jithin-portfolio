@@ -94,16 +94,9 @@ export function Work({ locale, dict }: WorkProps) {
                         {study.summary[locale]}
                       </p>
 
-                      {/* Capabilities pills */}
-                      <div className="flex flex-wrap gap-2.5 mb-8">
-                        {study.capabilities[locale].map((cap, cIdx) => (
-                          <span
-                            key={cIdx}
-                            className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface-panel/85 text-ink border border-border-subtle"
-                          >
-                            {cap}
-                          </span>
-                        ))}
+                      {/* Capabilities */}
+                      <div className="text-xs font-mono text-ink-muted mb-8 tracking-wider">
+                        {study.capabilities[locale].join("  ·  ")}
                       </div>
 
                       {/* Action */}

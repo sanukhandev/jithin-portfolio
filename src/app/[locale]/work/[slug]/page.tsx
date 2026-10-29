@@ -194,15 +194,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
               <span className="block text-xs font-mono uppercase tracking-wider text-ink font-semibold mb-4">
                 Core Domains &amp; Capabilities
               </span>
-              <div className="flex flex-wrap gap-2">
-                {study.capabilities[locale].map((cap, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface/85 border border-border-subtle text-ink"
-                  >
-                    {cap}
-                  </span>
-                ))}
+              <div className="text-xs font-mono text-ink-muted leading-relaxed tracking-wide">
+                {study.capabilities[locale].join("  ·  ")}
               </div>
             </div>
 
