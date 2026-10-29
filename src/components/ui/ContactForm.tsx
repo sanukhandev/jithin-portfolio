@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Check, Copy, ArrowUpRight, Send, AlertCircle, RefreshCw } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { Mail, Check, Copy, ArrowUpRight, Hand, AlertCircle, RefreshCw } from "lucide-react";
 import { Dictionary } from "@/i18n/dictionaries";
 import { Button } from "./Button";
 
@@ -24,6 +25,7 @@ export function ContactForm({ dict }: ContactFormProps) {
   const [copied, setCopied] = useState(false);
 
   const t = dict.contact.form;
+  const shouldReduceMotion = useReducedMotion();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -293,7 +295,24 @@ export function ContactForm({ dict }: ContactFormProps) {
                   status === "submitting" ? (
                     <RefreshCw className="w-4 h-4 animate-spin" strokeWidth={2} aria-hidden="true" />
                   ) : (
-                    <Send className="w-4 h-4" strokeWidth={2} aria-hidden="true" />
+                    <motion.span
+                      className="inline-flex origin-bottom-right rtl:origin-bottom-left"
+                      animate={
+                        shouldReduceMotion
+                          ? {}
+                          : {
+                              rotate: [0, 16, -6, 14, -2, 0],
+                            }
+                      }
+                      transition={{
+                        duration: 1.8,
+                        repeat: Infinity,
+                        repeatDelay: 2.4,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <Hand className="w-4 h-4 text-white group-hover:scale-110 transition-transform" strokeWidth={2} aria-hidden="true" />
+                    </motion.span>
                   )
                 }
               >
