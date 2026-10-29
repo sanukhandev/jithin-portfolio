@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Inter, Noto_Sans_Arabic } from "next/font/google";
 import "@/styles/globals.css";
 import { Locale } from "@/types/content";
 import { LOCALES, isLocale, getDirection } from "@/i18n/config";
@@ -11,6 +12,20 @@ import { getPersonStructuredData, getWebSiteStructuredData } from "@/lib/structu
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SkipLink } from "@/components/layout/SkipLink";
+
+const sfDisplay = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sf-display",
+  display: "swap",
+});
+
+const sfArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["500", "600", "700"],
+  variable: "--font-sf-arabic",
+  display: "swap",
+});
 
 export async function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -68,7 +83,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className="bg-surface text-ink antialiased flex flex-col min-h-screen">
+      <body className={`${sfDisplay.variable} ${sfArabic.variable} bg-surface text-ink antialiased flex flex-col min-h-screen`}>
         <SkipLink label={dict.nav.skipLink} />
         <Header locale={locale} dict={dict} />
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">

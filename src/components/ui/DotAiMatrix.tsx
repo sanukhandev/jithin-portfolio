@@ -526,8 +526,8 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
               fontSize: "36px",
               fontWeight: 600,
               fontFamily: isArabic
-                ? '-apple-system, BlinkMacSystemFont, "SF Arabic", "Geeza Pro", "Segoe UI Arabic", "Dubai", "Tahoma", sans-serif'
-                : '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif',
+                ? 'var(--font-sf-arabic), "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "SF Arabic", "Geeza Pro", "Segoe UI Arabic", "Dubai", "Tahoma", sans-serif'
+                : 'var(--font-sf-display), "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif',
               letterSpacing: isArabic ? "normal" : "-0.035em",
             }}
           >
