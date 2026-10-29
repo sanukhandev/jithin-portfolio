@@ -5,7 +5,7 @@ import { Dictionary } from "@/i18n/dictionaries";
 import { siteConfig } from "@/content/site";
 import { Container } from "../ui/Container";
 import { Button } from "../ui/Button";
-import { HeroSchematic } from "../ui/HeroSchematic";
+import { DotAiMatrix } from "../ui/DotAiMatrix";
 import { MotionWrapper } from "../ui/MotionWrapper";
 
 interface HeroProps {
@@ -64,10 +64,10 @@ export function Hero({ locale, dict }: HeroProps) {
             </MotionWrapper>
           </div>
 
-          {/* Abstract AI Intelligence Network Schematic */}
+          {/* Dot-Based AI Featured Animation (Framer Motion) */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <MotionWrapper delay={0.25} direction="none" className="w-full">
-              <HeroSchematic />
+              <DotAiMatrix />
             </MotionWrapper>
           </div>
         </div>
