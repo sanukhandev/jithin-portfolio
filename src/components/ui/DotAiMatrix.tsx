@@ -1,232 +1,173 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { FileText, FileCode, Files } from "lucide-react";
 
-// 5x7 Pixel Font Matrix for "HELLO WORLD !"
-const CHAR_BITMAPS: Record<string, number[][]> = {
-  H: [
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-  ],
-  E: [
-    [1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1],
-  ],
-  L: [
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1],
-  ],
-  O: [
-    [0, 1, 1, 1, 0],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [0, 1, 1, 1, 0],
-  ],
-  W: [
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1],
-    [1, 1, 0, 1, 1],
-    [1, 0, 0, 0, 1],
-  ],
-  R: [
-    [1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 0],
-    [1, 0, 1, 0, 0],
-    [1, 0, 0, 1, 0],
-    [1, 0, 0, 0, 1],
-  ],
-  D: [
-    [1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 0],
-  ],
-  "!": [
-    [1],
-    [1],
-    [1],
-    [1],
-    [1],
-    [0],
-    [1],
-  ],
-  " ": [
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-    [0, 0],
-  ],
-};
-
-interface PixelItem {
-  id: string;
-  charIndex: number;
-  finalX: number;
-  finalY: number;
-  scatterX: number;
-  scatterY: number;
-  delay: number;
-}
+// Glitch pixel characters for depixelating effect
+const PIXEL_CHARS = ["█", "▓", "▒", "░", "■", "▪", "0", "1"];
 
 export function DotAiMatrix({ className = "" }: { className?: string }) {
   const shouldReduceMotion = useReducedMotion();
 
-  // Compute all pixel positions for "HELLO WORLD !"
-  const textString = "HELLO WORLD !";
-  const startX = 415;
-  const startY = 160;
-  const pixelSize = 2.4;
-  const pixelGap = 1.3;
-  const charSpacing = 4.5;
+  const targetWord = "HELLO WORLD !";
+  const [resolvedCount, setResolvedCount] = useState(targetWord.length);
+  const [glitchText, setGlitchText] = useState(targetWord);
+  const [beamActive, setBeamActive] = useState(false);
 
-  const pixels: PixelItem[] = useMemo(() => {
-    const list: PixelItem[] = [];
-    let currentX = startX;
-
-    for (let cIdx = 0; cIdx < textString.length; cIdx++) {
-      const char = textString[cIdx];
-      const bitmap = CHAR_BITMAPS[char] || CHAR_BITMAPS[" "];
-      const cols = bitmap[0].length;
-
-      for (let r = 0; r < bitmap.length; r++) {
-        for (let c = 0; c < cols; c++) {
-          if (bitmap[r][c] === 1) {
-            const finalX = currentX + c * (pixelSize + pixelGap);
-            const finalY = startY + r * (pixelSize + pixelGap);
-
-            // Deterministic pseudo-random scatter vector
-            const seed = (cIdx * 37 + r * 13 + c * 7) % 31;
-            const angle = (seed / 31) * Math.PI * 2;
-            const dist = 12 + (seed % 16);
-
-            list.push({
-              id: `p-${cIdx}-${r}-${c}`,
-              charIndex: cIdx,
-              finalX,
-              finalY,
-              scatterX: Math.cos(angle) * dist,
-              scatterY: Math.sin(angle) * dist,
-              // Delay wave traveling from left to right as the stream hits
-              delay: 1.1 + cIdx * 0.08 + (c * 0.02),
-            });
-          }
-        }
-      }
-      currentX += cols * (pixelSize + pixelGap) + charSpacing;
+  // Depixelation loop cycle
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setResolvedCount(targetWord.length);
+      setGlitchText(targetWord);
+      return;
     }
-    return list;
-  }, []);
 
-  // Document sources (Stage 1)
+    let isMounted = true;
+
+    const runCycle = async () => {
+      while (isMounted) {
+        // Phase 1: Reset to pixelated noise
+        setBeamActive(false);
+        setResolvedCount(0);
+        setGlitchText(
+          targetWord
+            .split("")
+            .map((ch) => (ch === " " ? " " : PIXEL_CHARS[Math.floor(Math.random() * PIXEL_CHARS.length)]))
+            .join("")
+        );
+
+        // Wait for streams to travel through filters to single node
+        await new Promise((r) => setTimeout(r, 1200));
+        if (!isMounted) break;
+
+        // Phase 2: Beam fires from single node
+        setBeamActive(true);
+        await new Promise((r) => setTimeout(r, 300));
+        if (!isMounted) break;
+
+        // Phase 3: Depixelate character by character from stream impact
+        for (let i = 0; i <= targetWord.length; i++) {
+          if (!isMounted) break;
+          setResolvedCount(i);
+          setGlitchText(
+            targetWord
+              .split("")
+              .map((ch, idx) => {
+                if (idx < i) return ch;
+                if (ch === " ") return " ";
+                return PIXEL_CHARS[Math.floor(Math.random() * PIXEL_CHARS.length)];
+              })
+              .join("")
+          );
+          await new Promise((r) => setTimeout(r, 90));
+        }
+
+        // Phase 4: Fully resolved "HELLO WORLD !" holds in clear focus
+        setGlitchText(targetWord);
+        await new Promise((r) => setTimeout(r, 2200));
+      }
+    };
+
+    runCycle();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [shouldReduceMotion]);
+
+  // Stage Coordinates
   const DOC_SOURCES = [
-    { id: "doc-1", y: 85, icon: FileText },
-    { id: "doc-2", y: 175, icon: FileCode },
-    { id: "doc-3", y: 265, icon: Files },
+    { id: "doc-1", y: 75, icon: FileText },
+    { id: "doc-2", y: 160, icon: FileCode },
+    { id: "doc-3", y: 245, icon: Files },
   ];
 
-  // Pipeline Coordinates
-  const FILTER_1_X = 165;
-  const FILTER_2_X = 265;
-  const CORE_NODE = { x: 355, y: 175 };
+  const FILTER_1_X = 145;
+  const FILTER_2_X = 230;
+  const CORE_NODE = { x: 310, y: 160 };
+  const TARGET_START_X = 380;
+  const TARGET_Y = 168;
 
-  // Streams from Docs -> Filter 1 -> Filter 2 -> Core Node
+  // Stream paths from docs -> filters -> core node
   const STREAM_PATHS = [
     {
-      d: `M 70 85 L ${FILTER_1_X} 115 L ${FILTER_2_X} 150 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      d: `M 65 75 L ${FILTER_1_X} 105 L ${FILTER_2_X} 135 L ${CORE_NODE.x} ${CORE_NODE.y}`,
       duration: 2.8,
       delay: 0,
     },
     {
-      d: `M 70 175 L ${FILTER_1_X} 175 L ${FILTER_2_X} 175 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 2.6,
-      delay: 0.4,
+      d: `M 65 160 L ${FILTER_1_X} 160 L ${FILTER_2_X} 160 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 2.5,
+      delay: 0.3,
     },
     {
-      d: `M 70 265 L ${FILTER_1_X} 235 L ${FILTER_2_X} 200 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 3.0,
-      delay: 0.8,
-    },
-    {
-      d: `M 70 85 L ${FILTER_1_X} 175 L ${FILTER_2_X} 150 L ${CORE_NODE.x} ${CORE_NODE.y}`,
-      duration: 3.2,
-      delay: 1.2,
-    },
-    {
-      d: `M 70 265 L ${FILTER_1_X} 175 L ${FILTER_2_X} 200 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      d: `M 65 245 L ${FILTER_1_X} 215 L ${FILTER_2_X} 185 L ${CORE_NODE.x} ${CORE_NODE.y}`,
       duration: 2.9,
-      delay: 1.6,
+      delay: 0.6,
+    },
+    {
+      d: `M 65 75 L ${FILTER_1_X} 160 L ${FILTER_2_X} 135 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.1,
+      delay: 1.0,
+    },
+    {
+      d: `M 65 245 L ${FILTER_1_X} 160 L ${FILTER_2_X} 185 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 2.8,
+      delay: 1.4,
     },
   ];
 
-  // Beam from Core Node to Pixel Matrix Target
-  const BEAM_PATH = `M ${CORE_NODE.x + 18} ${CORE_NODE.y} L ${startX - 10} ${startY + 12}`;
+  // Scattering pixel particles around the impact zone
+  const SCATTER_PIXELS = [
+    { x: TARGET_START_X - 10, y: TARGET_Y - 20, size: 4 },
+    { x: TARGET_START_X + 20, y: TARGET_Y - 28, size: 5 },
+    { x: TARGET_START_X + 60, y: TARGET_Y - 24, size: 4 },
+    { x: TARGET_START_X + 110, y: TARGET_Y - 26, size: 5 },
+    { x: TARGET_START_X + 160, y: TARGET_Y - 22, size: 4 },
+    { x: TARGET_START_X + 210, y: TARGET_Y - 25, size: 4.5 },
+    { x: TARGET_START_X + 15, y: TARGET_Y + 22, size: 4 },
+    { x: TARGET_START_X + 75, y: TARGET_Y + 26, size: 4.5 },
+    { x: TARGET_START_X + 130, y: TARGET_Y + 24, size: 5 },
+    { x: TARGET_START_X + 185, y: TARGET_Y + 25, size: 4 },
+    { x: TARGET_START_X + 235, y: TARGET_Y + 20, size: 4 },
+  ];
 
   return (
     <div
-      className={`relative w-full aspect-[16/9] max-w-[660px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
+      className={`relative w-full aspect-[16/9] max-w-[680px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
       aria-hidden="true"
     >
       <svg
-        viewBox="0 0 680 350"
+        viewBox="0 0 680 320"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full overflow-visible"
       >
-        {/* Ambient Subtle Grid Dots */}
+        {/* Subtle Ambient Grid Background */}
         <defs>
-          <pattern id="ambientMatrix" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="11" cy="11" r="0.65" className="fill-ink/15" />
+          <pattern id="dotLattice" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="0.6" className="fill-ink/15" />
           </pattern>
         </defs>
-        <rect width="680" height="350" fill="url(#ambientMatrix)" opacity={0.5} />
+        <rect width="680" height="320" fill="url(#dotLattice)" opacity={0.4} />
 
         {/* 1. DOCUMENT ICONS (STAGE 1: GENERATION SOURCE) */}
         <g className="doc-icons">
           {DOC_SOURCES.map((doc) => {
             const Icon = doc.icon;
             return (
-              <g key={doc.id} transform={`translate(32, ${doc.y - 19})`}>
+              <g key={doc.id} transform={`translate(28, ${doc.y - 18})`}>
                 <rect
                   x="0"
                   y="0"
-                  width="38"
-                  height="38"
+                  width="36"
+                  height="36"
                   rx="6"
-                  className="fill-surface stroke-ink/30"
+                  className="fill-surface stroke-ink/35"
                   strokeWidth="1.2"
                 />
-                <foreignObject x="7" y="7" width="24" height="24">
+                <foreignObject x="6" y="6" width="24" height="24">
                   <div className="w-full h-full flex items-center justify-center text-ink">
                     <Icon className="w-5 h-5 text-ink" strokeWidth={1.5} />
                   </div>
@@ -234,9 +175,9 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
 
                 {/* Emitting port dot */}
                 <motion.circle
-                  cx="38"
-                  cy="19"
-                  r="3"
+                  cx="36"
+                  cy="18"
+                  r="3.5"
                   className="fill-ink"
                   animate={
                     shouldReduceMotion
@@ -249,7 +190,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
                   transition={{
                     duration: 1.8,
                     repeat: Infinity,
-                    delay: doc.y * 0.004,
+                    delay: doc.y * 0.005,
                     ease: "easeInOut",
                   }}
                 />
@@ -259,33 +200,32 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
         </g>
 
         {/* 2. TRANSMISSION RAILS */}
-        <g className="rails">
+        <g className="stream-rails">
           {STREAM_PATHS.map((path, idx) => (
             <path
               key={`rail-${idx}`}
               d={path.d}
               className="stroke-ink/10"
-              strokeWidth="0.9"
+              strokeWidth="0.8"
               strokeDasharray="2 3"
             />
           ))}
         </g>
 
-        {/* 3. TAILING STREAMS (PASSING THROUGH VERTICAL FILTERS) */}
+        {/* 3. TAILING IMPULSE STREAMS (PASSING THROUGH FILTERS) */}
         {!shouldReduceMotion && (
           <g className="tailing-impulses">
             {STREAM_PATHS.map((path, idx) => (
               <React.Fragment key={`impulse-${idx}`}>
-                {/* Primary Tailing Line */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink"
                   strokeWidth="1.75"
                   strokeLinecap="round"
-                  strokeDasharray="45 320"
+                  strokeDasharray="45 280"
                   animate={{
-                    strokeDashoffset: [365, -365],
+                    strokeDashoffset: [325, -325],
                     opacity: [0, 0.95, 0.95, 0],
                   }}
                   transition={{
@@ -295,22 +235,21 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
                     ease: "easeInOut",
                   }}
                 />
-                {/* Secondary Micro-Tail */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink/40"
-                  strokeWidth="1"
+                  strokeWidth="0.9"
                   strokeLinecap="round"
-                  strokeDasharray="15 350"
+                  strokeDasharray="14 311"
                   animate={{
-                    strokeDashoffset: [365, -365],
+                    strokeDashoffset: [325, -325],
                     opacity: [0, 0.7, 0.7, 0],
                   }}
                   transition={{
                     duration: path.duration * 0.9,
                     repeat: Infinity,
-                    delay: path.delay + 0.25,
+                    delay: path.delay + 0.2,
                     ease: "easeInOut",
                   }}
                 />
@@ -324,14 +263,14 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
         <g className="vertical-filter-1">
           <line
             x1={FILTER_1_X}
-            y1="45"
+            y1="40"
             x2={FILTER_1_X}
-            y2="305"
+            y2="280"
             className="stroke-ink/30"
             strokeWidth="1.5"
             strokeDasharray="6 4"
           />
-          {[85, 130, 175, 220, 265].map((y, idx) => (
+          {[75, 120, 160, 200, 245].map((y, idx) => (
             <circle
               key={`f1-notch-${idx}`}
               cx={FILTER_1_X}
@@ -344,19 +283,19 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           {!shouldReduceMotion && (
             <motion.line
               x1={FILTER_1_X}
-              y1="45"
+              y1="40"
               x2={FILTER_1_X}
-              y2="105"
+              y2="95"
               className="stroke-ink"
               strokeWidth="2.5"
               strokeLinecap="round"
               animate={{
-                y1: [45, 245, 45],
-                y2: [105, 305, 105],
+                y1: [40, 225, 40],
+                y2: [95, 280, 95],
                 opacity: [0.2, 0.85, 0.2],
               }}
               transition={{
-                duration: 3.2,
+                duration: 3.0,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -368,14 +307,14 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
         <g className="vertical-filter-2">
           <line
             x1={FILTER_2_X}
-            y1="60"
+            y1="55"
             x2={FILTER_2_X}
-            y2="290"
+            y2="265"
             className="stroke-ink/30"
             strokeWidth="1.5"
             strokeDasharray="4 4"
           />
-          {[110, 150, 175, 200, 240].map((y, idx) => (
+          {[95, 135, 160, 185, 225].map((y, idx) => (
             <circle
               key={`f2-notch-${idx}`}
               cx={FILTER_2_X}
@@ -388,19 +327,19 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           {!shouldReduceMotion && (
             <motion.line
               x1={FILTER_2_X}
-              y1="60"
+              y1="55"
               x2={FILTER_2_X}
-              y2="120"
+              y2="110"
               className="stroke-ink"
               strokeWidth="2"
               strokeLinecap="round"
               animate={{
-                y1: [230, 60, 230],
-                y2: [290, 120, 290],
+                y1: [210, 55, 210],
+                y2: [265, 110, 265],
                 opacity: [0.3, 0.9, 0.3],
               }}
               transition={{
-                duration: 2.8,
+                duration: 2.7,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -413,7 +352,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           <circle
             cx={CORE_NODE.x}
             cy={CORE_NODE.y}
-            r="22"
+            r="20"
             className="stroke-ink/20 fill-transparent"
             strokeWidth="1"
             strokeDasharray="3 3"
@@ -421,7 +360,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           <circle
             cx={CORE_NODE.x}
             cy={CORE_NODE.y}
-            r="14"
+            r="13"
             className="stroke-ink/35 fill-surface"
             strokeWidth="1.2"
           />
@@ -433,11 +372,11 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
               className="stroke-ink"
               strokeWidth="1"
               animate={{
-                r: [7, 32],
-                opacity: [0.75, 0],
+                r: [7, 30],
+                opacity: [0.8, 0],
               }}
               transition={{
-                duration: 2.0,
+                duration: 1.8,
                 repeat: Infinity,
                 ease: "easeOut",
               }}
@@ -464,102 +403,134 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           <circle cx={CORE_NODE.x} cy={CORE_NODE.y} r="2" className="fill-surface" />
         </g>
 
-        {/* 6. STREAM FIRING INTO PIXEL FIELD (STAGE 4) */}
-        <path
-          d={BEAM_PATH}
+        {/* 6. EMITTING STREAM BEAM SHOOTING INTO PIXEL MATRIX (STAGE 4) */}
+        <line
+          x1={CORE_NODE.x + 20}
+          y1={CORE_NODE.y}
+          x2={TARGET_START_X - 10}
+          y2={TARGET_Y - 8}
           className="stroke-ink/25"
-          strokeWidth="1"
+          strokeWidth="1.2"
           strokeDasharray="3 3"
         />
-        {!shouldReduceMotion && (
-          <motion.path
-            d={BEAM_PATH}
-            fill="none"
-            className="stroke-ink"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeDasharray="28 120"
-            animate={{
-              strokeDashoffset: [148, -148],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 1.4,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        )}
 
-        {/* Impact Spark Waves at Target Inception */}
+        {/* High energy beam pulse */}
+        <motion.line
+          x1={CORE_NODE.x + 20}
+          y1={CORE_NODE.y}
+          x2={TARGET_START_X - 10}
+          y2={TARGET_Y - 8}
+          className="stroke-ink"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeDasharray="25 60"
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  strokeDashoffset: [85, -85],
+                  opacity: beamActive ? [0.4, 1, 0.4] : 0.2,
+                }
+          }
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
+        {/* Impact Wave Expanding when Beam Hits */}
         {!shouldReduceMotion && (
           <motion.circle
-            cx={startX - 8}
-            cy={startY + 12}
-            r={3}
+            cx={TARGET_START_X - 10}
+            cy={TARGET_Y - 8}
+            r="4"
             className="stroke-ink fill-transparent"
-            strokeWidth="1"
+            strokeWidth="1.2"
             animate={{
-              r: [3, 16],
-              opacity: [0.8, 0],
+              r: [4, 18],
+              opacity: [0.9, 0],
             }}
             transition={{
-              duration: 1.4,
+              duration: 1.2,
               repeat: Infinity,
               ease: "easeOut",
             }}
           />
         )}
 
-        {/* 7. DEPIXELATING "HELLO WORLD !" PIXEL MATRIX (STAGE 5) */}
-        <g className="depixelating-word">
-          {pixels.map((pixel) => (
+        {/* 7. DEPIXELATING "HELLO WORLD !" TYPOGRAPHY & PIXEL MATRIX (STAGE 5) */}
+        <g className="depixelating-target">
+          {/* Scatter Pixel Noise Blocks that dissolve / assemble */}
+          {!shouldReduceMotion &&
+            SCATTER_PIXELS.map((p, idx) => (
+              <motion.rect
+                key={`scatter-pixel-${idx}`}
+                width={p.size}
+                height={p.size}
+                className="fill-ink"
+                animate={
+                  resolvedCount < targetWord.length
+                    ? {
+                        x: [p.x - 6, p.x + 6, p.x],
+                        y: [p.y - 4, p.y + 4, p.y],
+                        opacity: [0.15, 0.7, 0.15],
+                        scale: [0.8, 1.3, 0.8],
+                      }
+                    : {
+                        opacity: 0,
+                        scale: 0.2,
+                      }
+                }
+                transition={{
+                  duration: 1.2,
+                  repeat: Infinity,
+                  delay: (idx * 0.1) % 0.8,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+
+          {/* Clean Baseline Indicator Line */}
+          <line
+            x1={TARGET_START_X}
+            y1={TARGET_Y + 12}
+            x2={TARGET_START_X + 270}
+            y2={TARGET_Y + 12}
+            className="stroke-ink/20"
+            strokeWidth="1"
+            strokeDasharray="4 4"
+          />
+
+          {/* Prominent Depixelating Text */}
+          <text
+            x={TARGET_START_X}
+            y={TARGET_Y}
+            className="fill-ink font-mono font-bold tracking-[0.2em] select-none"
+            style={{ fontSize: "24px" }}
+          >
+            {glitchText}
+          </text>
+
+          {/* Spark trail advancing with the depixelation wave */}
+          {!shouldReduceMotion && resolvedCount < targetWord.length && (
             <motion.rect
-              key={pixel.id}
-              width={pixelSize}
-              height={pixelSize}
-              rx={0.3}
+              x={TARGET_START_X + resolvedCount * 19.5}
+              y={TARGET_Y - 22}
+              width="6"
+              height="26"
               className="fill-ink"
-              initial={false}
-              animate={
-                shouldReduceMotion
-                  ? {
-                      x: pixel.finalX,
-                      y: pixel.finalY,
-                      opacity: 1,
-                      scale: 1,
-                    }
-                  : {
-                      // Cycle: Scattered noise -> Hit by stream -> Snaps into sharp pixel -> Holds -> Dissolves
-                      x: [
-                        pixel.finalX + pixel.scatterX, // 0%: Scattered / blurred noise
-                        pixel.finalX,                  // 35%: Snaps to crystal clear coordinate
-                        pixel.finalX,                  // 75%: Fully formed word holds
-                        pixel.finalX + pixel.scatterX, // 100%: Deconstructs / dissolves
-                      ],
-                      y: [
-                        pixel.finalY + pixel.scatterY,
-                        pixel.finalY,
-                        pixel.finalY,
-                        pixel.finalY + pixel.scatterY,
-                      ],
-                      opacity: [0.15, 1, 1, 0.15],
-                      scale: [0.5, 1.25, 1, 0.5],
-                    }
-              }
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0.01 }
-                  : {
-                      duration: 4.8,
-                      repeat: Infinity,
-                      delay: pixel.delay,
-                      times: [0, 0.35, 0.8, 1],
-                      ease: [0.22, 1, 0.36, 1],
-                    }
-              }
+              animate={{
+                opacity: [1, 0.2, 1],
+                scaleY: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 0.3,
+                repeat: Infinity,
+                ease: "linear",
+              }}
             />
-          ))}
+          )}
         </g>
       </svg>
     </div>
