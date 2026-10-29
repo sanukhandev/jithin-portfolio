@@ -95,11 +95,11 @@ export function Work({ locale, dict }: WorkProps) {
                       </p>
 
                       {/* Capabilities pills */}
-                      <div className="flex flex-wrap gap-2 mb-8">
+                      <div className="flex flex-wrap gap-2.5 mb-8">
                         {study.capabilities[locale].map((cap, cIdx) => (
                           <span
                             key={cIdx}
-                            className="px-2.5 py-1 text-xs font-mono rounded bg-surface-panel text-ink border border-border-subtle"
+                            className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface-panel/85 text-ink border border-border-subtle"
                           >
                             {cap}
                           </span>

@@ -12,12 +12,12 @@ export function Badge({
   className = "",
 }: BadgeProps) {
   const baseStyles =
-    "inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono tracking-wide uppercase rounded-md transition-colors";
+    "inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono tracking-wide uppercase rounded-md transition-colors glass-badge-spatial";
 
   const variantStyles = {
-    outline: "border border-border-strong text-ink bg-surface/50",
-    subtle: "bg-surface-panel text-ink border border-border-subtle",
-    solid: "bg-action-bg text-action-text",
+    outline: "border border-border-strong text-ink bg-surface/70",
+    subtle: "bg-surface-panel/85 text-ink border border-border-subtle",
+    solid: "bg-action-bg text-action-text border border-action-bg",
   };
 
   return (

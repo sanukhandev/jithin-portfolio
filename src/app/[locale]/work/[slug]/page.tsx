@@ -198,7 +198,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                 {study.capabilities[locale].map((cap, idx) => (
                   <span
                     key={idx}
-                    className="px-2.5 py-1 text-xs font-mono rounded bg-surface border border-border-subtle text-ink"
+                    className="px-3 py-1 text-xs font-mono rounded-md glass-pill-spatial bg-surface/85 border border-border-subtle text-ink"
                   >
                     {cap}
                   </span>
