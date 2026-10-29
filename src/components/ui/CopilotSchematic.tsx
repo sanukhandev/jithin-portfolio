@@ -3,7 +3,7 @@ import React from "react";
 export function CopilotSchematic({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`relative w-full aspect-[16/10] bg-surface-raised border border-border-subtle rounded-xl overflow-hidden p-6 flex items-center justify-center select-none pointer-events-none ${className}`}
+      className={`relative w-full aspect-[16/10] flex items-center justify-center select-none pointer-events-none ${className}`}
       aria-hidden="true"
     >
       <svg
