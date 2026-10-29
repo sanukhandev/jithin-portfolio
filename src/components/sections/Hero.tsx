@@ -1,5 +1,6 @@
 import React from "react";
-import { ArrowUpRight, ArrowDown } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ArrowDown, MessageSquare } from "lucide-react";
 import { Locale } from "@/types/content";
 import { Dictionary } from "@/i18n/dictionaries";
 import { siteConfig } from "@/content/site";
@@ -53,13 +54,13 @@ export function Hero({ locale, dict }: HeroProps) {
                 >
                   {dict.hero.ctaPrimary}
                 </Button>
-                <Button
+                <Link
                   href={`/${locale}#contact`}
-                  variant="secondary"
-                  size="lg"
+                  className="group inline-flex items-center gap-2.5 text-sm sm:text-base font-medium text-ink underline underline-offset-8 decoration-border-strong hover:decoration-ink hover:opacity-85 transition-all duration-200 px-2 py-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 rounded"
                 >
-                  {dict.hero.ctaSecondary}
-                </Button>
+                  <span>{dict.hero.ctaSecondary}</span>
+                  <MessageSquare className="w-4 h-4 text-ink shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={1.75} aria-hidden="true" />
+                </Link>
               </div>
             </MotionWrapper>
           </div>
