@@ -1,0 +1,108 @@
+{
+  "nav": {
+    "work": "Work",
+    "pillars": "Capabilities",
+    "approach": "Approach",
+    "insights": "Perspectives",
+    "about": "About",
+    "contact": "Contact",
+    "menu": "Open menu",
+    "close": "Close menu",
+    "themeLight": "Switch to light theme",
+    "themeDark": "Switch to dark theme",
+    "language": "Select language",
+    "skipLink": "Skip to main content"
+  },
+  "hero": {
+    "role": "Chief Innovation Officer",
+    "eyebrow": "AI Innovation · Enterprise Transformation",
+    "title": "Designing what comes after.",
+    "body": "Connecting artificial intelligence, strategic design, and organizational ambition to create the next generation of intelligent businesses.",
+    "ctaPrimary": "Explore the work",
+    "ctaSecondary": "Start a conversation",
+    "scrollPrompt": "Scroll to explore"
+  },
+  "pillars": {
+    "eyebrow": "Innovation Architecture",
+    "heading": "Four pillars of intelligent transformation.",
+    "subheading": "A structured executive approach bridging frontier artificial intelligence with tangible enterprise capability and measurable governance."
+  },
+  "work": {
+    "eyebrow": "Selected Initiatives",
+    "heading": "Ideas made tangible.",
+    "subheading": "Strategic systems blueprints and illustrative architectural concepts demonstrating enterprise AI leadership.",
+    "badge": "Illustrative concept",
+    "viewDetails": "View concept blueprint",
+    "backToWork": "Back to all initiatives",
+    "challenge": "Strategic Challenge",
+    "approach": "Architectural Approach",
+    "architecture": "Systems Architecture",
+    "targetOutcomes": "Targeted Economic Outcomes",
+    "disclaimer": "This concept is an illustrative architectural framework designed to show strategic capability and does not represent an actual delivered client engagement."
+  },
+  "approach": {
+    "eyebrow": "Operating Philosophy",
+    "heading": "From possibility to progress.",
+    "subheading": "A disciplined, four-stage lifecycle designed to de-risk AI innovation and compound enterprise value.",
+    "inputs": "Inputs",
+    "outputs": "Outputs",
+    "decisionGate": "Decision Gate"
+  },
+  "insights": {
+    "eyebrow": "Perspectives & Thought Leadership",
+    "heading": "Perspectives on what is next.",
+    "subheading": "Executive essays exploring AI governance, systems reliability, and organizational readiness.",
+    "badge": "Draft perspective",
+    "readArticle": "Read perspective",
+    "backToInsights": "Back to perspectives",
+    "keyTakeaways": "Key Strategic Takeaways",
+    "draftNotice": "This perspective is a working draft essay for discussion and executive peer review."
+  },
+  "about": {
+    "eyebrow": "Executive Leadership",
+    "heading": "Innovation as a leadership discipline.",
+    "lead": "Bridging the gap between technological potential and organizational transformation.",
+    "p1": "As Chief Innovation Officer, Jithin K focuses on operationalizing emerging artificial intelligence technologies to drive authentic business model evolution. Rather than chasing ephemeral hype cycles, the focus is on engineering governable, scalable systems that create enduring enterprise advantage.",
+    "p2": "Modern enterprise leadership requires a rare synthesis: deep architectural fluency in cognitive computing combined with the executive acumen to navigate risk, capital allocation, and cultural change. By anchoring innovation in rigorous validation and cross-functional alignment, complex technologies become dependable organizational muscle.",
+    "principlesHeading": "Core Leadership Principles",
+    "principles": [
+      {
+        "title": "Systemic over Speculative",
+        "description": "Prioritize durable architectural capability over isolated, unmaintainable prototypes."
+      },
+      {
+        "title": "Human-Centered Supervision",
+        "description": "Design intelligent systems with explicit human oversight, clear agency, and dignity."
+      },
+      {
+        "title": "Measurable Value",
+        "description": "Require clear economic hypothesis and empirical validation before scaling capital."
+      },
+      {
+        "title": "Responsible by Design",
+        "description": "Integrate data sovereignty, explainability, and algorithmic risk controls from day one."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Direct Engagement",
+    "heading": "Let's shape what's next.",
+    "subheading": "Initiating executive dialogue around AI strategy, system architecture, or institutional transformation.",
+    "statusTitle": "Direct Contact Status",
+    "statusMessage": "Contact details will be added after verification.",
+    "statusDetail": "Direct email and scheduling links are intentionally restricted until formal executive credentials and secure channels are approved.",
+    "connectPrompt": "Inquiries regarding advisory roles, keynote engagements, or strategic transformation initiatives may be directed once verified channels are live.",
+    "configuredEmail": "Direct Executive Email"
+  },
+  "footer": {
+    "role": "Chief Innovation Officer",
+    "copyright": "All rights reserved.",
+    "disclaimerNotice": "Illustrative portfolio concept. Not an assertion of unverified employment or outcomes.",
+    "backToTop": "Back to top"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The requested page does not exist or has been relocated.",
+    "backHome": "Return to overview"
+  }
+}
