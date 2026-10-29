@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowUp } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { ArrowUp, Heart } from "lucide-react";
 import { Locale } from "@/types/content";
 import { Dictionary } from "@/i18n/dictionaries";
 import { siteConfig } from "@/content/site";
@@ -14,6 +15,7 @@ interface FooterProps {
 }
 
 export function Footer({ locale, dict }: FooterProps) {
+  const shouldReduceMotion = useReducedMotion();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -91,8 +93,36 @@ export function Footer({ locale, dict }: FooterProps) {
           <p>
             &copy; {new Date().getFullYear()} {siteConfig.name}. {dict.footer.copyright}
           </p>
-          <p className="text-center sm:text-end text-[11px] text-ink-muted/70">
-            Apple-inspired minimalism · Swiss typography · Strictly monochrome
+          <p className="text-center sm:text-end text-[11px] text-ink-muted/80 flex items-center justify-center sm:justify-end flex-wrap gap-1">
+            <span>Swiss Monochrome — Designed with</span>
+            <motion.span
+              className="inline-flex items-center mx-0.5 text-red-500"
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      scale: [1, 1.25, 1, 1.2, 1],
+                    }
+              }
+              transition={{
+                duration: 1.3,
+                repeat: Infinity,
+                repeatDelay: 0.8,
+                ease: "easeInOut",
+              }}
+              aria-label="love"
+            >
+              <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" strokeWidth={1.5} aria-hidden="true" />
+            </motion.span>
+            <span>by</span>
+            <a
+              href="https://sanukhan.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-ink hover:underline underline-offset-4 transition-colors"
+            >
+              SanuKhan
+            </a>
           </p>
         </div>
       </Container>
