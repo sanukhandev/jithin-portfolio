@@ -29,7 +29,7 @@ export function Contact({ dict }: ContactProps) {
           <MotionWrapper delay={0.2}>
             {verifiedEmail ? (
               /* Configured verified email scenario */
-              <div className="p-8 sm:p-12 rounded-2xl border border-border-strong bg-surface text-center flex flex-col items-center">
+              <div className="p-8 sm:p-12 rounded-2xl glass-card-spatial bg-surface/90 text-center flex flex-col items-center">
                 <div className="w-12 h-12 rounded-full bg-surface-panel flex items-center justify-center text-ink mb-6">
                   <Mail className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
                 </div>
@@ -63,7 +63,7 @@ export function Contact({ dict }: ContactProps) {
               </div>
             ) : (
               /* Honest pending-verification status card */
-              <div className="p-8 sm:p-12 rounded-2xl border border-border-subtle bg-surface text-center flex flex-col items-center">
+              <div className="p-8 sm:p-12 rounded-2xl glass-card-spatial bg-surface/90 text-center flex flex-col items-center">
                 <div className="w-12 h-12 rounded-full bg-surface-panel flex items-center justify-center text-ink mb-6">
                   <ShieldAlert className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
                 </div>

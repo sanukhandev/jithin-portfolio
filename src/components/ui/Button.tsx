@@ -28,15 +28,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none";
+      "inline-flex items-center justify-center font-medium focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none glass-button-spatial";
 
     const variantStyles = {
       primary:
-        "bg-action-bg text-action-text border border-action-bg hover:opacity-90 active:scale-[0.98]",
+        "bg-action-bg text-action-text border border-action-bg hover:opacity-95",
       secondary:
-        "bg-surface-panel text-ink border border-border-subtle hover:border-border-strong active:scale-[0.98]",
+        "bg-surface-panel/90 text-ink border border-border-subtle hover:border-border-strong hover:bg-surface",
       outline:
-        "bg-transparent text-ink border border-border-strong hover:bg-surface-panel active:scale-[0.98]",
+        "bg-surface/80 text-ink border border-border-strong hover:bg-surface-panel",
     };
 
     const sizeStyles = {

@@ -34,7 +34,7 @@ export function Pillars({ locale, dict }: PillarsProps) {
             const Icon = iconMap[pillar.iconName];
             return (
               <MotionWrapper key={pillar.id} delay={0.1 * idx}>
-                <div className="group h-full flex flex-col p-8 sm:p-10 rounded-xl border border-border-subtle bg-surface-raised hover:border-border-strong hover:bg-surface transition-all duration-300">
+                <div className="group h-full flex flex-col p-8 sm:p-10 rounded-xl glass-card-spatial bg-surface-raised/90">
                   {/* Icon & Index */}
                   <div className="flex items-center justify-between mb-8">
                     <div className="w-12 h-12 rounded-lg bg-surface border border-border-subtle flex items-center justify-center text-ink group-hover:scale-105 transition-transform">

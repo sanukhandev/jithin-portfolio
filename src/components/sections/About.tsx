@@ -42,7 +42,7 @@ export function About({ dict }: AboutProps) {
           {/* Core Leadership Principles */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <MotionWrapper delay={0.25}>
-              <div className="p-8 sm:p-10 rounded-2xl border border-border-subtle bg-surface-raised">
+              <div className="p-8 sm:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
                 <span className="block text-xs font-mono uppercase tracking-widest text-ink-muted mb-6">
                   {dict.about.principlesHeading}
                 </span>

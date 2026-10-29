@@ -27,7 +27,7 @@ export function Insights({ locale, dict }: InsightsProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {insights.map((article, idx) => (
             <MotionWrapper key={article.id} delay={0.1 * idx}>
-              <article className="h-full flex flex-col p-8 rounded-xl border border-border-subtle bg-surface hover:border-border-strong transition-all duration-300">
+              <article className="h-full flex flex-col p-8 rounded-xl glass-card-spatial bg-surface/90">
                 {/* Meta info & Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <Badge variant="subtle">{dict.insights.badge}</Badge>

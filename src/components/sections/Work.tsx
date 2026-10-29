@@ -42,7 +42,7 @@ export function Work({ locale, dict }: WorkProps) {
             return (
               <MotionWrapper key={study.id} delay={0.15}>
                 <article
-                  className="rounded-2xl border border-border-subtle bg-surface p-8 sm:p-12 lg:p-14 shadow-sm hover:border-border-strong transition-all duration-300"
+                  className="rounded-2xl glass-card-spatial bg-surface/90 p-8 sm:p-12 lg:p-14 shadow-sm"
                   aria-labelledby={`case-title-${study.id}`}
                 >
                   <div

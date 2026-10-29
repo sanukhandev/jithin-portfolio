@@ -24,7 +24,7 @@ export function Approach({ locale, dict }: ApproachProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {approachStages.map((stage, idx) => (
             <MotionWrapper key={stage.step} delay={0.1 * idx}>
-              <div className="h-full flex flex-col p-6 sm:p-8 rounded-xl border border-border-subtle bg-surface-raised hover:border-border-strong hover:bg-surface transition-all duration-300">
+              <div className="h-full flex flex-col p-6 sm:p-8 rounded-xl glass-card-spatial bg-surface-raised/90">
                 {/* Step number badge */}
                 <div className="flex items-center justify-between mb-6">
                   <span className="font-mono text-2xl font-light text-ink tracking-tight">

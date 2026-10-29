@@ -190,7 +190,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           {/* Sidebar Metadata & Capabilities */}
           <div className="lg:col-span-4 space-y-8">
             {/* Capabilities Box */}
-            <div className="p-6 rounded-xl border border-border-subtle bg-surface-raised">
+            <div className="p-6 rounded-xl glass-card-spatial bg-surface-raised/90">
               <span className="block text-xs font-mono uppercase tracking-wider text-ink font-semibold mb-4">
                 Core Domains &amp; Capabilities
               </span>
@@ -207,7 +207,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             </div>
 
             {/* Concept Disclaimer Box */}
-            <div className="p-6 rounded-xl border border-border-strong bg-surface">
+            <div className="p-6 rounded-xl glass-card-spatial bg-surface/90">
               <span className="block text-xs font-mono uppercase tracking-wider text-ink font-semibold mb-2">
                 {dict.work.badge}
               </span>

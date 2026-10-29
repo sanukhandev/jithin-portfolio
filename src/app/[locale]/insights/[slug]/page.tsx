@@ -117,7 +117,7 @@ export default async function InsightDetailPage({
             ))}
 
             {/* Key Takeaways Card */}
-            <div className="mt-12 p-8 rounded-xl bg-surface-raised border border-border-subtle">
+            <div className="mt-12 p-8 rounded-xl glass-card-spatial bg-surface-raised/90">
               <h2 className="text-sm font-mono uppercase tracking-widest text-ink font-semibold mb-4">
                 {dict.insights.keyTakeaways}
               </h2>
@@ -136,7 +136,7 @@ export default async function InsightDetailPage({
 
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-8">
-            <div className="p-6 rounded-xl border border-border-subtle bg-surface-raised">
+            <div className="p-6 rounded-xl glass-card-spatial bg-surface-raised/90">
               <span className="block text-xs font-mono uppercase tracking-wider text-ink font-semibold mb-4">
                 Topics &amp; Themes
               </span>
@@ -152,7 +152,7 @@ export default async function InsightDetailPage({
               </div>
             </div>
 
-            <div className="p-6 rounded-xl border border-border-subtle bg-surface text-xs font-mono text-ink-muted space-y-2">
+            <div className="p-6 rounded-xl glass-card-spatial bg-surface/90 text-xs font-mono text-ink-muted space-y-2">
               <span className="text-ink font-semibold block uppercase tracking-wider">
                 Peer Review Notice
               </span>
