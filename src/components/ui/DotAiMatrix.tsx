@@ -1,230 +1,178 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
-
-interface Neuron {
-  id: string;
-  x: number;
-  y: number;
-  r: number;
-  driftX: number;
-  driftY: number;
-  duration: number;
-  delay: number;
-  isCore?: boolean;
-}
-
-// 1. Primary Layer Neurons
-const PRIMARY_NEURONS: Neuron[] = [
-  // Layer 0: Input (4 neurons)
-  { id: "L0-0", x: 45, y: 80, r: 4, driftX: 3, driftY: 4, duration: 4.2, delay: 0.1 },
-  { id: "L0-1", x: 45, y: 160, r: 4.5, driftX: -4, driftY: 3, duration: 3.8, delay: 0.4 },
-  { id: "L0-2", x: 45, y: 240, r: 4, driftX: 3, driftY: -4, duration: 4.5, delay: 0.7 },
-  { id: "L0-3", x: 45, y: 320, r: 4.5, driftX: -3, driftY: -3, duration: 3.9, delay: 0.2 },
-
-  // Layer 1: Feature Extraction (5 neurons)
-  { id: "L1-0", x: 150, y: 50, r: 4, driftX: -3, driftY: 4, duration: 4.1, delay: 0.3 },
-  { id: "L1-1", x: 150, y: 125, r: 5, driftX: 4, driftY: -3, duration: 3.7, delay: 0.8 },
-  { id: "L1-2", x: 150, y: 200, r: 4.5, driftX: -3, driftY: 4, duration: 4.6, delay: 0.5 },
-  { id: "L1-3", x: 150, y: 275, r: 5, driftX: 4, driftY: 3, duration: 4.0, delay: 0.9 },
-  { id: "L1-4", x: 150, y: 350, r: 4, driftX: -4, driftY: -4, duration: 3.6, delay: 0.2 },
-
-  // Layer 2: Deep Processing Core (6 neurons)
-  { id: "L2-0", x: 260, y: 35, r: 4, driftX: 4, driftY: -3, duration: 4.4, delay: 0.6 },
-  { id: "L2-1", x: 260, y: 105, r: 5, driftX: -4, driftY: 4, duration: 3.9, delay: 0.1 },
-  { id: "L2-2", x: 260, y: 175, r: 6, driftX: 3, driftY: -4, duration: 4.8, delay: 0.4, isCore: true },
-  { id: "L2-3", x: 260, y: 245, r: 6, driftX: -3, driftY: 3, duration: 4.2, delay: 0.7, isCore: true },
-  { id: "L2-4", x: 260, y: 315, r: 5, driftX: 4, driftY: -4, duration: 3.8, delay: 0.3 },
-  { id: "L2-5", x: 260, y: 385, r: 4, driftX: -3, driftY: 3, duration: 4.5, delay: 0.8 },
-
-  // Layer 3: Decision Synthesis (4 neurons)
-  { id: "L3-0", x: 370, y: 85, r: 4.5, driftX: -4, driftY: 3, duration: 4.0, delay: 0.5 },
-  { id: "L3-1", x: 370, y: 165, r: 5.5, driftX: 3, driftY: -4, duration: 4.6, delay: 0.2 },
-  { id: "L3-2", x: 370, y: 245, r: 5.5, driftX: -3, driftY: 4, duration: 3.7, delay: 0.6 },
-  { id: "L3-3", x: 370, y: 325, r: 4.5, driftX: 4, driftY: -3, duration: 4.3, delay: 0.9 },
-
-  // Layer 4: Output Execution (2 neurons)
-  { id: "L4-0", x: 470, y: 155, r: 6, driftX: 3, driftY: -4, duration: 4.5, delay: 0.4, isCore: true },
-  { id: "L4-1", x: 470, y: 255, r: 6, driftX: -3, driftY: 3, duration: 4.1, delay: 0.7, isCore: true },
-];
-
-// 2. Interneurons / Dendritic Nodes (Adding more dots bridging the layers)
-const INTER_NEURONS: Neuron[] = [
-  { id: "IN-0", x: 100, y: 110, r: 3, driftX: 2, driftY: -3, duration: 3.5, delay: 0.3 },
-  { id: "IN-1", x: 100, y: 210, r: 3, driftX: -3, driftY: 2, duration: 4.1, delay: 0.7 },
-  { id: "IN-2", x: 100, y: 290, r: 2.5, driftX: 2, driftY: 3, duration: 3.8, delay: 0.1 },
-  { id: "IN-3", x: 205, y: 80, r: 3, driftX: -2, driftY: 3, duration: 4.3, delay: 0.5 },
-  { id: "IN-4", x: 205, y: 160, r: 3.5, driftX: 3, driftY: -2, duration: 3.9, delay: 0.2 },
-  { id: "IN-5", x: 205, y: 240, r: 3.5, driftX: -3, driftY: -3, duration: 4.5, delay: 0.8 },
-  { id: "IN-6", x: 205, y: 320, r: 3, driftX: 2, driftY: 3, duration: 3.7, delay: 0.4 },
-  { id: "IN-7", x: 315, y: 120, r: 3.5, driftX: -3, driftY: 2, duration: 4.2, delay: 0.6 },
-  { id: "IN-8", x: 315, y: 200, r: 4, driftX: 3, driftY: -3, duration: 3.6, delay: 0.1 },
-  { id: "IN-9", x: 315, y: 280, r: 3.5, driftX: -2, driftY: 3, duration: 4.7, delay: 0.9 },
-  { id: "IN-10", x: 420, y: 130, r: 3, driftX: 3, driftY: -2, duration: 4.0, delay: 0.3 },
-  { id: "IN-11", x: 420, y: 210, r: 3.5, driftX: -3, driftY: 3, duration: 3.8, delay: 0.5 },
-  { id: "IN-12", x: 420, y: 290, r: 3, driftX: 2, driftY: -3, duration: 4.4, delay: 0.8 },
-];
-
-// 3. Ambient Synaptic Micro-Dots (Floating background scatter for rich density)
-const AMBIENT_DOTS = [
-  { x: 30, y: 40, r: 1.5, d: 3.8 },
-  { x: 75, y: 180, r: 1.5, d: 4.2 },
-  { x: 80, y: 360, r: 1.5, d: 3.5 },
-  { x: 120, y: 400, r: 1.5, d: 4.7 },
-  { x: 160, y: 20, r: 1.5, d: 3.9 },
-  { x: 180, y: 380, r: 1.5, d: 4.1 },
-  { x: 230, y: 410, r: 1.5, d: 4.4 },
-  { x: 280, y: 20, r: 1.5, d: 3.6 },
-  { x: 340, y: 45, r: 1.5, d: 4.5 },
-  { x: 390, y: 390, r: 1.5, d: 3.7 },
-  { x: 440, y: 70, r: 1.5, d: 4.3 },
-  { x: 490, y: 90, r: 1.5, d: 4.0 },
-  { x: 485, y: 330, r: 1.5, d: 4.6 },
-  { x: 450, y: 380, r: 1.5, d: 3.8 },
-];
-
-// 4. Synaptic Connection Pairs
-const STATIC_SYNAPSES: [Neuron, Neuron][] = [
-  // L0 -> L1
-  [PRIMARY_NEURONS[0], PRIMARY_NEURONS[4]],
-  [PRIMARY_NEURONS[0], PRIMARY_NEURONS[5]],
-  [PRIMARY_NEURONS[1], PRIMARY_NEURONS[5]],
-  [PRIMARY_NEURONS[1], PRIMARY_NEURONS[6]],
-  [PRIMARY_NEURONS[2], PRIMARY_NEURONS[6]],
-  [PRIMARY_NEURONS[2], PRIMARY_NEURONS[7]],
-  [PRIMARY_NEURONS[3], PRIMARY_NEURONS[7]],
-  [PRIMARY_NEURONS[3], PRIMARY_NEURONS[8]],
-  // Interneuron bridges
-  [PRIMARY_NEURONS[0], INTER_NEURONS[0]],
-  [INTER_NEURONS[0], PRIMARY_NEURONS[5]],
-  [PRIMARY_NEURONS[1], INTER_NEURONS[1]],
-  [INTER_NEURONS[1], PRIMARY_NEURONS[6]],
-  [PRIMARY_NEURONS[2], INTER_NEURONS[2]],
-  [INTER_NEURONS[2], PRIMARY_NEURONS[7]],
-  // L1 -> L2
-  [PRIMARY_NEURONS[4], PRIMARY_NEURONS[9]],
-  [PRIMARY_NEURONS[4], PRIMARY_NEURONS[10]],
-  [PRIMARY_NEURONS[5], PRIMARY_NEURONS[10]],
-  [PRIMARY_NEURONS[5], PRIMARY_NEURONS[11]],
-  [PRIMARY_NEURONS[6], PRIMARY_NEURONS[11]],
-  [PRIMARY_NEURONS[6], PRIMARY_NEURONS[12]],
-  [PRIMARY_NEURONS[7], PRIMARY_NEURONS[12]],
-  [PRIMARY_NEURONS[7], PRIMARY_NEURONS[13]],
-  [PRIMARY_NEURONS[8], PRIMARY_NEURONS[13]],
-  [PRIMARY_NEURONS[8], PRIMARY_NEURONS[14]],
-  // Interneurons L1 -> L2
-  [PRIMARY_NEURONS[5], INTER_NEURONS[4]],
-  [INTER_NEURONS[4], PRIMARY_NEURONS[11]],
-  [PRIMARY_NEURONS[6], INTER_NEURONS[5]],
-  [INTER_NEURONS[5], PRIMARY_NEURONS[12]],
-  // L2 -> L3
-  [PRIMARY_NEURONS[9], PRIMARY_NEURONS[15]],
-  [PRIMARY_NEURONS[10], PRIMARY_NEURONS[15]],
-  [PRIMARY_NEURONS[10], PRIMARY_NEURONS[16]],
-  [PRIMARY_NEURONS[11], PRIMARY_NEURONS[16]],
-  [PRIMARY_NEURONS[12], PRIMARY_NEURONS[17]],
-  [PRIMARY_NEURONS[13], PRIMARY_NEURONS[17]],
-  [PRIMARY_NEURONS[13], PRIMARY_NEURONS[18]],
-  [PRIMARY_NEURONS[14], PRIMARY_NEURONS[18]],
-  // Interneurons L2 -> L3
-  [PRIMARY_NEURONS[11], INTER_NEURONS[8]],
-  [INTER_NEURONS[8], PRIMARY_NEURONS[16]],
-  [PRIMARY_NEURONS[12], INTER_NEURONS[9]],
-  [INTER_NEURONS[9], PRIMARY_NEURONS[17]],
-  // L3 -> L4
-  [PRIMARY_NEURONS[15], PRIMARY_NEURONS[19]],
-  [PRIMARY_NEURONS[16], PRIMARY_NEURONS[19]],
-  [PRIMARY_NEURONS[17], PRIMARY_NEURONS[20]],
-  [PRIMARY_NEURONS[18], PRIMARY_NEURONS[20]],
-  // Interneurons L3 -> L4
-  [PRIMARY_NEURONS[16], INTER_NEURONS[11]],
-  [INTER_NEURONS[11], PRIMARY_NEURONS[19]],
-  [PRIMARY_NEURONS[17], INTER_NEURONS[12]],
-  [INTER_NEURONS[12], PRIMARY_NEURONS[20]],
-];
-
-// 5. Curved Synaptic Pathways for Tailing Signal Streams (Comet lines)
-const TAILING_PATHS = [
-  {
-    d: "M 45 80 Q 150 50, 260 105 T 370 165 T 470 155",
-    duration: 2.8,
-    delay: 0,
-  },
-  {
-    d: "M 45 160 Q 150 125, 260 175 T 370 165 T 470 155",
-    duration: 3.2,
-    delay: 0.9,
-  },
-  {
-    d: "M 45 240 Q 150 200, 260 245 T 370 245 T 470 255",
-    duration: 3.0,
-    delay: 1.8,
-  },
-  {
-    d: "M 45 320 Q 150 275, 260 245 T 370 245 T 470 255",
-    duration: 3.4,
-    delay: 0.4,
-  },
-  {
-    d: "M 45 160 Q 150 275, 260 175 T 370 85 T 470 155",
-    duration: 3.6,
-    delay: 2.2,
-  },
-  {
-    d: "M 45 240 Q 150 125, 260 315 T 370 325 T 470 255",
-    duration: 3.5,
-    delay: 1.4,
-  },
-];
+import { FileText, FileCode, Files } from "lucide-react";
 
 export function DotAiMatrix({ className = "" }: { className?: string }) {
   const shouldReduceMotion = useReducedMotion();
 
-  const allNeurons = [...PRIMARY_NEURONS, ...INTER_NEURONS];
+  // Typewriter effect state for constructing "HELLO WORLD"
+  const fullText = "HELLO WORLD";
+  const [displayedLength, setDisplayedLength] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setDisplayedLength(fullText.length);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setDisplayedLength((prev) => {
+        if (prev >= fullText.length) {
+          // Pause at full text then reset
+          setTimeout(() => setDisplayedLength(0), 1800);
+          return fullText.length;
+        }
+        return prev + 1;
+      });
+    }, 180);
+
+    return () => clearInterval(interval);
+  }, [shouldReduceMotion]);
+
+  // Document sources on the left
+  const DOC_SOURCES = [
+    { id: "doc-1", y: 90, icon: FileText, label: "DOC_01" },
+    { id: "doc-2", y: 190, icon: FileCode, label: "DOC_02" },
+    { id: "doc-3", y: 290, icon: Files, label: "DOC_03" },
+  ];
+
+  // Two vertical filter stages in the middle
+  const FILTER_1_X = 180;
+  const FILTER_2_X = 290;
+  const CORE_NODE = { x: 400, y: 190 };
+
+  // Streams from Docs -> Filter 1 -> Filter 2 -> Core Node
+  const STREAM_PATHS = [
+    // Top Doc -> Filter 1 -> Filter 2 -> Core
+    {
+      d: `M 80 90 L ${FILTER_1_X} 120 L ${FILTER_2_X} 160 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.0,
+      delay: 0,
+    },
+    // Middle Doc -> Filter 1 -> Filter 2 -> Core
+    {
+      d: `M 80 190 L ${FILTER_1_X} 190 L ${FILTER_2_X} 190 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 2.8,
+      delay: 0.6,
+    },
+    // Bottom Doc -> Filter 1 -> Filter 2 -> Core
+    {
+      d: `M 80 290 L ${FILTER_1_X} 260 L ${FILTER_2_X} 220 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.2,
+      delay: 1.2,
+    },
+    // Diagonal cross-harmonics
+    {
+      d: `M 80 90 L ${FILTER_1_X} 190 L ${FILTER_2_X} 160 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.4,
+      delay: 1.8,
+    },
+    {
+      d: `M 80 290 L ${FILTER_1_X} 190 L ${FILTER_2_X} 220 L ${CORE_NODE.x} ${CORE_NODE.y}`,
+      duration: 3.1,
+      delay: 2.2,
+    },
+  ];
 
   return (
     <div
-      className={`relative w-full aspect-[5/4] max-w-[560px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
+      className={`relative w-full aspect-[16/10] max-w-[620px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
       aria-hidden="true"
     >
       <svg
-        viewBox="0 0 520 420"
+        viewBox="0 0 620 380"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full overflow-visible"
       >
-        {/* Background Static Synapses */}
-        <g className="synapse-web">
-          {STATIC_SYNAPSES.map(([n1, n2], idx) => (
-            <line
-              key={`syn-${idx}`}
-              x1={n1.x}
-              y1={n1.y}
-              x2={n2.x}
-              y2={n2.y}
+        <defs>
+          {/* Subtle grid pattern */}
+          <pattern id="subtleGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="0.6" className="fill-ink/15" />
+          </pattern>
+        </defs>
+        <rect width="620" height="380" fill="url(#subtleGrid)" opacity={0.6} />
+
+        {/* 1. DOCUMENT ICONS (STAGE 1: GENERATION SOURCE) */}
+        <g className="doc-icons">
+          {DOC_SOURCES.map((doc) => {
+            const Icon = doc.icon;
+            return (
+              <g key={doc.id} transform={`translate(40, ${doc.y - 20})`}>
+                {/* Doc Icon Outline & Glow */}
+                <rect
+                  x="0"
+                  y="0"
+                  width="40"
+                  height="40"
+                  rx="6"
+                  className="fill-surface stroke-ink/30"
+                  strokeWidth="1.2"
+                />
+                {/* Embedded Lucide Icon representation */}
+                <foreignObject x="8" y="8" width="24" height="24">
+                  <div className="w-full h-full flex items-center justify-center text-ink">
+                    <Icon className="w-5 h-5 text-ink" strokeWidth={1.5} />
+                  </div>
+                </foreignObject>
+
+                {/* Emitting Port Dot on right edge */}
+                <motion.circle
+                  cx="40"
+                  cy="20"
+                  r="3.5"
+                  className="fill-ink"
+                  animate={
+                    shouldReduceMotion
+                      ? {}
+                      : {
+                          scale: [1, 1.4, 1],
+                          opacity: [0.6, 1, 0.6],
+                        }
+                  }
+                  transition={{
+                    duration: 1.8,
+                    repeat: Infinity,
+                    delay: doc.y * 0.005,
+                    ease: "easeInOut",
+                  }}
+                />
+              </g>
+            );
+          })}
+        </g>
+
+        {/* 2. STATIC TRANSMISSION RAILS (DOCS -> FILTERS -> CORE) */}
+        <g className="transmission-rails">
+          {STREAM_PATHS.map((path, idx) => (
+            <path
+              key={`rail-${idx}`}
+              d={path.d}
               className="stroke-ink/10"
-              strokeWidth="0.8"
+              strokeWidth="1"
+              strokeDasharray="2 3"
             />
           ))}
         </g>
 
-        {/* Tailing Lines / Fast Moving Synaptic Signal Trails (Comets) */}
+        {/* 3. TAILING LINES (DATA STREAM IMPULSES PASSING THROUGH FILTERS) */}
         {!shouldReduceMotion && (
-          <g className="tailing-signals">
-            {TAILING_PATHS.map((path, idx) => (
-              <React.Fragment key={`trail-${idx}`}>
-                {/* 1. Long Tailing Stream Line */}
+          <g className="tailing-impulses">
+            {STREAM_PATHS.map((path, idx) => (
+              <React.Fragment key={`impulse-${idx}`}>
+                {/* Primary Tailing Line */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink"
-                  strokeWidth="1.6"
+                  strokeWidth="1.8"
                   strokeLinecap="round"
-                  strokeDasharray="60 380"
+                  strokeDasharray="50 350"
                   animate={{
-                    strokeDashoffset: [440, -440],
-                    opacity: [0, 0.85, 0.85, 0],
+                    strokeDashoffset: [400, -400],
+                    opacity: [0, 0.9, 0.9, 0],
                   }}
                   transition={{
                     duration: path.duration,
@@ -233,23 +181,22 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
                     ease: "easeInOut",
                   }}
                 />
-
-                {/* 2. Secondary Fast Micro-Tail */}
+                {/* Accompanying Micro Particle */}
                 <motion.path
                   d={path.d}
                   fill="none"
                   className="stroke-ink/40"
-                  strokeWidth="0.9"
+                  strokeWidth="1"
                   strokeLinecap="round"
-                  strokeDasharray="25 420"
+                  strokeDasharray="15 385"
                   animate={{
-                    strokeDashoffset: [440, -440],
-                    opacity: [0, 0.6, 0.6, 0],
+                    strokeDashoffset: [400, -400],
+                    opacity: [0, 0.7, 0.7, 0],
                   }}
                   transition={{
-                    duration: path.duration * 0.9,
+                    duration: path.duration * 0.95,
                     repeat: Infinity,
-                    delay: path.delay + 0.3,
+                    delay: path.delay + 0.2,
                     ease: "easeInOut",
                   }}
                 />
@@ -258,161 +205,275 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
           </g>
         )}
 
-        {/* Dynamic Firing Synapse Highlight Pulses on Segment Lines */}
+        {/* 4. VERTICAL FILTERS (STAGE 2) */}
+        {/* Filter 1: Ingestion & Feature Extraction */}
+        <g className="vertical-filter-1">
+          <line
+            x1={FILTER_1_X}
+            y1="40"
+            x2={FILTER_1_X}
+            y2="340"
+            className="stroke-ink/30"
+            strokeWidth="1.5"
+            strokeDasharray="6 4"
+          />
+          {/* Filter Gateway Slits / Notch Dots */}
+          {[90, 140, 190, 240, 290].map((y, idx) => (
+            <motion.circle
+              key={`f1-notch-${idx}`}
+              cx={FILTER_1_X}
+              cy={y}
+              r="3"
+              className="fill-surface stroke-ink"
+              strokeWidth="1.2"
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      scale: [1, 1.25, 1],
+                      opacity: [0.5, 1, 0.5],
+                    }
+              }
+              transition={{
+                duration: 2.4,
+                repeat: Infinity,
+                delay: idx * 0.3,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+          {/* Vertical Scanner Light */}
+          {!shouldReduceMotion && (
+            <motion.line
+              x1={FILTER_1_X}
+              y1="40"
+              x2={FILTER_1_X}
+              y2="100"
+              className="stroke-ink"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              animate={{
+                y1: [40, 280, 40],
+                y2: [100, 340, 100],
+                opacity: [0.2, 0.8, 0.2],
+              }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          )}
+        </g>
+
+        {/* Filter 2: Refinement & Alignment */}
+        <g className="vertical-filter-2">
+          <line
+            x1={FILTER_2_X}
+            y1="60"
+            x2={FILTER_2_X}
+            y2="320"
+            className="stroke-ink/30"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+          />
+          {/* Filter 2 Notches */}
+          {[120, 160, 190, 220, 260].map((y, idx) => (
+            <motion.circle
+              key={`f2-notch-${idx}`}
+              cx={FILTER_2_X}
+              cy={y}
+              r="2.5"
+              className="fill-surface stroke-ink"
+              strokeWidth="1"
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      scale: [1, 1.25, 1],
+                      opacity: [0.5, 0.9, 0.5],
+                    }
+              }
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                delay: idx * 0.25 + 0.4,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+          {!shouldReduceMotion && (
+            <motion.line
+              x1={FILTER_2_X}
+              y1="60"
+              x2={FILTER_2_X}
+              y2="120"
+              className="stroke-ink"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{
+                y1: [260, 60, 260],
+                y2: [320, 120, 320],
+                opacity: [0.3, 0.85, 0.3],
+              }}
+              transition={{
+                duration: 3.0,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          )}
+        </g>
+
+        {/* 5. FINAL SINGLE CONVERGENCE NODE (STAGE 3) */}
+        <g className="final-single-node">
+          {/* Concentric Aura Rings */}
+          <circle
+            cx={CORE_NODE.x}
+            cy={CORE_NODE.y}
+            r="24"
+            className="stroke-ink/20 fill-transparent"
+            strokeWidth="1"
+            strokeDasharray="3 3"
+          />
+          <circle
+            cx={CORE_NODE.x}
+            cy={CORE_NODE.y}
+            r="16"
+            className="stroke-ink/35 fill-surface"
+            strokeWidth="1.2"
+          />
+
+          {/* Ripple Radiating from Core */}
+          {!shouldReduceMotion && (
+            <motion.circle
+              cx={CORE_NODE.x}
+              cy={CORE_NODE.y}
+              r="8"
+              className="stroke-ink"
+              strokeWidth="1"
+              animate={{
+                r: [8, 36],
+                opacity: [0.7, 0],
+              }}
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeOut",
+              }}
+            />
+          )}
+
+          {/* Core Solid Node */}
+          <motion.circle
+            cx={CORE_NODE.x}
+            cy={CORE_NODE.y}
+            r="7"
+            className="fill-ink"
+            animate={
+              shouldReduceMotion
+                ? {}
+                : {
+                    scale: [1, 1.25, 1],
+                  }
+            }
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <circle cx={CORE_NODE.x} cy={CORE_NODE.y} r="2" className="fill-surface" />
+        </g>
+
+        {/* 6. EMITTING BEAM FROM SINGLE NODE TOWARD TEXT */}
+        <line
+          x1={CORE_NODE.x + 24}
+          y1={CORE_NODE.y}
+          x2="455"
+          y2={CORE_NODE.y}
+          className="stroke-ink/40"
+          strokeWidth="1.5"
+          strokeDasharray="2 2"
+        />
         {!shouldReduceMotion && (
-          <g className="synaptic-pulses">
-            {STATIC_SYNAPSES.filter((_, idx) => idx % 4 === 0).map(([n1, n2], idx) => (
-              <motion.line
-                key={`pulse-line-${idx}`}
-                x1={n1.x}
-                y1={n1.y}
-                x2={n2.x}
-                y2={n2.y}
-                className="stroke-ink"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeDasharray="16 60"
+          <motion.circle
+            cx={CORE_NODE.x + 24}
+            cy={CORE_NODE.y}
+            r="3"
+            className="fill-ink"
+            animate={{
+              cx: [CORE_NODE.x + 24, 455],
+              opacity: [0.9, 0.2],
+            }}
+            transition={{
+              duration: 0.9,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        )}
+
+        {/* 7. CONSTRUCTING "HELLO WORLD" TEXT (STAGE 4) */}
+        <g className="text-construction" transform="translate(465, 198)">
+          {/* Constructing Text Output */}
+          <text
+            x="0"
+            y="0"
+            className="fill-ink font-mono font-bold tracking-widest text-[20px] select-none"
+          >
+            {fullText.slice(0, displayedLength)}
+          </text>
+
+          {/* Typing Blinking Cursor Block */}
+          {!shouldReduceMotion && (
+            <motion.rect
+              x={displayedLength * 14.5 + 4}
+              y="-18"
+              width="9"
+              height="22"
+              className="fill-ink"
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          )}
+        </g>
+
+        {/* Subtle Assembly Scatter Particles around Text */}
+        {!shouldReduceMotion && (
+          <g className="text-assembly-particles">
+            {[
+              { x: 475, y: 165, r: 1.5, d: 0.2 },
+              { x: 510, y: 170, r: 1.5, d: 0.5 },
+              { x: 550, y: 165, r: 1.5, d: 0.8 },
+              { x: 490, y: 220, r: 1.5, d: 0.4 },
+              { x: 535, y: 225, r: 1.5, d: 0.7 },
+              { x: 580, y: 215, r: 1.5, d: 1.0 },
+            ].map((p, idx) => (
+              <motion.circle
+                key={`p-${idx}`}
+                cx={p.x}
+                cy={p.y}
+                r={p.r}
+                className="fill-ink/70"
                 animate={{
-                  strokeDashoffset: [76, -76],
-                  opacity: [0.1, 0.85, 0.1],
+                  y: [p.y - 4, p.y + 4, p.y - 4],
+                  opacity: [0.3, 0.9, 0.3],
                 }}
                 transition={{
-                  duration: 2.0 + (idx % 3) * 0.4,
+                  duration: 2.2,
                   repeat: Infinity,
-                  delay: (idx * 0.35) % 2,
-                  ease: "linear",
+                  delay: p.d,
+                  ease: "easeInOut",
                 }}
               />
             ))}
           </g>
         )}
-
-        {/* Ambient Neural Scatter Micro-Dots */}
-        <g className="ambient-scatter">
-          {AMBIENT_DOTS.map((dot, idx) => (
-            <motion.circle
-              key={`amb-${idx}`}
-              cx={dot.x}
-              cy={dot.y}
-              r={dot.r}
-              className="fill-ink"
-              animate={
-                shouldReduceMotion
-                  ? { opacity: 0.25 }
-                  : {
-                      opacity: [0.1, 0.45, 0.1],
-                      scale: [0.8, 1.4, 0.8],
-                    }
-              }
-              transition={{
-                duration: dot.d,
-                repeat: Infinity,
-                delay: (idx * 0.25) % 2,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </g>
-
-        {/* Moving Neurons (Organic 2D Drift & Pulsing Halos) */}
-        <g className="neurons">
-          {allNeurons.map((neuron) => (
-            <motion.g
-              key={neuron.id}
-              animate={
-                shouldReduceMotion
-                  ? {}
-                  : {
-                      x: [-neuron.driftX, neuron.driftX, -neuron.driftX],
-                      y: [-neuron.driftY, neuron.driftY, -neuron.driftY],
-                    }
-              }
-              transition={{
-                duration: neuron.duration,
-                repeat: Infinity,
-                delay: neuron.delay,
-                ease: "easeInOut",
-              }}
-            >
-              {/* Outer Radiant Halo Ring */}
-              <motion.circle
-                cx={neuron.x}
-                cy={neuron.y}
-                r={neuron.r + (neuron.isCore ? 6 : 4)}
-                className="stroke-ink/20 fill-transparent"
-                strokeWidth="0.75"
-                strokeDasharray={neuron.isCore ? undefined : "2 2"}
-                animate={
-                  shouldReduceMotion
-                    ? {}
-                    : {
-                        scale: neuron.isCore ? [1, 1.35, 1] : [1, 1.2, 1],
-                        opacity: [0.2, 0.55, 0.2],
-                      }
-                }
-                transition={{
-                  duration: neuron.duration * 0.75,
-                  repeat: Infinity,
-                  delay: neuron.delay,
-                  ease: "easeInOut",
-                }}
-              />
-
-              {/* Expanding Ripple for Core Neurons */}
-              {neuron.isCore && !shouldReduceMotion && (
-                <motion.circle
-                  cx={neuron.x}
-                  cy={neuron.y}
-                  r={neuron.r}
-                  className="stroke-ink/30"
-                  strokeWidth="0.8"
-                  animate={{
-                    r: [neuron.r, neuron.r + 14],
-                    opacity: [0.6, 0],
-                  }}
-                  transition={{
-                    duration: 3.2,
-                    repeat: Infinity,
-                    delay: neuron.delay * 1.5,
-                    ease: "easeOut",
-                  }}
-                />
-              )}
-
-              {/* Primary Neuron Body Dot */}
-              <motion.circle
-                cx={neuron.x}
-                cy={neuron.y}
-                r={neuron.r}
-                className={neuron.isCore ? "fill-ink" : "fill-ink/80"}
-                animate={
-                  shouldReduceMotion
-                    ? {}
-                    : {
-                        scale: [1, 1.15, 1],
-                        opacity: [0.75, 1, 0.75],
-                      }
-                }
-                transition={{
-                  duration: neuron.duration * 0.6,
-                  repeat: Infinity,
-                  delay: neuron.delay,
-                  ease: "easeInOut",
-                }}
-              />
-
-              {/* Nucleus Center for Core Output Nodes */}
-              {neuron.isCore && (
-                <circle
-                  cx={neuron.x}
-                  cy={neuron.y}
-                  r={1.75}
-                  className="fill-surface"
-                />
-              )}
-            </motion.g>
-          ))}
-        </g>
       </svg>
     </div>
   );
