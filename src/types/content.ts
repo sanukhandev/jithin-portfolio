@@ -17,6 +17,14 @@ export interface LocalizedStringList {
 export interface SiteConfig {
   name: string;
   role: LocalizedString;
+  company: {
+    name: string;
+    url: string;
+    presence: string;
+    regions: string[];
+  };
+  location: LocalizedString;
+  phone?: string;
   eyebrow: LocalizedString;
   heroHeadline: LocalizedString;
   heroMission: LocalizedString;
@@ -25,6 +33,7 @@ export interface SiteConfig {
     linkedin: string | null;
     email: string | null;
     github: string | null;
+    phone?: string | null;
   };
   disclaimer: LocalizedString;
 }

@@ -7,6 +7,18 @@ export const siteConfig: SiteConfig = {
     it: "Chief Innovation Officer",
     ar: "الرئيس التنفيذي للابتكار",
   },
+  company: {
+    name: "desertwhales.tech",
+    url: "https://desertwhales.tech",
+    presence: "UAE · KSA · ITY · IND",
+    regions: ["UAE", "KSA", "ITY", "IND"],
+  },
+  location: {
+    en: "Palermo & Pagani, Italy",
+    it: "Palermo e Pagani, Italia",
+    ar: "باليرمو وباغاني، إيطاليا",
+  },
+  phone: "+39 (Direct on request)",
   eyebrow: {
     en: "AI Innovation · Enterprise Transformation",
     it: "Innovazione IA · Trasformazione aziendale",
@@ -27,6 +39,7 @@ export const siteConfig: SiteConfig = {
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || null,
     email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "jithinkjacob@live.it",
     github: null,
+    phone: "+39 (Direct on request)",
   },
   disclaimer: {
     en: "This executive portfolio features illustrative concepts and strategic frameworks designed to demonstrate AI leadership capabilities. No unverified personal credentials, client engagements, or quantified results are asserted.",

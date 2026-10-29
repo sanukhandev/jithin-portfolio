@@ -27,7 +27,10 @@ export function Hero({ locale, dict }: HeroProps) {
             <MotionWrapper delay={0.1}>
               <div className="mb-4">
                 <span className="block text-sm sm:text-base font-mono uppercase tracking-wider text-ink-muted">
-                  {siteConfig.name} — {siteConfig.role[locale]}
+                  {siteConfig.name} — {siteConfig.role[locale]} · {siteConfig.company.name}
+                </span>
+                <span className="block text-xs font-mono text-ink-muted/70 tracking-widest uppercase mt-1">
+                  {siteConfig.company.presence} · {siteConfig.location[locale]}
                 </span>
               </div>
               <h1

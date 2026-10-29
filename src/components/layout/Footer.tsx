@@ -36,8 +36,11 @@ export function Footer({ locale, dict }: FooterProps) {
             <span className="font-serif text-2xl sm:text-3xl font-normal text-ink mb-2">
               {siteConfig.name}
             </span>
-            <span className="text-xs font-mono uppercase tracking-widest text-ink-muted mb-4">
-              {siteConfig.role[locale]}
+            <span className="text-xs font-mono uppercase tracking-widest text-ink-muted mb-1.5">
+              {siteConfig.role[locale]} · {siteConfig.company.name}
+            </span>
+            <span className="text-[11px] font-mono text-ink-muted/70 tracking-wider uppercase mb-4 block">
+              {siteConfig.company.presence} · {siteConfig.location[locale]}
             </span>
             <p className="text-sm text-ink-muted max-w-sm leading-relaxed mb-6 font-sans">
               {siteConfig.heroMission[locale]}

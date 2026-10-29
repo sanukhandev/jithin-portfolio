@@ -33,7 +33,7 @@ export default async function HomePage({ params }: PageProps) {
       <Approach locale={locale} dict={dict} />
       <Insights locale={locale} dict={dict} />
       <About locale={locale} dict={dict} />
-      <Contact dict={dict} />
+      <Contact locale={locale} dict={dict} />
     </>
   );
 }
