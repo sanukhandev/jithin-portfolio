@@ -100,7 +100,27 @@
     "statusMessage": "I contatti saranno aggiunti dopo la verifica.",
     "statusDetail": "I canali di posta e i calendari di prenotazione sono momentaneamente disattivati in attesa della configurazione dei canali sicuri verificati.",
     "connectPrompt": "Le richieste per ruoli consultivi, relazioni a conferenze o iniziative strategiche potranno essere inoltrate non appena i canali verificati saranno attivi.",
-    "configuredEmail": "Email direzionale diretta"
+    "configuredEmail": "Email direzionale diretta",
+    "form": {
+      "nameLabel": "Nome e Cognome",
+      "namePlaceholder": "es. Elena Rossi",
+      "emailLabel": "Email aziendale / professionale",
+      "emailPlaceholder": "nome@organizzazione.it",
+      "subjectLabel": "Ambito di collaborazione",
+      "subjectPlaceholder": "es. AI Governance & Board Advisory",
+      "messageLabel": "Dettagli della richiesta",
+      "messagePlaceholder": "Descrivi brevemente il contesto aziendale, le sfide principali o la tempistica strategica...",
+      "submit": "Invia richiesta",
+      "submitting": "Invio in corso...",
+      "successTitle": "Richiesta inviata con successo",
+      "successMessage": "Grazie. Il tuo messaggio è stato inoltrato a Jithin K (jithinkjacob@live.it). Le richieste dirette ricevono riscontro entro 24–48 ore lavorative.",
+      "sendAnother": "Invia un'altra richiesta",
+      "directEmailCta": "Apri client di posta",
+      "copyEmail": "Copia indirizzo email",
+      "copied": "Copiato negli appunti",
+      "error": "Si è verificato un errore durante l'invio. Riprova o scrivi direttamente via email.",
+      "securityNotice": "Canale direzionale diretto · Cifrato durante la trasmissione"
+    }
   },
   "footer": {
     "role": "Chief Innovation Officer",

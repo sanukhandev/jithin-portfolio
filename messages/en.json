@@ -100,7 +100,27 @@
     "statusMessage": "Contact details will be added after verification.",
     "statusDetail": "Direct email and scheduling links are intentionally restricted until formal executive credentials and secure channels are approved.",
     "connectPrompt": "Inquiries regarding advisory roles, keynote engagements, or strategic transformation initiatives may be directed once verified channels are live.",
-    "configuredEmail": "Direct Executive Email"
+    "configuredEmail": "Direct Executive Email",
+    "form": {
+      "nameLabel": "Your Name",
+      "namePlaceholder": "e.g. Elena Rossi",
+      "emailLabel": "Corporate / Work Email",
+      "emailPlaceholder": "name@organization.com",
+      "subjectLabel": "Engagement Focus",
+      "subjectPlaceholder": "e.g. AI Transformation & Board Advisory",
+      "messageLabel": "Inquiry Details",
+      "messagePlaceholder": "Briefly describe your institutional context, core challenges, or strategic timeline...",
+      "submit": "Transmit Inquiry",
+      "submitting": "Transmitting...",
+      "successTitle": "Inquiry Transmitted",
+      "successMessage": "Thank you. Your message has been routed to Jithin K (jithinkjacob@live.it). Direct inquiries receive an executive response within 24–48 business hours.",
+      "sendAnother": "Send another inquiry",
+      "directEmailCta": "Open Mail Client",
+      "copyEmail": "Copy Email Address",
+      "copied": "Copied to clipboard",
+      "error": "Transmission encountered an error. Please retry or contact directly via email.",
+      "securityNotice": "Direct executive channel · Encrypted in transit"
+    }
   },
   "footer": {
     "role": "Chief Innovation Officer",
