@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { LOCALES, DEFAULT_LOCALE } from "./i18n/config";
+import { LOCALES } from "./i18n/config";
+import { detectRegionLocale } from "./i18n/geo";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,10 +23,37 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Redirect root or non-localized route to default locale /en
+  // Extract region / country signals from edge proxy headers
+  const country =
+    request.headers.get("x-vercel-ip-country") ||
+    request.headers.get("cf-ipcountry") ||
+    request.headers.get("x-country-code") ||
+    request.headers.get("cloudfront-viewer-country") ||
+    request.headers.get("x-real-ip-country") ||
+    (request as unknown as { geo?: { country?: string } }).geo?.country;
+
+  const acceptLanguage = request.headers.get("accept-language");
+  const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value;
+
+  // Identify region and determine default locale
+  const targetLocale = detectRegionLocale({
+    country,
+    acceptLanguage,
+    cookieLocale,
+  });
+
+  // Redirect root or non-localized route to the regional default locale
   const url = request.nextUrl.clone();
-  url.pathname = `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.redirect(url);
+  url.pathname = `/${targetLocale}${pathname === "/" ? "" : pathname}`;
+  const response = NextResponse.redirect(url);
+
+  // Attach diagnostic telemetry headers
+  response.headers.set("x-detected-locale", targetLocale);
+  if (country) {
+    response.headers.set("x-detected-country", country);
+  }
+
+  return response;
 }
 
 export const config = {

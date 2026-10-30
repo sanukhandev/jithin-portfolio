@@ -49,6 +49,13 @@ export function LanguageSwitcher({
     setIsOpen(false);
     if (targetLocale === currentLocale) return;
 
+    // Persist explicit user selection to cookie so root redirects honor their preference
+    try {
+      document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    } catch {
+      // ignore in non-browser environments
+    }
+
     // Replace the locale prefix in current pathname, e.g. /en/work/xyz -> /it/work/xyz
     const segments = pathname.split("/").filter(Boolean);
     if (segments.length > 0 && LOCALES.includes(segments[0] as Locale)) {

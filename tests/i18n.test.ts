@@ -3,6 +3,13 @@ import en from "../messages/en.json";
 import itMessages from "../messages/it.json";
 import ar from "../messages/ar.json";
 import { LOCALES, getDirection, isLocale } from "../src/i18n/config";
+import {
+  getLocaleFromCountry,
+  getLocaleFromAcceptLanguage,
+  detectRegionLocale,
+  ITALIAN_COUNTRY_CODES,
+  ARABIC_COUNTRY_CODES,
+} from "../src/i18n/geo";
 
 // Recursive key flattener to ensure 100% parity across dictionaries
 function getKeys(obj: Record<string, any>, prefix = ""): string[] {
@@ -57,5 +64,79 @@ describe("i18n and localization completeness", () => {
     checkNoEmptyValues(en);
     checkNoEmptyValues(itMessages);
     checkNoEmptyValues(ar);
+  });
+});
+
+describe("Region & Geo-Locale Automatic Detection", () => {
+  it("should map Italian countries (IT, SM, VA) to 'it' locale", () => {
+    expect(getLocaleFromCountry("IT")).toBe("it");
+    expect(getLocaleFromCountry("it")).toBe("it");
+    expect(getLocaleFromCountry("SM")).toBe("it");
+    expect(getLocaleFromCountry("VA")).toBe("it");
+    for (const code of ITALIAN_COUNTRY_CODES) {
+      expect(getLocaleFromCountry(code)).toBe("it");
+    }
+  });
+
+  it("should map Middle East & North Africa countries (SA, AE, QA, etc.) to 'ar' locale", () => {
+    expect(getLocaleFromCountry("SA")).toBe("ar");
+    expect(getLocaleFromCountry("AE")).toBe("ar");
+    expect(getLocaleFromCountry("QA")).toBe("ar");
+    expect(getLocaleFromCountry("EG")).toBe("ar");
+    for (const code of ARABIC_COUNTRY_CODES) {
+      expect(getLocaleFromCountry(code)).toBe("ar");
+    }
+  });
+
+  it("should return null for non-regional countries like US, IN, GB", () => {
+    expect(getLocaleFromCountry("US")).toBeNull();
+    expect(getLocaleFromCountry("IN")).toBeNull();
+    expect(getLocaleFromCountry("GB")).toBeNull();
+    expect(getLocaleFromCountry("")).toBeNull();
+    expect(getLocaleFromCountry(null)).toBeNull();
+  });
+
+  it("should parse Accept-Language header and find preferred locale", () => {
+    expect(getLocaleFromAcceptLanguage("it-IT,it;q=0.9,en-US;q=0.8")).toBe("it");
+    expect(getLocaleFromAcceptLanguage("ar-SA,ar-AE;q=0.9,en-US;q=0.8")).toBe("ar");
+    expect(getLocaleFromAcceptLanguage("en-US,en;q=0.9")).toBe("en");
+    expect(getLocaleFromAcceptLanguage("fr-FR,fr;q=0.9,de;q=0.8")).toBeNull();
+    expect(getLocaleFromAcceptLanguage("")).toBeNull();
+  });
+
+  it("detectRegionLocale should follow strict precedence order", () => {
+    // 1. Explicit cookie preference overrides country and accept-language
+    expect(
+      detectRegionLocale({
+        cookieLocale: "it",
+        country: "AE",
+        acceptLanguage: "ar-AE",
+      })
+    ).toBe("it");
+
+    expect(
+      detectRegionLocale({
+        cookieLocale: "en",
+        country: "IT",
+        acceptLanguage: "it-IT",
+      })
+    ).toBe("en");
+
+    // 2. Country detection when no cookie is set
+    expect(detectRegionLocale({ country: "IT" })).toBe("it");
+    expect(detectRegionLocale({ country: "SA" })).toBe("ar");
+    expect(detectRegionLocale({ country: "AE" })).toBe("ar");
+
+    // 3. Accept-Language header when country is unmapped (e.g. IN or US)
+    expect(
+      detectRegionLocale({
+        country: "US",
+        acceptLanguage: "it-IT,it;q=0.9,en;q=0.8",
+      })
+    ).toBe("it");
+
+    // 4. Fallback to 'en' when neither country nor accept-language match
+    expect(detectRegionLocale({ country: "IN" })).toBe("en");
+    expect(detectRegionLocale({})).toBe("en");
   });
 });

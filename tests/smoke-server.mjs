@@ -38,11 +38,67 @@ async function runSmokeTests() {
     await waitForServer(BASE_URL);
     console.log("Next.js server is ready. Executing HTTP smoke tests...");
 
-    // 1. Root redirect check
+    // 1. Root redirect check (Default fallback -> /en)
     const rootRes = await fetch(`${BASE_URL}/`, { redirect: "manual" });
-    console.log(`[Root /]: status = ${rootRes.status}, location = ${rootRes.headers.get("location")}`);
+    console.log(`[Root / default]: status = ${rootRes.status}, location = ${rootRes.headers.get("location")}`);
     if (rootRes.status !== 307 && rootRes.status !== 308) {
       throw new Error(`Expected root redirect, got ${rootRes.status}`);
+    }
+    if (!rootRes.headers.get("location")?.endsWith("/en")) {
+      throw new Error(`Expected default redirect to /en, got ${rootRes.headers.get("location")}`);
+    }
+
+    // 1b. Regional redirect check: Italy (IT) -> /it
+    const itGeoRes = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+      headers: { "x-vercel-ip-country": "IT" },
+    });
+    console.log(`[Root / IT geo]: location = ${itGeoRes.headers.get("location")}`);
+    if (!itGeoRes.headers.get("location")?.endsWith("/it")) {
+      throw new Error(`Expected IT geo redirect to /it, got ${itGeoRes.headers.get("location")}`);
+    }
+
+    // 1c. Regional redirect check: Saudi Arabia (SA) -> /ar
+    const saGeoRes = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+      headers: { "cf-ipcountry": "SA" },
+    });
+    console.log(`[Root / SA geo]: location = ${saGeoRes.headers.get("location")}`);
+    if (!saGeoRes.headers.get("location")?.endsWith("/ar")) {
+      throw new Error(`Expected SA geo redirect to /ar, got ${saGeoRes.headers.get("location")}`);
+    }
+
+    // 1d. Regional redirect check: UAE (AE) -> /ar
+    const aeGeoRes = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+      headers: { "cf-ipcountry": "AE" },
+    });
+    console.log(`[Root / AE geo]: location = ${aeGeoRes.headers.get("location")}`);
+    if (!aeGeoRes.headers.get("location")?.endsWith("/ar")) {
+      throw new Error(`Expected AE geo redirect to /ar, got ${aeGeoRes.headers.get("location")}`);
+    }
+
+    // 1e. Browser Accept-Language detection: Italian -> /it
+    const itLangRes = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+      headers: { "accept-language": "it-IT,it;q=0.9,en-US;q=0.8" },
+    });
+    console.log(`[Root / it-IT lang]: location = ${itLangRes.headers.get("location")}`);
+    if (!itLangRes.headers.get("location")?.endsWith("/it")) {
+      throw new Error(`Expected Italian accept-language redirect to /it, got ${itLangRes.headers.get("location")}`);
+    }
+
+    // 1f. Cookie override precedence: NEXT_LOCALE=it in UAE -> /it
+    const cookieOverrideRes = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+      headers: {
+        "cf-ipcountry": "AE",
+        cookie: "NEXT_LOCALE=it",
+      },
+    });
+    console.log(`[Root / cookie override in AE]: location = ${cookieOverrideRes.headers.get("location")}`);
+    if (!cookieOverrideRes.headers.get("location")?.endsWith("/it")) {
+      throw new Error(`Expected cookie override redirect to /it, got ${cookieOverrideRes.headers.get("location")}`);
     }
 
     // 2. English homepage check
