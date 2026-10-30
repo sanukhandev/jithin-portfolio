@@ -16,7 +16,7 @@ interface InsightsProps {
 
 export function Insights({ locale, dict }: InsightsProps) {
   return (
-    <section id="insights" className="py-24 sm:py-32 border-b border-border-subtle bg-surface-raised">
+    <section id="insights" className="py-14 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface-raised">
       <Container>
         <SectionHeader
           eyebrow={dict.insights.eyebrow}
@@ -24,10 +24,10 @@ export function Insights({ locale, dict }: InsightsProps) {
           subheading={dict.insights.subheading}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {insights.map((article, idx) => (
             <MotionWrapper key={article.id} delay={0.1 * idx}>
-              <article className="h-full flex flex-col p-8 rounded-xl glass-card-spatial bg-surface/90">
+              <article className="h-full flex flex-col p-6 sm:p-8 rounded-xl glass-card-spatial bg-surface/90">
                 {/* Meta info & Badge */}
                 <div className="flex items-center justify-between mb-6">
                   <Badge variant="subtle">{dict.insights.badge}</Badge>

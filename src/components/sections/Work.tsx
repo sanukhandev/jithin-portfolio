@@ -25,7 +25,7 @@ const schematicMap = {
 
 export function Work({ locale, dict }: WorkProps) {
   return (
-    <section id="work" className="py-24 sm:py-32 border-b border-border-subtle bg-surface-raised">
+    <section id="work" className="py-14 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface-raised">
       <Container>
         <SectionHeader
           eyebrow={dict.work.eyebrow}
@@ -33,7 +33,7 @@ export function Work({ locale, dict }: WorkProps) {
           subheading={dict.work.subheading}
         />
 
-        <div className="space-y-16 lg:space-y-24">
+        <div className="space-y-8 sm:space-y-14 lg:space-y-20">
           {caseStudies.map((study, idx) => {
             const SchematicComponent = schematicMap[study.diagramType];
             const isReversed = idx % 2 === 1;
@@ -41,11 +41,11 @@ export function Work({ locale, dict }: WorkProps) {
             return (
               <MotionWrapper key={study.id} delay={0.15}>
                 <article
-                  className="rounded-2xl glass-card-spatial bg-surface/90 p-8 sm:p-12 lg:p-14 shadow-sm"
+                  className="rounded-2xl glass-card-spatial bg-surface/90 p-6 sm:p-10 lg:p-14 shadow-sm"
                   aria-labelledby={`case-title-${study.id}`}
                 >
                   <div
-                    className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center ${
+                    className={`grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-14 items-center ${
                       isReversed ? "lg:flex-row-reverse" : ""
                     }`}
                   >

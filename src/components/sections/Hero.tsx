@@ -17,11 +17,11 @@ interface HeroProps {
 export function Hero({ locale, dict }: HeroProps) {
   return (
     <section
-      className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 lg:pt-48 lg:pb-36 overflow-hidden"
+      className="relative pt-24 pb-10 sm:pt-36 sm:pb-20 lg:pt-48 lg:pb-32 overflow-hidden"
       aria-labelledby="hero-title"
     >
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-8 items-center">
           {/* Main Hero Narrative */}
           <div className="lg:col-span-7 flex flex-col items-start z-10">
             <MotionWrapper delay={0.1}>
@@ -34,7 +34,7 @@ export function Hero({ locale, dict }: HeroProps) {
             </MotionWrapper>
 
             <MotionWrapper delay={0.2}>
-              <p className="text-lg sm:text-xl lg:text-2xl text-ink-muted font-sans font-normal leading-relaxed max-w-2xl mb-10">
+              <p className="text-lg sm:text-xl lg:text-2xl text-ink-muted font-sans font-normal leading-relaxed max-w-2xl mb-6 sm:mb-10">
                 {dict.hero.body}
               </p>
             </MotionWrapper>
@@ -69,7 +69,7 @@ export function Hero({ locale, dict }: HeroProps) {
         </div>
 
         {/* Scroll indicator prompt */}
-        <div className="mt-16 sm:mt-24 pt-8 border-t border-border-subtle/50 flex items-center justify-between text-xs font-mono text-ink-muted">
+        <div className="mt-8 sm:mt-16 lg:mt-20 pt-5 sm:pt-8 border-t border-border-subtle/50 flex items-center justify-between text-xs font-mono text-ink-muted">
           <div className="flex items-center gap-2">
             <ArrowDown className="w-3.5 h-3.5 animate-bounce" strokeWidth={1.5} aria-hidden="true" />
             <span>{dict.hero.scrollPrompt}</span>

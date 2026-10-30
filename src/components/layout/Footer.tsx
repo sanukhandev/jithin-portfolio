@@ -30,9 +30,9 @@ export function Footer({ locale, dict }: FooterProps) {
   ];
 
   return (
-    <footer className="border-t border-border-subtle bg-surface-raised py-16 sm:py-20">
+    <footer className="border-t border-border-subtle bg-surface-raised py-12 sm:py-16 lg:py-20">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 pb-12 sm:pb-16 border-b border-border-subtle">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 pb-8 sm:pb-12 lg:pb-16 border-b border-border-subtle">
           {/* Identity & Mission */}
           <div className="md:col-span-5 flex flex-col items-start">
             <span className="font-serif text-2xl sm:text-3xl font-normal text-ink mb-2">

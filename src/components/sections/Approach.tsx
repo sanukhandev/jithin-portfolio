@@ -41,7 +41,7 @@ const STAGE_CONFIG = [
 
 export function Approach({ locale, dict }: ApproachProps) {
   return (
-    <section id="approach" className="py-24 sm:py-32 border-b border-border-subtle bg-surface">
+    <section id="approach" className="py-14 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface">
       <Container>
         <SectionHeader
           eyebrow={dict.approach.eyebrow}
@@ -50,7 +50,7 @@ export function Approach({ locale, dict }: ApproachProps) {
         />
 
         {/* Assorted Bento Collage Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-start">
           {approachStages.map((stage, idx) => {
             const config = STAGE_CONFIG[idx] || STAGE_CONFIG[0];
             const Icon = config.icon;
@@ -59,7 +59,7 @@ export function Approach({ locale, dict }: ApproachProps) {
             return (
               <div key={stage.step} className={`${config.span} ${config.offset} transition-transform`}>
                 <MotionWrapper delay={0.12 * idx}>
-                  <div className="h-full flex flex-col p-7 sm:p-9 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
+                  <div className="h-full flex flex-col p-6 sm:p-8 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
                     {/* Top Collage Header: Icon, Heading in between, and Step Number */}
                     <div className="flex items-center justify-between gap-4 mb-5">
                       <div className="w-12 h-12 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0">

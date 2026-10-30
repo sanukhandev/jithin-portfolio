@@ -21,7 +21,7 @@ export function SectionHeader({
       : "text-start items-start";
 
   return (
-    <div className={`flex flex-col mb-12 sm:mb-16 lg:mb-20 max-w-4xl ${alignmentClasses} ${className}`}>
+    <div className={`flex flex-col mb-8 sm:mb-12 lg:mb-16 max-w-4xl ${alignmentClasses} ${className}`}>
       {eyebrow && (
         <span className="text-xs uppercase tracking-widest text-ink-muted font-sans font-medium mb-3 sm:mb-4">
           {eyebrow}

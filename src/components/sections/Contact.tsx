@@ -17,14 +17,14 @@ export function Contact({ locale = "en", dict }: ContactProps) {
   return (
     <section
       id="contact"
-      className="relative py-20 sm:py-28 lg:py-32 border-b border-border-subtle bg-surface overflow-hidden"
+      className="relative py-14 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface overflow-hidden"
       aria-labelledby="contact-heading"
     >
       {/* Background Pattern Animation with Opaque Bézier Spline Lines (Echoing Hero) */}
       <ContactBackgroundAnimation />
 
       <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-start">
           {/* Column 1: Executive Contact Intel & Text (Left in LTR, Right in Arabic RTL) */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <MotionWrapper delay={0.1}>

@@ -14,14 +14,14 @@ interface AboutProps {
 
 export function About({ locale, dict }: AboutProps) {
   return (
-    <section id="about" className="py-24 sm:py-32 border-b border-border-subtle bg-surface">
+    <section id="about" className="py-14 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface">
       <Container>
         <SectionHeader
           eyebrow={dict.about.eyebrow}
           heading={dict.about.heading}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Executive Narrative & Contact Card */}
           <div className="lg:col-span-7 space-y-6">
             <MotionWrapper delay={0.1}>
@@ -44,7 +44,7 @@ export function About({ locale, dict }: AboutProps) {
 
             {/* Executive Contact Card to fill the section gap */}
             <MotionWrapper delay={0.35}>
-              <div className="mt-8 p-8 sm:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
+              <div className="mt-6 sm:mt-8 p-6 sm:p-8 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
                 <h3 className="text-xl sm:text-2xl font-serif text-ink mb-3 leading-snug">
                   {dict.about.contactCard.heading}
                 </h3>
@@ -74,7 +74,7 @@ export function About({ locale, dict }: AboutProps) {
           {/* Core Leadership Principles */}
           <div className="lg:col-span-5">
             <MotionWrapper delay={0.25}>
-              <div className="p-8 sm:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
+              <div className="p-6 sm:p-8 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
                 <span className="block text-xs font-mono uppercase tracking-widest text-ink-muted mb-6">
                   {dict.about.principlesHeading}
                 </span>

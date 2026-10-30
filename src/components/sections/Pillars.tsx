@@ -21,7 +21,7 @@ const iconMap = {
 
 export function Pillars({ locale, dict }: PillarsProps) {
   return (
-    <section id="pillars" className="py-24 sm:py-32 border-b border-border-subtle bg-surface">
+    <section id="pillars" className="pt-10 pb-16 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface">
       <Container>
         <SectionHeader
           eyebrow={dict.pillars.eyebrow}
@@ -29,12 +29,12 @@ export function Pillars({ locale, dict }: PillarsProps) {
           subheading={dict.pillars.subheading}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {pillars.map((pillar, idx) => {
             const Icon = iconMap[pillar.iconName];
             return (
               <MotionWrapper key={pillar.id} delay={0.1 * idx}>
-                <div className="group h-full flex flex-col p-8 sm:p-10 rounded-xl glass-card-spatial bg-surface-raised/90">
+                <div className="group h-full flex flex-col p-6 sm:p-8 lg:p-10 rounded-xl glass-card-spatial bg-surface-raised/90">
                   {/* Icon, Heading in between, & Index */}
                   <div className="flex items-center justify-between gap-4 mb-6">
                     <div className="w-12 h-12 rounded-lg bg-surface border border-border-subtle flex items-center justify-center text-ink shrink-0 group-hover:scale-105 transition-transform">
