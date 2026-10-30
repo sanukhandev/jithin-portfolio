@@ -3,6 +3,7 @@ import { ApproachStage } from "@/types/content";
 export const approachStages: ApproachStage[] = [
   {
     step: "01",
+    slug: "discover-opportunity-assessment",
     title: {
       en: "Discover",
       it: "Scoperta",
@@ -33,9 +34,35 @@ export const approachStages: ApproachStage[] = [
       it: "Rilevanza strategica e ritorno economico dimostrabile prima di scrivere qualsiasi codice esplorativo.",
       ar: "الملاءمة الاستراتيجية والعائد الاقتصادي القابل للإثبات قبل كتابة أي كود استكشافي.",
     },
+    deliverables: {
+      en: [
+        "Context Qualification Register & Strategic Friction Map",
+        "Data Gravity & Enterprise Readiness Diagnostic",
+        "Executive AI Transformation Charter & Investment Gates",
+        "Initial Value Realization & Economic Feasibility Matrix",
+      ],
+      it: [
+        "Registro di qualificazione del contesto e mappa delle inefficienze",
+        "Diagnosi di gravità e prontezza dei dati aziendali",
+        "Charter di trasformazione IA e banchi di investimento",
+        "Matrice iniziale di realizzazione del valore e fattibilità economica",
+      ],
+      ar: [
+        "سجل تأهيل السياق وخريطة الاختناقات التشغيلية",
+        "تشخيص جاهزية البيانات وأهميتها الاستراتيجية",
+        "ميثاق التحول للذكاء الاصطناعي ومراحل الاستثمار",
+        "مصفوفة تحقيق القيمة الأولية والجدوى الاقتصادية",
+      ],
+    },
+    governanceReview: {
+      en: "Ethical feasibility & strategic alignment sign-off before allocating exploratory technical capital.",
+      it: "Approvazione della fattibilità etica e dell'allineamento strategico prima di allocare capitale tecnico esplorativo.",
+      ar: "اعتماد الجدوى الأخلاقية والتوافق الاستراتيجي قبل تخصيص الموارد التقنية الاستكشافية.",
+    },
   },
   {
     step: "02",
+    slug: "validate-boundary-testing",
     title: {
       en: "Validate",
       it: "Validazione",
@@ -66,9 +93,35 @@ export const approachStages: ApproachStage[] = [
       it: "Raggiungimento delle soglie di accuratezza e sicurezza anche in casi limite avversari.",
       ar: "تحقيق عتبات الدقة والأمان في مواجهة الحالات القصوى والمعقدة.",
     },
+    deliverables: {
+      en: [
+        "Adversarial Red-Teaming Benchmark Report",
+        "Hallucination & Drift Boundary Matrix",
+        "Sandboxed Latency/Cost Optimization Model",
+        "Proof-of-Concept Verification Dossier",
+      ],
+      it: [
+        "Report di benchmark per red-teaming avversario",
+        "Matrice dei limiti di allucinazione e deviazione",
+        "Modello di ottimizzazione costi e latenza in sandbox",
+        "Dossier di verifica del proof-of-concept",
+      ],
+      ar: [
+        "تقرير تقييم اختبارات الاختراق والحماية",
+        "مصفوفة حدود الهلوسة وانحراف النماذج",
+        "نموذج ترشيد التكاليف والسرعة في بيئة تجريبية",
+        "ملف توثيق إثبات المفهوم والتحقق",
+      ],
+    },
+    governanceReview: {
+      en: "Deterministic safety threshold validation & bias mitigation review under simulated production loads.",
+      it: "Verifica delle soglie deterministiche di sicurezza e mitigazione dei bias sotto carichi simulati di produzione.",
+      ar: "التحقق من عتبات الأمان الحتمية ومراجعة الحد من التحيز تحت أحمال إنتاج تجريبية.",
+    },
   },
   {
     step: "03",
+    slug: "design-systems-architecture",
     title: {
       en: "Design",
       it: "Progettazione",
@@ -99,9 +152,35 @@ export const approachStages: ApproachStage[] = [
       it: "Approvazione della revisione architetturale e di sicurezza con contenimento garantito dei guasti.",
       ar: "اعتماد المراجعة المعمارية والأمنية مع خطة شاملة لاحتواء حالات الفشل المحتملة.",
     },
+    deliverables: {
+      en: [
+        "Production Multi-Agent Blueprint & Deterministic State Machines",
+        "Human-in-the-Loop Supervisory Topology & Escalation Rules",
+        "Idempotent Event & Failover Specifications",
+        "Telemetry, Observability, and Audit Trail Schemas",
+      ],
+      it: [
+        "Progetto di produzione multi-agente e macchine a stati deterministiche",
+        "Topologia di supervisione con controllo umano e regole di escalation",
+        "Specifiche per eventi idempotenti e gestione failover",
+        "Schemi di telemetria, osservabilità e audit trail",
+      ],
+      ar: [
+        "مخطط إنتاج الأنظمة الوكيلة وآلات الحالات الحتمية",
+        "هيكلية الإشراف البشري وقواعد التصعيد",
+        "مواصفات الأحداث الحتمية واستعادة التشغيل بعد الأعطال",
+        "مخططات المراقبة التشغيلية وسلاسل التدقيق",
+      ],
+    },
+    governanceReview: {
+      en: "Comprehensive security, data residency, and EU AI Act / sovereign jurisdictional compliance sign-off.",
+      it: "Approvazione completa per sicurezza, residenza dei dati e conformità all'EU AI Act e giurisdizioni sovrane.",
+      ar: "اعتماد شامل للأمان ومحلية البيانات والامتثال لقانون الذكاء الاصطناعي الأوروبي والأنظمة السيادية.",
+    },
   },
   {
     step: "04",
+    slug: "scale-operational-compounding",
     title: {
       en: "Scale",
       it: "Scalabilità",
@@ -131,6 +210,31 @@ export const approachStages: ApproachStage[] = [
       en: "Sustained operational SLOs, cost predictability, and organizational adoption metrics.",
       it: "Mantenimento dei livelli di servizio (SLO), prevedibilità dei costi e adozione effettiva.",
       ar: "استدامة معايير جودة الخدمة (SLO)، واستقرار التكاليف، وتحقيق مؤشرات التبني المؤسسي.",
+    },
+    deliverables: {
+      en: [
+        "Multi-Cohort Phased Rollout Infrastructure Plan",
+        "Real-Time Drift & Hallucination Telemetry Suite",
+        "Continuous Unit-Economics Optimization Runbook",
+        "Institutional Capability & Skill Transfer Playbook",
+      ],
+      it: [
+        "Piano infrastrutturale di rilascio scaglionato per coorti",
+        "Suite di telemetria in tempo reale per deviazione e affidabilità",
+        "Runbook di ottimizzazione continua dei costi unitari",
+        "Playbook per il trasferimento di competenze istituzionali",
+      ],
+      ar: [
+        "خطة البنية التحتية للإطلاق التدريجي على مراحل",
+        "منظومة المراقبة الحية لانحراف النماذج والموثوقية",
+        "دليل التشغيل للتحسين المستمر لاقتصاديات التكلفة",
+        "دليل نقل المعرفة وبناء القدرات المؤسسية",
+      ],
+    },
+    governanceReview: {
+      en: "Continuous auditability, SLA telemetry compliance, and long-term organizational governance review.",
+      it: "Auditabilità continua, conformità della telemetria SLA e revisione periodica della governance organizzativa.",
+      ar: "قابلية التدقيق المستمر، والامتثال لمؤشرات جودة الخدمة (SLA)، ومراجعة الحوكمة المؤسسية طويلة المدى.",
     },
   },
 ];

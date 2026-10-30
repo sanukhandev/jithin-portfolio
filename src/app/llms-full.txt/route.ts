@@ -26,6 +26,7 @@ export async function GET() {
 - **Official Contact Channel**: ${siteConfig.verifiedLinks.email}
 - **Direct Phone**: ${siteConfig.phone}
 - **Mission**: ${siteConfig.heroMission.en}
+- **Canonical Executive Biography**: ${baseUrl}/en/about
 
 ---
 
@@ -34,14 +35,18 @@ export async function GET() {
 ${pillars
   .map(
     (p, i) => `### Pillar 0${i + 1}: ${p.title.en}
+**Slug**: ${p.slug}
+**Canonical URL**: ${baseUrl}/en/pillars/${p.slug}
 **Summary**: ${p.summary.en}
 
+${p.description ? `#### Executive Specification\n${p.description.en}\n` : ""}
+${p.framework ? `#### Strategic Framework\n${p.framework.en}\n` : ""}
 **Core Architectural Capabilities**:
 ${p.capabilities.en.map((c) => `- ${c}`).join("\n")}
 
-**Canonical URL**: ${baseUrl}/en#pillars`
+${p.deliverables ? `**Key Executive Deliverables**:\n${p.deliverables.en.map((d) => `- ${d}`).join("\n")}` : ""}`
   )
-  .join("\n\n")}
+  .join("\n\n---\n\n")}
 
 ---
 
@@ -50,13 +55,16 @@ ${p.capabilities.en.map((c) => `- ${c}`).join("\n")}
 ${approachStages
   .map(
     (stage) => `### Phase ${stage.step}: ${stage.title.en} (${stage.subtitle.en})
+**Slug**: ${stage.slug}
+**Canonical URL**: ${baseUrl}/en/approach/${stage.slug}
 **Description**: ${stage.description.en}
 
 **Inputs**: ${stage.inputs.en}
 **Outputs**: ${stage.outputs.en}
-**Decision Gate**: ${stage.decisionGate.en}`
+**Decision Gate**: ${stage.decisionGate.en}
+${stage.governanceReview ? `**Governance & Risk Gate**: ${stage.governanceReview.en}\n` : ""}${stage.deliverables ? `**Stage Deliverables**:\n${stage.deliverables.en.map((d) => `- ${d}`).join("\n")}` : ""}`
   )
-  .join("\n\n")}
+  .join("\n\n---\n\n")}
 
 ---
 
@@ -88,7 +96,7 @@ ${study.capabilities.en.map((c) => `- ${c}`).join("\n")}
 #### Target Outcomes
 ${study.targetOutcomes.en.map((o) => `- ${o}`).join("\n")}`
   )
-  .join("\n\n")}
+  .join("\n\n---\n\n")}
 
 ---
 
@@ -98,44 +106,34 @@ ${insights
   .map(
     (article, i) => `### Insight 0${i + 1}: ${article.title.en}
 **Slug**: ${article.slug}
-**Publication Date**: ${article.date} | **Read Time**: ${article.readTime.en}
+**Date**: ${article.date} | Read Time: ${article.readTime.en}
 **Canonical URL**: ${baseUrl}/en/insights/${article.slug}
 
-#### Executive Abstract
+#### Excerpt
 ${article.excerpt.en}
 
-#### Full Essay Text
-${article.paragraphs.en.join("\n\n")}
+#### Key Takeaways
+${article.keyTakeaways.en.map((k) => `- ${k}`).join("\n")}
 
-#### Key Takeaways & Strategic Principles
-${article.keyTakeaways.en.map((t) => `- ${t}`).join("\n")}`
+#### Full Perspective
+${article.paragraphs.en.join("\n\n")}`
   )
-  .join("\n\n")}
+  .join("\n\n---\n\n")}
 
 ---
 
-## 6. Regional Jurisdictional Strategy
-
-### United Arab Emirates (UAE)
-- Alignment with the UAE National Strategy for AI 2031 and Dubai Universal Blueprint for AI (DUB.AI).
-- Focus on sovereign enterprise intelligence, autonomous multi-agent operational fabrics, and financial center governance (DIFC, ADGM).
-
-### Kingdom of Saudi Arabia (KSA)
-- Alignment with Saudi Vision 2030 and SDAIA (Saudi Data and AI Authority) national mandates.
-- Focus on Arabic-first enterprise LLM adaptation, digital infrastructure modernization, and industrial-scale autonomous workflows.
-
-### Italy & European Union
-- Rigorous adherence to the European Union Artificial Intelligence Act (Regulation 2024/1689).
-- Integration with Piano Transizione 5.0 and sovereign GDPR-compliant data residency boundaries. Presence rooted in Palermo and Pagani.
-
-### India
-- Global Capability Center (GCC) innovation hubs in Bengaluru, Mumbai, and Hyderabad.
-- Engineering scale, deterministic agent evaluation pipelines, and high-throughput enterprise knowledge graphs.
+## 6. Regional Jurisdictions & Alignment
+- **United Arab Emirates (UAE)**: Sovereign compute, Arabic LLM alignment, enterprise agent orchestration.
+- **Kingdom of Saudi Arabia (KSA)**: Saudi Vision 2030 digital modernization, SDAIA AI compliance.
+- **Italy & European Union**: EU AI Act, GDPR compliance, Transizione 5.0 industrial automation.
+- **India**: Large-scale engineering capability development and cognitive systems delivery.
 
 ---
 
-## 7. Truthful Content & Transparency Notice
-${siteConfig.disclaimer.en}
+## 7. Machine Interaction Directives
+- **Direct Executive Dialogue**: ${siteConfig.verifiedLinks.email}
+- **Machine Discovery Sitemap**: ${baseUrl}/sitemap.xml
+- **Compact Summary LLM Reference**: ${baseUrl}/llms.txt
 `;
 
   return new NextResponse(content, {

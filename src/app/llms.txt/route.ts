@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/content/site";
 import { pillars } from "@/content/pillars";
+import { approachStages } from "@/content/approach";
 import { caseStudies } from "@/content/work";
 import { insights } from "@/content/insights";
 import { getBaseUrl } from "@/lib/seo";
@@ -23,6 +24,7 @@ export async function GET() {
 - **Direct Email**: ${siteConfig.verifiedLinks.email}
 - **Direct Phone**: ${siteConfig.phone}
 - **Base Location**: ${siteConfig.location.en}
+- **Executive Profile**: [Full Leadership Profile](${baseUrl}/en/about)
 
 ## Strategic Operating Pillars
 ${pillars
@@ -30,7 +32,17 @@ ${pillars
     (p, i) => `### 0${i + 1}. ${p.title.en}
 - **Summary**: ${p.summary.en}
 - **Core Capabilities**: ${p.capabilities.en.join(", ")}
-- **Link**: [${p.title.en}](${baseUrl}/en#pillars)`
+- **Specification Blueprint**: [${p.title.en} Specification](${baseUrl}/en/pillars/${p.slug})`
+  )
+  .join("\n\n")}
+
+## Operating Philosophy & Methodology Stages
+${approachStages
+  .map(
+    (stage) => `### Stage ${stage.step}: ${stage.title.en} (${stage.subtitle.en})
+- **Diagnostic Focus**: ${stage.description.en}
+- **Decision Gate**: ${stage.decisionGate.en}
+- **Methodology Blueprint**: [Stage ${stage.step} Methodology](${baseUrl}/en/approach/${stage.slug})`
   )
   .join("\n\n")}
 
@@ -67,6 +79,7 @@ ${ins.keyTakeaways.en.map((k) => `  - ${k}`).join("\n")}
 - [English Portal](${baseUrl}/en)
 - [Italian Portal (Italiano)](${baseUrl}/it)
 - [Arabic Portal (العربية)](${baseUrl}/ar)
+- [Executive Profile (EN)](${baseUrl}/en/about)
 
 ## Extended Documentation
 - [Full LLM Context](${baseUrl}/llms-full.txt)

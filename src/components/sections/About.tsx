@@ -42,7 +42,21 @@ export function About({ locale, dict }: AboutProps) {
               </p>
             </MotionWrapper>
 
-            {/* Executive Contact Card to fill the section gap */}
+            {/* Read Full Executive Profile Link */}
+            <MotionWrapper delay={0.32}>
+              <div className="pt-2">
+                <Button
+                  href={`/${locale}/about`}
+                  variant="secondary"
+                  size="md"
+                  icon={<ArrowUpRight className="w-4 h-4" strokeWidth={2} aria-hidden="true" />}
+                >
+                  {dict.about.readMore}
+                </Button>
+              </div>
+            </MotionWrapper>
+
+            {/* Executive Contact Card */}
             <MotionWrapper delay={0.35}>
               <div className="mt-6 sm:mt-8 p-6 sm:p-8 lg:p-10 rounded-2xl glass-card-spatial bg-surface-raised/90">
                 <h3 className="text-xl sm:text-2xl font-serif text-ink mb-3 leading-snug">

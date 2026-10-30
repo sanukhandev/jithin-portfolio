@@ -40,10 +40,14 @@ export interface SiteConfig {
 
 export interface Pillar {
   id: string;
+  slug: string;
   title: LocalizedString;
   summary: LocalizedString;
   capabilities: LocalizedStringList;
   iconName: "BrainCircuit" | "Bot" | "Cpu" | "ShieldCheck";
+  description?: LocalizedString;
+  framework?: LocalizedString;
+  deliverables?: LocalizedStringList;
 }
 
 export interface CaseStudy {
@@ -63,12 +67,15 @@ export interface CaseStudy {
 
 export interface ApproachStage {
   step: string;
+  slug: string;
   title: LocalizedString;
   subtitle: LocalizedString;
   description: LocalizedString;
   inputs: LocalizedString;
   outputs: LocalizedString;
   decisionGate: LocalizedString;
+  deliverables?: LocalizedStringList;
+  governanceReview?: LocalizedString;
 }
 
 export interface Insight {

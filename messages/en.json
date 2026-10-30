@@ -25,7 +25,12 @@
   "pillars": {
     "eyebrow": "Innovation Architecture",
     "heading": "Four pillars of intelligent transformation.",
-    "subheading": "A structured executive approach bridging frontier artificial intelligence with tangible enterprise capability and measurable governance."
+    "subheading": "A structured executive approach bridging frontier artificial intelligence with tangible enterprise capability and measurable governance.",
+    "readMore": "Explore specification",
+    "backToPillars": "Back to capabilities",
+    "frameworkHeading": "Strategic Framework",
+    "deliverablesHeading": "Key Executive Deliverables",
+    "capabilitiesHeading": "Core Capabilities"
   },
   "work": {
     "eyebrow": "Selected Initiatives",
@@ -46,7 +51,11 @@
     "subheading": "A disciplined, four-stage lifecycle designed to de-risk AI innovation and compound enterprise value.",
     "inputs": "Inputs",
     "outputs": "Outputs",
-    "decisionGate": "Decision Gate"
+    "decisionGate": "Decision Gate",
+    "readMore": "View methodology",
+    "backToApproach": "Back to operating philosophy",
+    "deliverablesHeading": "Stage Deliverables",
+    "governanceHeading": "Governance & Risk Gate"
   },
   "insights": {
     "eyebrow": "Perspectives & Thought Leadership",
@@ -64,6 +73,11 @@
     "lead": "Bridging the gap between technological potential and organizational transformation.",
     "p1": "As Chief Innovation Officer, Jithin K focuses on operationalizing emerging artificial intelligence technologies to drive authentic business model evolution. Rather than chasing ephemeral hype cycles, the focus is on engineering governable, scalable systems that create enduring enterprise advantage.",
     "p2": "Modern enterprise leadership requires a rare synthesis: deep architectural fluency in cognitive computing combined with the executive acumen to navigate risk, capital allocation, and cultural change. By anchoring innovation in rigorous validation and cross-functional alignment, complex technologies become dependable organizational muscle.",
+    "readMore": "Read full executive profile",
+    "backToHome": "Back to overview",
+    "fullBioTitle": "Executive Leadership Profile",
+    "regionalScopeTitle": "Regional Advisory & Jurisdiction Expertise",
+    "regionalScopeSubtitle": "Strategic AI frameworks aligned with regulatory environments and modernization agendas across the GCC, Europe, and Asia-Pacific.",
     "principlesHeading": "Core Leadership Principles",
     "principles": [
       {

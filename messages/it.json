@@ -25,7 +25,12 @@
   "pillars": {
     "eyebrow": "Architettura dell'innovazione",
     "heading": "Quattro pilastri di trasformazione intelligente.",
-    "subheading": "Un approccio direzionale strutturato che unisce l'IA di frontiera a capacità aziendali tangibili e governance misurabile."
+    "subheading": "Un approccio direzionale strutturato che unisce l'IA di frontiera a capacità aziendali tangibili e governance misurabile.",
+    "readMore": "Esplora specifica",
+    "backToPillars": "Torna alle capacità",
+    "frameworkHeading": "Framework strategico",
+    "deliverablesHeading": "Deliverable direzionali chiave",
+    "capabilitiesHeading": "Competenze chiave"
   },
   "work": {
     "eyebrow": "Iniziative selezionate",
@@ -46,7 +51,11 @@
     "subheading": "Un ciclo di vita disciplinato in quattro fasi per ridurre i rischi dell'innovazione IA e amplificare il valore aziendale.",
     "inputs": "Input",
     "outputs": "Output",
-    "decisionGate": "Gate decisionale"
+    "decisionGate": "Gate decisionale",
+    "readMore": "Vedi metodologia",
+    "backToApproach": "Torna alla filosofia operativa",
+    "deliverablesHeading": "Deliverable della fase",
+    "governanceHeading": "Gate di governance e rischio"
   },
   "insights": {
     "eyebrow": "Prospettive e leadership di pensiero",
@@ -64,6 +73,11 @@
     "lead": "Colmare il divario tra potenziale tecnologico e trasformazione organizzativa.",
     "p1": "In qualità di Chief Innovation Officer, Jithin K si dedica all'operativizzazione delle tecnologie emergenti di intelligenza artificiale per guidare l'evoluzione dei modelli di business. Anziché inseguire mode tecnologiche effimere, l'attenzione è rivolta alla progettazione di sistemi scalabili e governabili che generano un vantaggio competitivo duraturo.",
     "p2": "La leadership aziendale moderna richiede una sintesi distintiva: profonda padronanza architetturale del cognitive computing unita a visione direzionale per gestire rischi, allocazione del capitale e cambiamento culturale. Ancorando l'innovazione a validazioni rigorose e allineamento interfunzionale, le tecnologie complesse diventano capacità organizzative consolidate.",
+    "readMore": "Leggi il profilo direzionale completo",
+    "backToHome": "Torna alla panoramica",
+    "fullBioTitle": "Profilo di leadership direzionale",
+    "regionalScopeTitle": "Advisory regionale e competenze giurisdizionali",
+    "regionalScopeSubtitle": "Framework strategici di intelligenza artificiale allineati ai contesti normativi e ai piani di modernizzazione in GCC, Europa e Asia-Pacifico.",
     "principlesHeading": "Principi guida di leadership",
     "principles": [
       {

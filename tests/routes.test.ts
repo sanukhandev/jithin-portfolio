@@ -5,14 +5,18 @@ import { GET as getLlmsTxt } from "../src/app/llms.txt/route";
 import { GET as getLlmsFullTxt } from "../src/app/llms-full.txt/route";
 import { caseStudies } from "../src/content/work";
 import { insights } from "../src/content/insights";
+import { pillars } from "../src/content/pillars";
+import { approachStages } from "../src/content/approach";
 import { LOCALES, getDirection } from "../src/i18n/config";
 import { getDictionarySync } from "../src/i18n/dictionaries";
 
 describe("Routing, Sitemap & Internationalized Endpoints", () => {
-  it("sitemap should contain all localized pages, work items, insights, and LLM text files", () => {
+  it("sitemap should contain all localized pages, pillars, approach stages, about, work items, insights, and LLM text files", () => {
     const siteRoutes = sitemap();
     expect(siteRoutes.length).toBe(
-      LOCALES.length * (1 + caseStudies.length + insights.length) + 2
+      LOCALES.length *
+        (1 + 1 + pillars.length + approachStages.length + caseStudies.length + insights.length) +
+        2
     );
 
     // Check LLM files
@@ -22,6 +26,23 @@ describe("Routing, Sitemap & Internationalized Endpoints", () => {
     for (const locale of LOCALES) {
       // Check homepage
       expect(siteRoutes.some((r) => r.url.endsWith(`/${locale}`))).toBe(true);
+
+      // Check about page
+      expect(siteRoutes.some((r) => r.url.endsWith(`/${locale}/about`))).toBe(true);
+
+      // Check pillars
+      for (const pillar of pillars) {
+        expect(
+          siteRoutes.some((r) => r.url.endsWith(`/${locale}/pillars/${pillar.slug}`))
+        ).toBe(true);
+      }
+
+      // Check approach stages
+      for (const stage of approachStages) {
+        expect(
+          siteRoutes.some((r) => r.url.endsWith(`/${locale}/approach/${stage.slug}`))
+        ).toBe(true);
+      }
 
       // Check case studies
       for (const study of caseStudies) {
@@ -77,6 +98,9 @@ describe("Routing, Sitemap & Internationalized Endpoints", () => {
       expect(dict.hero.role).toBeDefined();
       expect(dict.work.badge).toBeDefined();
       expect(dict.contact.statusMessage).toBeDefined();
+      expect(dict.pillars.readMore).toBeDefined();
+      expect(dict.approach.readMore).toBeDefined();
+      expect(dict.about.readMore).toBeDefined();
     }
   });
 

@@ -4,20 +4,22 @@ const PORT = 3008;
 const BASE_URL = `http://localhost:${PORT}`;
 
 console.log("Starting Next.js production server on port", PORT);
-const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
+const isWindows = process.platform === "win32";
+const npxCmd = isWindows ? "npx.cmd" : "npx";
+const server = spawn(npxCmd, ["next", "start", "-p", String(PORT)], {
   shell: true,
   stdio: ["ignore", "pipe", "pipe"],
 });
 
 server.stdout.on("data", (data) => {
-  // console.log(`[server stdout]: ${data}`);
+  console.log(`[server stdout]: ${data}`);
 });
 
 server.stderr.on("data", (data) => {
   console.error(`[server stderr]: ${data}`);
 });
 
-async function waitForServer(url, timeout = 15000) {
+async function waitForServer(url, timeout = 30000) {
   const start = Date.now();
   while (Date.now() - start < timeout) {
     try {
@@ -26,7 +28,7 @@ async function waitForServer(url, timeout = 15000) {
     } catch {
       // wait a bit
     }
-    await new Promise((r) => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 500));
   }
   throw new Error("Server failed to start within timeout");
 }
@@ -92,7 +94,31 @@ async function runSmokeTests() {
       throw new Error("Insight detail page failed to render");
     }
 
-    // 7. Sitemap check
+    // 7. Pillars detail page check
+    const pillarRes = await fetch(`${BASE_URL}/en/pillars/ai-strategy-adoption`);
+    const pillarHtml = await pillarRes.text();
+    console.log(`[Pillar detail /en/pillars/ai-strategy-adoption]: status = ${pillarRes.status}`);
+    if (pillarRes.status !== 200 || !pillarHtml.includes("AI Strategy & Adoption")) {
+      throw new Error("Pillar detail page failed to render");
+    }
+
+    // 8. Approach detail page check
+    const approachRes = await fetch(`${BASE_URL}/en/approach/discover-opportunity-assessment`);
+    const approachHtml = await approachRes.text();
+    console.log(`[Approach detail /en/approach/discover-opportunity-assessment]: status = ${approachRes.status}`);
+    if (approachRes.status !== 200 || !approachHtml.includes("Discover")) {
+      throw new Error("Approach detail page failed to render");
+    }
+
+    // 9. About executive page check
+    const aboutRes = await fetch(`${BASE_URL}/en/about`);
+    const aboutHtml = await aboutRes.text();
+    console.log(`[About page /en/about]: status = ${aboutRes.status}`);
+    if (aboutRes.status !== 200 || !aboutHtml.includes("Jithin K")) {
+      throw new Error("About page failed to render");
+    }
+
+    // 10. Sitemap check
     const sitemapRes = await fetch(`${BASE_URL}/sitemap.xml`);
     const sitemapText = await sitemapRes.text();
     console.log(`[Sitemap /sitemap.xml]: status = ${sitemapRes.status}`);
@@ -100,12 +126,20 @@ async function runSmokeTests() {
       throw new Error("Sitemap XML endpoint failed");
     }
 
-    // 8. Robots check
+    // 11. Robots check
     const robotsRes = await fetch(`${BASE_URL}/robots.txt`);
     const robotsText = await robotsRes.text();
     console.log(`[Robots /robots.txt]: status = ${robotsRes.status}, text =\n${robotsText.trim()}`);
     if (robotsRes.status !== 200 || !robotsText.toLowerCase().includes("user-agent")) {
       throw new Error("Robots endpoint failed");
+    }
+
+    // 12. LLMs check
+    const llmsRes = await fetch(`${BASE_URL}/llms.txt`);
+    const llmsText = await llmsRes.text();
+    console.log(`[LLMs /llms.txt]: status = ${llmsRes.status}`);
+    if (llmsRes.status !== 200 || !llmsText.includes("Chief Innovation Officer")) {
+      throw new Error("llms.txt endpoint failed");
     }
 
     console.log("All HTTP smoke tests PASSED successfully!");

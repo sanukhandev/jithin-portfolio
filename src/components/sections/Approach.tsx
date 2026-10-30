@@ -1,5 +1,6 @@
 import React from "react";
-import { Compass, ShieldCheck, Layers, TrendingUp } from "lucide-react";
+import Link from "next/link";
+import { Compass, ShieldCheck, Layers, TrendingUp, ArrowUpRight } from "lucide-react";
 import { Locale } from "@/types/content";
 import { Dictionary } from "@/i18n/dictionaries";
 import { approachStages } from "@/content/approach";
@@ -118,6 +119,17 @@ export function Approach({ locale, dict }: ApproachProps) {
                       <b className="font-semibold text-ink font-sans">
                         {stage.decisionGate[locale]}
                       </b>
+                    </div>
+
+                    {/* Read More / View Methodology Link */}
+                    <div className="mt-6 pt-4 border-t border-border-subtle/40 flex items-center justify-between">
+                      <Link
+                        href={`/${locale}/approach/${stage.slug}`}
+                        className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-ink hover:text-ink-muted transition-colors group/btn"
+                      >
+                        <span>{dict.approach.readMore}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" strokeWidth={1.75} aria-hidden="true" />
+                      </Link>
                     </div>
                   </div>
                 </MotionWrapper>
