@@ -21,7 +21,7 @@ const iconMap = {
 
 export function Pillars({ locale, dict }: PillarsProps) {
   return (
-    <section id="pillars" className="pt-10 pb-16 sm:py-24 lg:py-32 border-b border-border-subtle bg-surface">
+    <section id="pillars" className="pt-6 sm:pt-10 lg:pt-14 pb-16 sm:pb-24 lg:py-32 border-b border-border-subtle bg-surface">
       <Container>
         <SectionHeader
           eyebrow={dict.pillars.eyebrow}

@@ -17,7 +17,7 @@ interface HeroProps {
 export function Hero({ locale, dict }: HeroProps) {
   return (
     <section
-      className="relative pt-24 pb-10 sm:pt-36 sm:pb-20 lg:pt-48 lg:pb-32 overflow-hidden"
+      className="relative pt-20 pb-0 sm:pt-32 sm:pb-2 lg:pt-40 lg:pb-4 overflow-hidden"
       aria-labelledby="hero-title"
     >
       <Container>
@@ -69,7 +69,7 @@ export function Hero({ locale, dict }: HeroProps) {
         </div>
 
         {/* Scroll indicator prompt */}
-        <div className="mt-8 sm:mt-16 lg:mt-20 pt-5 sm:pt-8 border-t border-border-subtle/50 flex items-center justify-between text-xs font-mono text-ink-muted">
+        <div className="mt-4 sm:mt-10 lg:mt-14 pt-4 sm:pt-6 pb-4 sm:pb-5 border-t border-border-subtle/50 flex items-center justify-between text-xs font-mono text-ink-muted">
           <div className="flex items-center gap-2">
             <ArrowDown className="w-3.5 h-3.5 animate-bounce" strokeWidth={1.5} aria-hidden="true" />
             <span>{dict.hero.scrollPrompt}</span>

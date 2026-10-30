@@ -153,11 +153,11 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`relative w-full aspect-[16/9] max-w-[680px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
+      className={`relative w-full aspect-[680/270] max-w-[680px] mx-auto flex items-center justify-center select-none pointer-events-none ${className}`}
       aria-hidden="true"
     >
       <svg
-        viewBox="0 0 680 320"
+        viewBox="0 25 680 270"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full overflow-visible"
@@ -168,7 +168,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
             <circle cx="10" cy="10" r="0.6" className="fill-ink/15" />
           </pattern>
         </defs>
-        <rect width="680" height="320" fill="url(#ambientDots)" opacity={0.4} />
+        <rect y="25" width="680" height="270" fill="url(#ambientDots)" opacity={0.4} />
 
         {/* 1. DOCUMENT SOURCES (STAGE 1: GENERATION SOURCE) */}
         <g className="doc-icons">
