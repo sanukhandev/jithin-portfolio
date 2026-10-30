@@ -38,6 +38,14 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
     }
 
     let isMounted = true;
+    const activeTimeouts: NodeJS.Timeout[] = [];
+    const safeSleep = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = setTimeout(() => {
+          resolve();
+        }, ms);
+        activeTimeouts.push(id);
+      });
 
     const runSequence = async () => {
       // 1. Initial state: scrambled digital noise
@@ -51,12 +59,12 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
       );
 
       // 2. Stream travels along curly ribbons through vertical filters to single node
-      await new Promise((r) => setTimeout(r, 1100));
+      await safeSleep(1100);
       if (!isMounted) return;
 
       // 3. Beam triggers from single node
       setBeamPulse(true);
-      await new Promise((r) => setTimeout(r, 250));
+      await safeSleep(250);
       if (!isMounted) return;
 
       // 4. Depixelating word character by character
@@ -72,12 +80,12 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
             })
             .join("")
         );
-        await new Promise((r) => setTimeout(r, 85));
+        await safeSleep(85);
       }
 
       // 5. Final sharp word holds in clear focus
       setDisplayText(target);
-      await new Promise((r) => setTimeout(r, 2200));
+      await safeSleep(2200);
       if (!isMounted) return;
 
       // Advance to next greeting
@@ -88,6 +96,7 @@ export function DotAiMatrix({ className = "" }: { className?: string }) {
 
     return () => {
       isMounted = false;
+      activeTimeouts.forEach((id) => clearTimeout(id));
     };
   }, [greetingIndex, shouldReduceMotion]);
 

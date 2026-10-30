@@ -9,6 +9,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { insights } from "@/content/insights";
 import { constructMetadata } from "@/lib/seo";
 import { getTechArticleStructuredData, getBreadcrumbStructuredData } from "@/lib/structured-data";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 
@@ -74,21 +75,15 @@ export default async function InsightDetailPage({
   const breadcrumbSchema = getBreadcrumbStructuredData({
     locale,
     items: [
-      { name: dict.nav.insights, path: "#insights" },
+      { name: dict.nav.insights, path: "" },
       { name: article.title[locale], path: `/insights/${article.slug}` },
     ],
   });
 
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd data={articleSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Container>
         {/* Back Link */}
         <div className="mb-8">

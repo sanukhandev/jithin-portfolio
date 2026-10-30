@@ -20,6 +20,7 @@ import {
   getTechArticleStructuredData,
   getBreadcrumbStructuredData,
 } from "@/lib/structured-data";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -90,21 +91,15 @@ export default async function ApproachDetailPage({
   const breadcrumbSchema = getBreadcrumbStructuredData({
     locale,
     items: [
-      { name: dict.nav.approach, path: "#approach" },
+      { name: dict.nav.approach, path: "" },
       { name: stage.title[locale], path: `/approach/${stage.slug}` },
     ],
   });
 
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd data={articleSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Container>
         {/* Back Link */}
         <div className="mb-8">

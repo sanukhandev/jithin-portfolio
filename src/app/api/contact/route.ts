@@ -1,37 +1,56 @@
 import { NextResponse } from "next/server";
+import { siteConfig } from "@/content/site";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { name, email, subject, message } = body;
 
-    // Validate fields
-    if (!name || typeof name !== "string" || name.trim().length < 2) {
+    // Validate fields & enforce defensive upper bounds
+    if (!name || typeof name !== "string" || name.trim().length < 2 || name.trim().length > 100) {
       return NextResponse.json(
-        { success: false, error: "Please provide a valid name." },
+        { success: false, error: "Please provide a valid name (2-100 characters)." },
         { status: 400 }
       );
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || typeof email !== "string" || !emailRegex.test(email.trim())) {
+    if (
+      !email ||
+      typeof email !== "string" ||
+      email.trim().length > 254 ||
+      !emailRegex.test(email.trim())
+    ) {
       return NextResponse.json(
         { success: false, error: "Please provide a valid corporate or professional email address." },
         { status: 400 }
       );
     }
 
-    if (!message || typeof message !== "string" || message.trim().length < 10) {
+    if (
+      !message ||
+      typeof message !== "string" ||
+      message.trim().length < 10 ||
+      message.trim().length > 5000
+    ) {
       return NextResponse.json(
-        { success: false, error: "Inquiry message must be at least 10 characters." },
+        { success: false, error: "Inquiry message must be between 10 and 5,000 characters." },
         { status: 400 }
       );
     }
 
-    const recipient = "jithinkjacob@live.it";
-    const sanitizedSubject = (typeof subject === "string" && subject.trim().length > 0)
-      ? subject.trim()
-      : "Executive Advisory & AI Transformation Inquiry";
+    if (subject && typeof subject === "string" && subject.trim().length > 200) {
+      return NextResponse.json(
+        { success: false, error: "Subject must not exceed 200 characters." },
+        { status: 400 }
+      );
+    }
+
+    const recipient = siteConfig.verifiedLinks.email || "jithinkjacob@live.it";
+    const sanitizedSubject =
+      typeof subject === "string" && subject.trim().length > 0
+        ? subject.trim()
+        : "Executive Advisory & AI Transformation Inquiry";
 
     // Telemetry log for operational tracking
     console.info(

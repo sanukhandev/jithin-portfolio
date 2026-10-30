@@ -19,6 +19,7 @@ import {
   getPersonStructuredData,
   getBreadcrumbStructuredData,
 } from "@/lib/structured-data";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -118,21 +119,15 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const breadcrumbSchema = getBreadcrumbStructuredData({
     locale,
     items: [
-      { name: dict.nav.about, path: "#about" },
+      { name: dict.nav.about, path: "" },
       { name: siteConfig.name, path: "/about" },
     ],
   });
 
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd data={personSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Container>
         {/* Back Link */}
         <div className="mb-8">

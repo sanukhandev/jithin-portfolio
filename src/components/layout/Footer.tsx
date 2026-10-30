@@ -90,7 +90,7 @@ export function Footer({ locale, dict }: FooterProps) {
           <p className="text-center sm:text-end text-[11px] text-ink-muted/80 flex items-center justify-center sm:justify-end flex-wrap gap-1">
             <span>Swiss Monochrome — Designed with</span>
             <motion.span
-              className="inline-flex items-center mx-0.5 text-red-500"
+              className="inline-flex items-center mx-0.5 text-ink"
               animate={
                 shouldReduceMotion
                   ? {}
@@ -106,7 +106,7 @@ export function Footer({ locale, dict }: FooterProps) {
               }}
               aria-label="love"
             >
-              <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" strokeWidth={1.5} aria-hidden="true" />
+              <Heart className="w-3.5 h-3.5 fill-ink text-ink" strokeWidth={1.5} aria-hidden="true" />
             </motion.span>
             <span>by</span>
             <a

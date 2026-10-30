@@ -18,7 +18,7 @@ export default function LocalizedNotFound() {
             The requested page does not exist or has been relocated.
           </p>
           <Link
-            href="/en"
+            href="/"
             className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-action-text bg-action-bg px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
           >
             <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.75} aria-hidden="true" />

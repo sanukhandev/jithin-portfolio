@@ -10,19 +10,19 @@ import { caseStudies } from "@/content/work";
 import { constructMetadata } from "@/lib/seo";
 import { getTechArticleStructuredData, getBreadcrumbStructuredData } from "@/lib/structured-data";
 import { Container } from "@/components/ui/Container";
-import { RadarSchematic } from "@/components/ui/RadarSchematic";
-import { CopilotSchematic } from "@/components/ui/CopilotSchematic";
-import { AutonomousSchematic } from "@/components/ui/AutonomousSchematic";
+import { SCHEMATIC_COMPONENTS } from "@/components/ui/schematics";
+import { JsonLd } from "@/components/seo/JsonLd";
+
 
 interface WorkDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-const schematicMap = {
-  radar: RadarSchematic,
-  copilot: CopilotSchematic,
-  autonomous: AutonomousSchematic,
-};
+
+
+
+
+
 
 export async function generateStaticParams() {
   const params: { locale: string; slug: string }[] = [];
@@ -66,7 +66,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   }
 
   const dict = await getDictionary(locale);
-  const SchematicComponent = schematicMap[study.diagramType];
+  const SchematicComponent = SCHEMATIC_COMPONENTS[study.diagramType];
 
   const articleSchema = getTechArticleStructuredData({
     locale,
@@ -78,21 +78,15 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const breadcrumbSchema = getBreadcrumbStructuredData({
     locale,
     items: [
-      { name: dict.nav.work, path: "#work" },
+      { name: dict.nav.work, path: "" },
       { name: study.title[locale], path: `/work/${study.slug}` },
     ],
   });
 
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd data={articleSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Container>
         {/* Back Link */}
         <div className="mb-8">

@@ -50,6 +50,8 @@ export interface Pillar {
   deliverables?: LocalizedStringList;
 }
 
+export type DiagramType = "radar" | "copilot" | "autonomous";
+
 export interface CaseStudy {
   id: string;
   slug: string;
@@ -62,7 +64,7 @@ export interface CaseStudy {
   architecture: LocalizedString;
   targetOutcomes: LocalizedStringList;
   capabilities: LocalizedStringList;
-  diagramType: "radar" | "copilot" | "autonomous";
+  diagramType: DiagramType;
 }
 
 export interface ApproachStage {

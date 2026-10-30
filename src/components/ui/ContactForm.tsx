@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Mail, Check, Copy, ArrowUpRight, Hand, AlertCircle, RefreshCw } from "lucide-react";
 import { Dictionary } from "@/i18n/dictionaries";
+import { siteConfig } from "@/content/site";
 import { Button } from "./Button";
 
 interface ContactFormProps {
   dict: Dictionary;
 }
 
-const TARGET_EMAIL = "jithinkjacob@live.it";
+const TARGET_EMAIL = siteConfig.verifiedLinks.email || "jithinkjacob@live.it";
 
 export function ContactForm({ dict }: ContactFormProps) {
   const [formData, setFormData] = useState({

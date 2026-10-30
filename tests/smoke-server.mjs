@@ -1,13 +1,13 @@
 import { spawn } from "child_process";
 
+import path from "path";
+
 const PORT = 3008;
 const BASE_URL = `http://localhost:${PORT}`;
 
 console.log("Starting Next.js production server on port", PORT);
-const isWindows = process.platform === "win32";
-const npxCmd = isWindows ? "npx.cmd" : "npx";
-const server = spawn(npxCmd, ["next", "start", "-p", String(PORT)], {
-  shell: true,
+const nextBin = path.resolve("./node_modules/next/dist/bin/next");
+const server = spawn(process.execPath, [nextBin, "start", "-p", String(PORT)], {
   stdio: ["ignore", "pipe", "pipe"],
 });
 
@@ -101,10 +101,16 @@ async function runSmokeTests() {
       throw new Error(`Expected cookie override redirect to /it, got ${cookieOverrideRes.headers.get("location")}`);
     }
 
-    // 2. English homepage check
+    // 2. English homepage check & HTTP Security Headers
     const enRes = await fetch(`${BASE_URL}/en`);
     const enHtml = await enRes.text();
-    console.log(`[EN /en]: status = ${enRes.status}, length = ${enHtml.length}`);
+    console.log(`[EN /en]: status = ${enRes.status}, length = ${enHtml.length}, x-frame-options = ${enRes.headers.get("x-frame-options")}`);
+    if (enRes.headers.get("x-frame-options") !== "DENY") {
+      throw new Error(`Expected X-Frame-Options: DENY, got ${enRes.headers.get("x-frame-options")}`);
+    }
+    if (enRes.headers.get("x-content-type-options") !== "nosniff") {
+      throw new Error(`Expected X-Content-Type-Options: nosniff, got ${enRes.headers.get("x-content-type-options")}`);
+    }
     if (!enHtml.includes('lang="en"') || !enHtml.includes('dir="ltr"')) {
       throw new Error("Missing lang=en or dir=ltr in English page");
     }

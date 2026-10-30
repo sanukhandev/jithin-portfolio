@@ -78,7 +78,7 @@ describe("SEO, AEO & GEO Structured Data Specifications", () => {
     const breadcrumbs = getBreadcrumbStructuredData({
       locale: "en",
       items: [
-        { name: "Work", path: "#work" },
+        { name: "Work", path: "" },
         { name: "Enterprise Copilot Blueprint", path: "/work/enterprise-copilot-blueprint" },
       ],
     });

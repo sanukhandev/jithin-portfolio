@@ -8,20 +8,20 @@ import { Container } from "../ui/Container";
 import { SectionHeader } from "../ui/SectionHeader";
 import { Button } from "../ui/Button";
 import { MotionWrapper } from "../ui/MotionWrapper";
-import { RadarSchematic } from "../ui/RadarSchematic";
-import { CopilotSchematic } from "../ui/CopilotSchematic";
-import { AutonomousSchematic } from "../ui/AutonomousSchematic";
+import { SCHEMATIC_COMPONENTS } from "../ui/schematics";
+
+
 
 interface WorkProps {
   locale: Locale;
   dict: Dictionary;
 }
 
-const schematicMap = {
-  radar: RadarSchematic,
-  copilot: CopilotSchematic,
-  autonomous: AutonomousSchematic,
-};
+
+
+
+
+
 
 export function Work({ locale, dict }: WorkProps) {
   return (
@@ -35,7 +35,7 @@ export function Work({ locale, dict }: WorkProps) {
 
         <div className="space-y-8 sm:space-y-14 lg:space-y-20">
           {caseStudies.map((study, idx) => {
-            const SchematicComponent = schematicMap[study.diagramType];
+            const SchematicComponent = SCHEMATIC_COMPONENTS[study.diagramType];
             const isReversed = idx % 2 === 1;
 
             return (

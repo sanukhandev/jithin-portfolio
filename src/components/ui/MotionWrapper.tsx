@@ -17,21 +17,16 @@ export function MotionWrapper({
   className = "",
 }: MotionWrapperProps) {
   const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   const offset = direction === "up" ? 16 : direction === "down" ? -16 : 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: offset }}
+      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: offset }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{
-        duration: 0.45,
-        delay,
+        duration: shouldReduceMotion ? 0 : 0.45,
+        delay: shouldReduceMotion ? 0 : delay,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
       className={className}

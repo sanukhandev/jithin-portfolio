@@ -5,13 +5,14 @@ import "@/styles/globals.css";
 import { Locale } from "@/types/content";
 import { LOCALES, isLocale, getDirection } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { constructMetadata } from "@/lib/seo";
+import { constructMetadata, getBaseUrl } from "@/lib/seo";
 import { siteConfig } from "@/content/site";
 import {
   getPersonStructuredData,
   getWebSiteStructuredData,
   getOrganizationStructuredData,
 } from "@/lib/structured-data";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -31,7 +32,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+    metadataBase: new URL(getBaseUrl()),
     ...constructMetadata({
       locale,
       title: `${siteConfig.name} — ${siteConfig.role[locale]}`,
@@ -69,18 +70,9 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
-        />
+        <JsonLd data={personSchema} />
+        <JsonLd data={websiteSchema} />
+        <JsonLd data={orgSchema} />
       </head>
       <body className="bg-surface text-ink antialiased flex flex-col min-h-screen">
         <SkipLink label={dict.nav.skipLink} />
