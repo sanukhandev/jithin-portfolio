@@ -4,7 +4,7 @@ import { siteConfig } from "@/content/site";
 import { LOCALES } from "@/i18n/config";
 
 export function getBaseUrl(): string {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_SITE_URL || "https://desertwhales.tech";
   return url.replace(/\/$/, "");
 }
 
@@ -45,6 +45,13 @@ export function constructMetadata({
   for (const loc of LOCALES) {
     languages[loc] = `${baseUrl}/${loc}${cleanPath === "/" ? "" : cleanPath}`;
   }
+  // GEO regional alternates (IN, IT, AE, SA)
+  languages["en-AE"] = `${baseUrl}/en${cleanPath === "/" ? "" : cleanPath}`;
+  languages["en-SA"] = `${baseUrl}/en${cleanPath === "/" ? "" : cleanPath}`;
+  languages["en-IN"] = `${baseUrl}/en${cleanPath === "/" ? "" : cleanPath}`;
+  languages["it-IT"] = `${baseUrl}/it${cleanPath === "/" ? "" : cleanPath}`;
+  languages["ar-SA"] = `${baseUrl}/ar${cleanPath === "/" ? "" : cleanPath}`;
+  languages["ar-AE"] = `${baseUrl}/ar${cleanPath === "/" ? "" : cleanPath}`;
   languages["x-default"] = `${baseUrl}/en${cleanPath === "/" ? "" : cleanPath}`;
 
   return {
@@ -91,6 +98,10 @@ export function constructMetadata({
         "max-image-preview": "large",
         "max-snippet": -1,
       },
+    },
+    other: {
+      "geo.region": locale === "it" ? "IT" : locale === "ar" ? "AE; SA" : "AE; SA; IT; IN",
+      "geo.placename": "Palermo, Pagani, Dubai, Riyadh",
     },
   };
 }

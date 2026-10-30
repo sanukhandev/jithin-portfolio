@@ -8,6 +8,7 @@ import { LOCALES, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { caseStudies } from "@/content/work";
 import { constructMetadata } from "@/lib/seo";
+import { getTechArticleStructuredData, getBreadcrumbStructuredData } from "@/lib/structured-data";
 import { Container } from "@/components/ui/Container";
 import { RadarSchematic } from "@/components/ui/RadarSchematic";
 import { CopilotSchematic } from "@/components/ui/CopilotSchematic";
@@ -67,8 +68,31 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const dict = await getDictionary(locale);
   const SchematicComponent = schematicMap[study.diagramType];
 
+  const articleSchema = getTechArticleStructuredData({
+    locale,
+    title: study.title[locale],
+    description: study.summary[locale],
+    path: `/work/${study.slug}`,
+  });
+
+  const breadcrumbSchema = getBreadcrumbStructuredData({
+    locale,
+    items: [
+      { name: dict.nav.work, path: "#work" },
+      { name: study.title[locale], path: `/work/${study.slug}` },
+    ],
+  });
+
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Container>
         {/* Back Link */}
         <div className="mb-8">

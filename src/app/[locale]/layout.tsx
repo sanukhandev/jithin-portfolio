@@ -8,7 +8,7 @@ import { LOCALES, isLocale, getDirection } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { constructMetadata } from "@/lib/seo";
 import { siteConfig } from "@/content/site";
-import { getPersonStructuredData, getWebSiteStructuredData } from "@/lib/structured-data";
+import { getPersonStructuredData, getWebSiteStructuredData, getOrganizationStructuredData } from "@/lib/structured-data";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -70,6 +70,7 @@ export default async function LocaleLayout({
   const dict = await getDictionary(locale);
   const personSchema = getPersonStructuredData(locale);
   const websiteSchema = getWebSiteStructuredData(locale);
+  const orgSchema = getOrganizationStructuredData();
 
   return (
     <html
@@ -87,6 +88,10 @@ export default async function LocaleLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
       </head>
       <body className={`${sfDisplay.variable} ${sfArabic.variable} bg-surface text-ink antialiased flex flex-col min-h-screen`}>

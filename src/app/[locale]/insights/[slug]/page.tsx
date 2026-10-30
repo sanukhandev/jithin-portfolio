@@ -8,6 +8,7 @@ import { LOCALES, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { insights } from "@/content/insights";
 import { constructMetadata } from "@/lib/seo";
+import { getTechArticleStructuredData, getBreadcrumbStructuredData } from "@/lib/structured-data";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
 
@@ -62,8 +63,32 @@ export default async function InsightDetailPage({
 
   const dict = await getDictionary(locale);
 
+  const articleSchema = getTechArticleStructuredData({
+    locale,
+    title: article.title[locale],
+    description: article.excerpt[locale],
+    path: `/insights/${article.slug}`,
+    datePublished: article.date,
+  });
+
+  const breadcrumbSchema = getBreadcrumbStructuredData({
+    locale,
+    items: [
+      { name: dict.nav.insights, path: "#insights" },
+      { name: article.title[locale], path: `/insights/${article.slug}` },
+    ],
+  });
+
   return (
     <article className="pt-32 pb-24 sm:pt-40 sm:pb-32 bg-surface">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Container>
         {/* Back Link */}
         <div className="mb-8">
