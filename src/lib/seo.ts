@@ -61,6 +61,15 @@ export function constructMetadata({
       template: `%s | ${siteConfig.name}`,
     },
     description,
+    icons: {
+      icon: [
+        { url: "/icon.svg", type: "image/svg+xml" },
+        { url: "/icon", sizes: "32x32", type: "image/png" },
+      ],
+      apple: [
+        { url: "/apple-icon", sizes: "180x180", type: "image/png" },
+      ],
+    },
     alternates: {
       canonical: canonicalUrl,
       languages,

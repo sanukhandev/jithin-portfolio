@@ -198,6 +198,26 @@ async function runSmokeTests() {
       throw new Error("llms.txt endpoint failed");
     }
 
+    // 13. Dynamic Favicon & Icon Endpoint checks
+    const iconRes = await fetch(`${BASE_URL}/icon`);
+    console.log(`[Favicon /icon]: status = ${iconRes.status}, type = ${iconRes.headers.get("content-type")}`);
+    if (iconRes.status !== 200 || !iconRes.headers.get("content-type")?.includes("image/png")) {
+      throw new Error("Favicon /icon endpoint failed");
+    }
+
+    const appleIconRes = await fetch(`${BASE_URL}/apple-icon`);
+    console.log(`[Apple Icon /apple-icon]: status = ${appleIconRes.status}, type = ${appleIconRes.headers.get("content-type")}`);
+    if (appleIconRes.status !== 200 || !appleIconRes.headers.get("content-type")?.includes("image/png")) {
+      throw new Error("Apple icon /apple-icon endpoint failed");
+    }
+
+    const svgIconRes = await fetch(`${BASE_URL}/icon.svg`);
+    const svgIconText = await svgIconRes.text();
+    console.log(`[SVG Icon /icon.svg]: status = ${svgIconRes.status}`);
+    if (svgIconRes.status !== 200 || !svgIconText.includes("<circle") || !svgIconText.includes("JK")) {
+      throw new Error("SVG icon endpoint failed or missing JK");
+    }
+
     console.log("All HTTP smoke tests PASSED successfully!");
     server.kill();
     process.exit(0);

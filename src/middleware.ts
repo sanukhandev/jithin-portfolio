@@ -18,7 +18,9 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.includes(".") || // files like favicon.ico, sitemap.xml, robots.txt, etc.
-    pathname === "/opengraph-image"
+    pathname === "/opengraph-image" ||
+    pathname.startsWith("/icon") ||
+    pathname.startsWith("/apple-icon")
   ) {
     return NextResponse.next();
   }
